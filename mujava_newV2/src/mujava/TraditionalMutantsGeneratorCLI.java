@@ -18,14 +18,21 @@
 
 package mujava;
 
-import openjava.ptree.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 
-import mujava.op.basic.*;
-import mujava.op.util.*;
+import mujava.op.basic.AOIS;
+import mujava.op.basic.CreateDirForEachMethod;
+import mujava.op.util.CodeChangeLog;
 import mujava.util.Debug;
+import openjava.ptree.ClassDeclaration;
+import openjava.ptree.ClassDeclarationList;
+import openjava.ptree.ParseTreeException;
 /**
  * <p>
  * Description: New tranditional mutants generator class build exclusively for command line version
@@ -132,6 +139,8 @@ public class TraditionalMutantsGeneratorCLI extends TraditionalMutantsGenerator 
 
          if (cdecl.getName().equals(MutationSystem.CLASS_NAME))
          {
+        	 try
+             {
             mujava.op.util.Mutator mutant_op;
                boolean AOR_FLAG = false;
      
@@ -149,6 +158,23 @@ public class TraditionalMutantsGeneratorCLI extends TraditionalMutantsGenerator 
                   System.err.println("Error in writing method list");
                   return;
                }
+               
+                          
+                 if (hasOperator (traditionalOp, "AOIS") )
+                 {
+                    Debug.println("  Applying AOI-Short-Cut ... ... ");
+                    mutant_op = new AOIS(file_env, cdecl, comp_unit);
+                    comp_unit.accept(mutant_op);
+                 }
+                 
+
+
+              } catch (ParseTreeException e)
+              {
+                 System.err.println( "Exception, during generating traditional mutants for the class "
+                                + MutationSystem.CLASS_NAME);
+                 e.printStackTrace();
+              }
          }
       }
    }

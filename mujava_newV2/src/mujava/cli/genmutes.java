@@ -73,6 +73,7 @@ public class genmutes {
 		String sessionName = jct.getParameters().get(0);
 
 		muJavaHomePath = Util.loadConfig();
+		System.out.println(muJavaHomePath);
 		// check if debug mode
 		if (jct.isDebug()) {
 			Util.debug = true;
@@ -132,108 +133,18 @@ public class genmutes {
 		{
 
 			// if all is selected, all mutation operators are added
-			ops.put("AORB", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AORS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AOIU", new ArrayList<String>(Arrays.asList(paras)));
 			ops.put("AOIS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AODU", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AODS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("ROR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("COR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("COD", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("COI", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("SOR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("LOR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("LOI", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("LOD", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("ASRS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("SDL", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("ODL", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("VDL", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("CDL", new ArrayList<String>(Arrays.asList(paras)));
 			// ops.put("SDL", jct.getAll());
 
 		} else { // if not all, add selected ops to the list
-			if (jct.getAORB()) {
-				ops.put("AORB", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getAORS()) {
-				ops.put("AORS", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getAOIU()) {
-				ops.put("AOIU", new ArrayList<String>(Arrays.asList(paras)));
-			}
 			if (jct.getAOIS()) {
 				ops.put("AOIS", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getAODU()) {
-				ops.put("AODU", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getAODS()) {
-				ops.put("AODS", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getROR()) {
-				ops.put("ROR", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getCOR()) {
-				ops.put("COR", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getCOD()) {
-				ops.put("COD", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getCOI()) {
-				ops.put("COI", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getSOR()) {
-				ops.put("SOR", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getLOR()) {
-				ops.put("LOR", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getLOI()) {
-				ops.put("LOI", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getLOD()) {
-				ops.put("LOD", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getASRS()) {
-				ops.put("ASRS", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getSDL()) {
-				ops.put("SDL", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getVDL()) {
-				ops.put("VDL", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getODL()) {
-				ops.put("ODL", new ArrayList<String>(Arrays.asList(paras)));
-			}
-			if (jct.getCDL()) {
-				ops.put("CDL", new ArrayList<String>(Arrays.asList(paras)));
-			}
+			}			
 		}
 
 		// add default option "all"
 		if (ops.size() == 0) {
-			ops.put("AORB", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AORS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AOIU", new ArrayList<String>(Arrays.asList(paras)));
 			ops.put("AOIS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AODU", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("AODS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("ROR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("COR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("COD", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("COI", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("SOR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("LOR", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("LOI", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("LOD", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("ASRS", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("SDL", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("ODL", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("VDL", new ArrayList<String>(Arrays.asList(paras)));
-			ops.put("CDL", new ArrayList<String>(Arrays.asList(paras)));
 		}
 
 		// String[] tradional_ops = ops.toArray(new String[0]);

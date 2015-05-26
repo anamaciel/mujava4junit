@@ -106,7 +106,9 @@ public class Util
 			path = inputs[0];
 			String debug = inputs[1];
 			path = path.replace("MuJava_HOME=", "");
+			//System.out.println("path 1: " + path);
 			path = path.replace("\n", "");
+			//System.out.println("path 2: " + path.trim());
 			debug = debug.replace("Debug_mode=", "");
 			debug = debug.replace("\n", "");
 			// load debug mode from config file, and set it
@@ -119,7 +121,7 @@ public class Util
 
 		inputStream.close();
 
-		return path;
+		return path.trim();
 	}
 	
 	

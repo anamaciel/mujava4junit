@@ -39,6 +39,7 @@ import java.util.Vector;
 
 
 
+
 import com.beust.jcommander.JCommander;
 
 import mujava.MutationSystem;
@@ -130,6 +131,8 @@ public class runmutes {
 		String[] argv = { "-all", "-fresh", "-debug", "date_plusTest", "date_plus" };
 
 		JCommander jCommander = new JCommander(jct, args);
+		
+		//System.out.println("teste");
 
 		String targetClassName = null;
 		String testSetName = null;
@@ -137,6 +140,7 @@ public class runmutes {
 		String testSessionName = null;
 
 		muJavaHomePath = Util.loadConfig();
+		//System.out.println("teste: "+muJavaHomePath);
 		// check if debug mode
 		if (jct.isDebug()) {
 			Util.debug = true;
@@ -149,6 +153,7 @@ public class runmutes {
 			// read all test names
 			testSessionName = jct.getParameters().get(0);
 			File folder = new File(muJavaHomePath + "/" + testSessionName + "/testset");
+			System.out.println("teste" + folder.getName());
 			File[] listOfFiles = folder.listFiles();
 
 			for (File file : listOfFiles) {
@@ -174,7 +179,19 @@ public class runmutes {
 
 			// make sure test file exists
 			File folder = new File(muJavaHomePath + "/" + testSessionName + "/testset");
+			
+			muJavaHomePath = muJavaHomePath.replace("\n", muJavaHomePath);
+			//System.out.println(muJavaHomePath.indexOf("\n"));
+			//System.out.println(testSessionName.indexOf("\n"));
+			
+			System.out.println("folder: " + folder.getAbsolutePath());
+			
 			File[] listOfFiles = folder.listFiles();
+			
+			
+			String[] listFiles = folder.list();
+			System.out.println("LISTA: " + listOfFiles);
+			
 			if (!hasTestFile(listOfFiles, testSetName)) {
 				Util.Error("can't find test file: " + testSetName);
 				return;
@@ -229,106 +246,16 @@ public class runmutes {
 		{
 
 			// if all is selected, all mutation operators are added
-			typeList.add("AORB");
-			typeList.add("AORS");
-			typeList.add("AOIU");
 			typeList.add("AOIS");
-			typeList.add("AODU");
-			typeList.add("AODS");
-			typeList.add("ROR");
-			typeList.add("COR");
-			typeList.add("COD");
-			typeList.add("COI");
-			typeList.add("SOR");
-			typeList.add("LOR");
-			typeList.add("LOI");
-			typeList.add("LOD");
-			typeList.add("ASRS");
-			typeList.add("SDL");
-			typeList.add("VDL");
-			typeList.add("ODL");
-			typeList.add("CDL");
 		} else { // if not all, add selected ops to the list
-			if (jct.isAORB()) {
-				typeList.add("AORB");
-			}
-			if (jct.isAORS()) {
-				typeList.add("AORS");
-			}
-			if (jct.isAOIU()) {
-				typeList.add("AOIU");
-			}
 			if (jct.isAOIS()) {
 				typeList.add("AOIS");
-			}
-			if (jct.isAODU()) {
-				typeList.add("AODU");
-			}
-			if (jct.isAODS()) {
-				typeList.add("AODS");
-			}
-			if (jct.isROR()) {
-				typeList.add("ROR");
-			}
-			if (jct.isCOR()) {
-				typeList.add("COR");
-			}
-			if (jct.isCOD()) {
-				typeList.add("COD");
-			}
-			if (jct.isCOI()) {
-				typeList.add("COI");
-			}
-			if (jct.isSOR()) {
-				typeList.add("SOR");
-			}
-			if (jct.isLOR()) {
-				typeList.add("LOR");
-			}
-			if (jct.isLOI()) {
-				typeList.add("LOI");
-			}
-			if (jct.isLOD()) {
-				typeList.add("LOD");
-			}
-			if (jct.isASRS()) {
-				typeList.add("ASRS");
-			}
-			if (jct.isSDL()) {
-				typeList.add("SDL");
-			}
-			if (jct.isVDL()) {
-				typeList.add("VDL");
-			}
-			if (jct.isCDL()) {
-				typeList.add("CDL");
-			}
-			if (jct.isODL()) {
-				typeList.add("ODL");
 			}
 		}
 
 		// default option, all
 		if (typeList.size() == 0) {
-			typeList.add("AORB");
-			typeList.add("AORS");
-			typeList.add("AOIU");
 			typeList.add("AOIS");
-			typeList.add("AODU");
-			typeList.add("AODS");
-			typeList.add("ROR");
-			typeList.add("COR");
-			typeList.add("COD");
-			typeList.add("COI");
-			typeList.add("SOR");
-			typeList.add("LOR");
-			typeList.add("LOI");
-			typeList.add("LOD");
-			typeList.add("ASRS");
-			typeList.add("SDL");
-			typeList.add("VDL");
-			typeList.add("CDL");
-			typeList.add("ODL");
 		}
 
 		setJMutationStructureAndSession(testSessionName);
@@ -378,7 +305,7 @@ public class runmutes {
 	}
 
 	private static boolean hasTestFile(File[] listOfFiles, String testSetName) {
-
+		//System.out.println(testSetName);
 		for (File file : listOfFiles) {
 			if (file.getName().equals(testSetName + ".class"))
 				return true;
@@ -388,6 +315,8 @@ public class runmutes {
 
 	static void runTests(String targetClassName, String testSetName, String[] mutantTypes, double percentage,
 			String mode) throws NoMutantException, NoMutantDirException, IOException {
+		
+		System.out.println("Class Name: " + targetClassName);
 
 		Util.Print("Class Name: " + targetClassName);
 		Util.Print("Test Name: " + testSetName);
@@ -440,6 +369,7 @@ public class runmutes {
 		if (mode.equals("default")) // run default mode, read result first, then
 									// if m is dead, t not run on it.
 		{
+			System.out.println("entrei nesse if");
 
 			// read file
 			TestResultCLI tr = new TestResultCLI();
@@ -448,6 +378,9 @@ public class runmutes {
 					+ "/mutant_list";
 			tr.getResults();
 
+			System.out.println("path: " + tr.path);
+			
+			
 			// need to check if eq option is enabled, if so, need to run eq
 			// mutants
 			if (runEq) {
@@ -465,7 +398,7 @@ public class runmutes {
 
 			// run
 			TestExecuterCLI test_engine = new TestExecuterCLI(targetClassName);
-			test_engine.setTimeOut(3000);
+			test_engine.setTimeOut(9000);
 
 			// First, read (load) test suite class.
 			Util.DebugPrint(targetClassName + " " + testSetName);

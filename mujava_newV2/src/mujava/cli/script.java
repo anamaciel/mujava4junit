@@ -28,18 +28,18 @@ public class script {
 
 	public static void main(String[] args) throws Exception {
 		runmutes runm = new runmutes();
-		String[] argv = { "-AORB", "-fresh", "-debug", "PrintTokensTest",
+		String[] argv = { "-AOIS", "-fresh", "-debug", "PrintTokensTest",
 				"PrintTokens" };
 //		runm.main(argv);
 
 //		argv = new String[] { "-AORS", "-fresh", "-debug", "PrintTokensTest",
 //				"PrintTokens" };
 //		runm.main(argv);
-		argv = new String[] { "-AOIU", "-fresh", "-debug", "PrintTokensTest",
-				"PrintTokens" }; //???
+//		argv = new String[] { "-AOIU", "-fresh", "-debug", "PrintTokensTest",
+//				"PrintTokens" }; //???
 //		runm.main(argv);
-//		argv = new String[] { "-AOIS", "-fresh", "-debug", "PrintTokensTest",
-//				"PrintTokens" };//???
+		argv = new String[] { "-AOIS", "-fresh", "-debug", "PrintTokensTest",
+				"PrintTokens" };//???
 //		runm.main(argv);
 //		argv = new String[] { "-AODU", "-fresh", "-debug", "PrintTokensTest",
 //				"PrintTokens" };
