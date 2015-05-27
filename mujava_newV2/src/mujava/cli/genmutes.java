@@ -111,8 +111,10 @@ public class genmutes {
 		// if(jct.getD())
 		// {
 		File sessionFolder = new File(muJavaHomePath + "/" + sessionName + "/src");
+		System.out.println("caminho: " + sessionFolder.getAbsolutePath());
 		File[] listOfFilesInSession = sessionFolder.listFiles();
-		file_list = new String[listOfFilesInSession.length];
+		System.out.println("qtde de arquivos: " + listOfFilesInSession.length);
+		file_list = new String[listOfFilesInSession.length];		
 		for (int i = 0; i < listOfFilesInSession.length; i++) {
 			file_list[i] = listOfFilesInSession[i].getName();
 		}
@@ -153,6 +155,7 @@ public class genmutes {
 		// MutationSystem.setJMutationStructureAndSession(sessionName);
 		MutationSystem.recordInheritanceRelation();
 		// generate mutants
+		System.out.println("arquivos: " + file_list[0]);
 		generateMutants(file_list, ops);
 
 		//System.exit(0);
@@ -177,6 +180,7 @@ public class genmutes {
 			// file_name = ABSTRACT_PATH - MutationSystem.SRC_PATH
 			// For example: org/apache/bcel/Class.java
 			String file_name = file_list[i];
+			System.out.println("File name: " + file_name);
 			try {
 				System.out.println((i + 1) + " : " + file_name);
 				// [1] Examine if the target class is interface or abstract
@@ -273,9 +277,9 @@ public class genmutes {
 			      
 			} catch (OpenJavaException oje) {
 				System.out.println("[OJException] " + file_name + " " + oje.toString());
-				// System.out.println("Can't generate mutants for " +file_name +
-				// " because OpenJava " + oje.getMessage());
-				deleteDirectory();
+				 System.out.println("Can't generate mutants for " +file_name +
+				 " because OpenJava " + oje.getMessage());
+				 deleteDirectory();
 			} catch (Exception exp) {
 				System.out.println("[Exception] " + file_name + " " + exp.toString());
 				exp.printStackTrace();

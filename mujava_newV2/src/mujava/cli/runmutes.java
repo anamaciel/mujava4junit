@@ -188,9 +188,7 @@ public class runmutes {
 			
 			File[] listOfFiles = folder.listFiles();
 			
-			
-			String[] listFiles = folder.list();
-			System.out.println("LISTA: " + listOfFiles);
+			//System.out.println("LISTA: " + listOfFiles.toString() +  " tamanho: " + listOfFiles.length);
 			
 			if (!hasTestFile(listOfFiles, testSetName)) {
 				Util.Error("can't find test file: " + testSetName);
@@ -306,7 +304,9 @@ public class runmutes {
 
 	private static boolean hasTestFile(File[] listOfFiles, String testSetName) {
 		//System.out.println(testSetName);
+		//System.out.println("qtde de arquivos: " + listOfFiles.length);
 		for (File file : listOfFiles) {
+			//System.out.println("nome arquivo: " + file.getName());
 			if (file.getName().equals(testSetName + ".class"))
 				return true;
 		}

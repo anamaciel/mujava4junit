@@ -38,7 +38,7 @@ public class script {
 //		argv = new String[] { "-AOIU", "-fresh", "-debug", "PrintTokensTest",
 //				"PrintTokens" }; //???
 //		runm.main(argv);
-		argv = new String[] { "-AOIS", "-fresh", "-debug", "PrintTokensTest",
+		argv = new String[] { "-AOIS", "-fresh", "-debug", "Cal",
 				"PrintTokens" };//???
 //		runm.main(argv);
 //		argv = new String[] { "-AODU", "-fresh", "-debug", "PrintTokensTest",
