@@ -45,31 +45,29 @@
 package mujava;
 
 import openjava.ptree.*;
-
 import java.io.*;
-
 import mujava.op.basic.*;
 import mujava.op.util.*;
 import mujava.util.Debug;
 
 
-public class TraditionalMutantsGenerator extends MutantsGenerator
+public class TraditionalMutantsGeneratorOracle extends MutantsGeneratorOracle
 {
    String[] traditionalOp;
 
-   public TraditionalMutantsGenerator(File f) 
+   public TraditionalMutantsGeneratorOracle(File f) 
    {
       super(f);
-      traditionalOp = MutationSystem.tm_operators;
+      traditionalOp = MutationSystemOracle.tm_operators;
    }
    
-   public TraditionalMutantsGenerator(File f, boolean debug) 
+   public TraditionalMutantsGeneratorOracle(File f, boolean debug) 
    {
       super (f, debug);
-      traditionalOp = MutationSystem.tm_operators;
+      traditionalOp = MutationSystemOracle.tm_operators;
    }
 
-   public TraditionalMutantsGenerator(File f, String[] tOP) 
+   public TraditionalMutantsGeneratorOracle(File f, String[] tOP) 
    {
       super(f);
       traditionalOp = tOP;
@@ -94,9 +92,10 @@ public class TraditionalMutantsGenerator extends MutantsGenerator
       if (traditionalOp != null && traditionalOp.length > 0)
       {
 	     Debug.println("* Generating traditional mutants");
-         MutationSystem.clearPreviousTraditionalMutants();
+	     System.out.println("* Generating traditional mutants");
+         MutationSystemOracle.clearPreviousTraditionalMutants();
 
-         MutationSystem.MUTANT_PATH = MutationSystem.TRADITIONAL_MUTANT_PATH;
+         MutationSystemOracle.MUTANT_PATH = MutationSystemOracle.TRADITIONAL_MUTANT_PATH;
 
          CodeChangeLog.openLogFile();
 
@@ -116,7 +115,8 @@ public class TraditionalMutantsGenerator extends MutantsGenerator
          try
          {
             Debug.println("* Compiling traditional mutants into bytecode");
-            String original_tm_path = MutationSystem.TRADITIONAL_MUTANT_PATH;
+            System.out.println("* Compiling traditional mutants into bytecode");
+            String original_tm_path = MutationSystemOracle.TRADITIONAL_MUTANT_PATH;
             File f = new File(original_tm_path, "method_list");
             FileReader r = new FileReader(f);
             BufferedReader reader = new BufferedReader(r);
@@ -124,16 +124,16 @@ public class TraditionalMutantsGenerator extends MutantsGenerator
             
             while (str != null)
             {
-               MutationSystem.MUTANT_PATH = original_tm_path + "/" + str;
+               MutationSystemOracle.MUTANT_PATH = original_tm_path + "/" + str;
                super.compileMutants();
                str = reader.readLine();
             }
             reader.close();
-            MutationSystem.MUTANT_PATH = original_tm_path;
+            MutationSystemOracle.MUTANT_PATH = original_tm_path;
          } catch (Exception e)
          {
         	e.printStackTrace();
-            System.err.println("Error at compileMutants() in TraditionalMutantsGenerator.java");
+            System.err.println("Error at compileMutants() in TraditionalMutantsGeneratorOracle.java");
          }
       }
    }
@@ -146,16 +146,17 @@ public class TraditionalMutantsGenerator extends MutantsGenerator
     */
    void genTraditionalMutants(ClassDeclarationList cdecls)
    {
-	   System.out.print("MÉTODO genTraditionalMutants");
+	  System.out.print("MÉTODO genTraditionalMutants");
       for (int j=0; j<cdecls.size(); ++j)
       {
          ClassDeclaration cdecl = cdecls.get(j);
          //take care of the case for generics
          String tempName = cdecl.getName();
-         if(tempName.indexOf("<") != -1 && tempName.indexOf(">")!= -1)
+         if(tempName.indexOf("<") != -1 && tempName.indexOf(">")!= -1)        	 
         	 tempName = tempName.substring(0, tempName.indexOf("<")) + tempName.substring(tempName.lastIndexOf(">") + 1, tempName.length());
+         	 System.out.println("tempName: " + tempName);	
 
-         if (tempName.equals(MutationSystem.CLASS_NAME))
+         if (tempName.equals(MutationSystemOracle.CLASS_NAME))
          {
             mujava.op.util.Mutator mutant_op;
                boolean AOR_FLAG = false;
@@ -163,8 +164,8 @@ public class TraditionalMutantsGenerator extends MutantsGenerator
                try
                {
                   //generate a list of methods from the original java class
-            	  //System.out.println("MutationSystem.MUTANT_PATH: " + MutationSystem.MUTANT_PATH);
-                  File f = new File(MutationSystem.MUTANT_PATH, "method_list");
+            	  //System.out.println("MutationSystemOracle.MUTANT_PATH: " + MutationSystemOracle.MUTANT_PATH);
+                  File f = new File(MutationSystemOracle.MUTANT_PATH, "method_list");
                   FileOutputStream fout = new FileOutputStream(f);
                   PrintWriter out = new PrintWriter(fout);
 

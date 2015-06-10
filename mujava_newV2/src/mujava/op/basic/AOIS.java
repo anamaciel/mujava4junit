@@ -29,7 +29,7 @@ import java.io.*;
  * @version 1.0
   */
 
-public class AOIS extends Arithmetic_OP
+public class AOIS extends JUnit_OP
 {
    boolean isPrePostEQ = true;
 
@@ -108,7 +108,7 @@ public class AOIS extends Arithmetic_OP
 
       String f_name;
       num++;
-      f_name = getSourceName("AOIS");
+      f_name = getSourceNameOracle("AOIS");
       String mutant_dir = getMuantID("AOIS");
 
       try 
@@ -120,6 +120,7 @@ public class AOIS extends Arithmetic_OP
 		 comp_unit.accept( writer );
 		 out.flush();  out.close();
       } catch ( IOException e ) {
+    	  e.printStackTrace();
 		 System.err.println( "fails to create " + f_name );
       } catch ( ParseTreeException e ) {
 		 System.err.println( "errors during printing " + f_name );
@@ -139,7 +140,7 @@ public class AOIS extends Arithmetic_OP
       
       String f_name;
       num++;
-      f_name = getSourceName("AOIS");
+      f_name = getSourceNameOracle("AOIS");
       String mutant_dir = getMuantID("AOIS");
 
       try 
@@ -152,6 +153,7 @@ public class AOIS extends Arithmetic_OP
 		 out.flush();  
 		 out.close();
       } catch ( IOException e ) {
+    	  e.printStackTrace();
 		 System.err.println( "fails to create " + f_name );
       } catch ( ParseTreeException e ) {
 		 System.err.println( "errors during printing " + f_name );

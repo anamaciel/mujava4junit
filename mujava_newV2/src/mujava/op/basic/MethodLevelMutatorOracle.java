@@ -16,28 +16,23 @@
 
 package mujava.op.basic;
 
-import java.io.File;
-import java.io.IOException;
+import openjava.mop.*;
+import openjava.ptree.*;
 
-import mujava.MutationSystem;
+import java.io.*;
+
 import mujava.MutationSystemOracle;
-import openjava.mop.FileEnvironment;
-import openjava.ptree.CompilationUnit;
-import openjava.ptree.ConstructorDeclaration;
-import openjava.ptree.MethodDeclaration;
-import openjava.ptree.ParameterList;
-import openjava.ptree.ParseTreeException;
 /**
  * <p>
  * </p>
  * @author Jeff Offutt and Yu-Seung Ma
  * @version 1.0
   */
-public class MethodLevelMutator  extends mujava.op.util.Mutator
+public class MethodLevelMutatorOracle  extends mujava.op.util.Mutator
 {
    String currentMethodSignature = null;
 
-   public MethodLevelMutator(FileEnvironment file_env, CompilationUnit comp_unit)
+   public MethodLevelMutatorOracle(FileEnvironment file_env, CompilationUnit comp_unit)
    {
       super( file_env, comp_unit );
    }
@@ -103,33 +98,39 @@ public class MethodLevelMutator  extends mujava.op.util.Mutator
    /**
     * Retrieve the source's file name
     */
-   public String getSourceName(mujava.op.util.Mutator clazz)
+   public String getSourceNameOracle(mujava.op.util.Mutator clazz)
    {
 	  // make directory for the mutant
-	  String dir_name = MutationSystem.MUTANT_PATH + "/" + currentMethodSignature + "/"
+	  String dir_name = MutationSystemOracle.MUTANT_PATH + "/" + currentMethodSignature + "/"
                         + getClassName() + "_" + this.num;
+	  
+	  //System.out.println("teste: " + dir_name);
 	  File f = new File(dir_name);
-	  f.mkdir();
+	  if(!f.mkdir()){
+		  System.out.println("aqui não criou 1");
+	  }
 
 	  // return file name
 	  String name;
-	  name = dir_name + "/" +  MutationSystem.CLASS_NAME + ".java";
+	  name = dir_name + "/" +  MutationSystemOracle.CLASS_NAME + ".java";
       return name;
    }
 
    /**
     * Retrieve the source's file name
     */
-   public String getSourceName(String op_name)
+   public String getSourceNameOracle(String op_name)
    {
  	  // make directory for the mutant
-	  String dir_name = MutationSystemOracle.MUTANT_PATH + "/" + currentMethodSignature + "/" + op_name + "_" + this.num + "/";
+	  String dir_name = MutationSystemOracle.MUTANT_PATH + "/" + currentMethodSignature + "/" + op_name + "_" + this.num;
 	  
-	  System.out.println("teste MethodLevel: " + dir_name);
+	  System.out.println("teste: " + currentMethodSignature);
 	  File f = new File(dir_name);
-	  System.out.println("f.mkdir();" + f.mkdir());
-	  f.mkdir();	  
 	  
+	  if(!f.mkdirs()){
+		  System.out.println("aqui não criou 2");
+	  }
+
 	  // return file name
 	  String name;
 	  name = dir_name + "/" +  MutationSystemOracle.CLASS_NAME + ".java";

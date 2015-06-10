@@ -45,6 +45,8 @@ public class DeclAnalyzer extends OJClass
 		// return file name
 		String name;
 		name = dir_name + "/" +  MutationSystem.CLASS_NAME+".java";
+		System.out.println(name);
+		
       //name = MutationSystem.getPrefix()+getClassName()+"_"+this.num+".java";
       return name;
     }

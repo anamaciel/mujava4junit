@@ -73,7 +73,7 @@ public class genmutes {
 		String sessionName = jct.getParameters().get(0);
 
 		muJavaHomePath = Util.loadConfig();
-		System.out.println(muJavaHomePath);
+		//System.out.println(muJavaHomePath);
 		// check if debug mode
 		if (jct.isDebug()) {
 			Util.debug = true;
@@ -155,7 +155,7 @@ public class genmutes {
 		// MutationSystem.setJMutationStructureAndSession(sessionName);
 		MutationSystem.recordInheritanceRelation();
 		// generate mutants
-		System.out.println("arquivos: " + file_list[0]);
+		//System.out.println("arquivos: " + file_list[0]);
 		generateMutants(file_list, ops);
 
 		//System.exit(0);
@@ -189,19 +189,23 @@ public class genmutes {
 
 				// Generate class name from file_name
 				String temp = file_name.substring(0, file_name.length() - ".java".length());
+				System.out.println(temp);
 				String class_name = "";
 
 				for (int j = 0; j < temp.length(); j++) {
-					if ((temp.charAt(j) == '\\') || (temp.charAt(j) == '/')) {
+					if ((temp.charAt(j) == '\\') || (temp.charAt(j) == '/')) {						
 						class_name = class_name + ".";
+						//System.out.println("class_name 1 " + class_name);
 					} else {
 						class_name = class_name + temp.charAt(j);
+						//System.out.println("class_name 2 " + class_name);
 					}
 				}
 
 
 				int class_type = MutationSystem.getClassType(class_name);
-
+				System.out.println("class_type: " + class_type);
+				
 				if (class_type == MutationSystem.NORMAL) { // do nothing
 				} else if (class_type == MutationSystem.MAIN) {
 					System.out.println(" -- " + file_name + " class contains 'static void main()' method.");
@@ -220,6 +224,9 @@ public class genmutes {
 						break;
 					case MutationSystem.GUI:
 						System.out.println(" -- Can't apply because " + file_name + " is 'GUI' class ");
+						break;
+					case MutationSystem.JUNIT:
+						System.out.println(" -- Can't apply because " + file_name + " is 'JUNIT' class ");
 						break;
 					case -1:
 						System.out.println(" -- Can't apply because class not found ");
@@ -240,7 +247,7 @@ public class genmutes {
 				TraditionalMutantsGeneratorCLI tmGenEngine;
 				tmGenEngine = new TraditionalMutantsGeneratorCLI(original_file, opArray);
 				tmGenEngine.makeMutants();
-				tmGenEngine.compileMutants();
+				//tmGenEngine.compileMutants();
 				
 			      // Lin add printing total mutants
 				// get all file names
@@ -253,6 +260,7 @@ public class genmutes {
 					//fileNameList.add(method.getName());
 					if(method.isDirectory())
 					{
+						System.out.println("is directory");
 						File[] listOfMutants = method.listFiles();
 						total_mutants = total_mutants+listOfMutants.length;
 						
@@ -340,10 +348,12 @@ public class genmutes {
 			}
 
 			String mutant_dir_path = MutationSystem.MUTANT_HOME + "/" + temp;
+			System.out.println("mutant_dir_path: " + mutant_dir_path);
 			File mutant_path = new File(mutant_dir_path);
 			mutant_path.mkdir();
 
 			String class_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.CM_DIR_NAME;
+			System.out.println("class_dir_path: " + class_mutant_dir_path);
 			File class_mutant_path = new File(class_mutant_dir_path);
 			class_mutant_path.mkdir();
 

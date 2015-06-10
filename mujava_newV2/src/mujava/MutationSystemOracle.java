@@ -52,7 +52,7 @@ import java.util.Vector;
  * @version 1.0
   */
 
-public class MutationSystem extends OJSystem
+public class MutationSystemOracle extends OJSystem
 {
    public static final int INTERFACE = 0;
    public static final int ABSTRACT = 1;
@@ -69,23 +69,19 @@ public class MutationSystem extends OJSystem
 
 
    /** home path where inputs and output of mujava system are located*/
-   //public static String SYSTEM_HOME = "C:/jmutation";
+   public static String SYSTEM_HOME = "D:/mujava";
    //public static String SYSTEM_HOME = "/Users/dmark/mujava";
 //   public static String SYSTEM_HOME = "";
-   public static String SYSTEM_HOME = System.getProperty("user.dir");
-   
-   
-   
-   //public static String SYSTEM_HOME = "D:/mujava";
+   //public static String SYSTEM_HOME = System.getProperty("user.dir");
 
    /** path of Java source files which mutation is applied to  */
-   public static String SRC_PATH = SYSTEM_HOME + "/src";
+   public static String SRC_PATH = SYSTEM_HOME + "/oracles/src";
 
    /** path of classes of Java source files at SRC_PATH directory */
-   public static String CLASS_PATH = SYSTEM_HOME + "/classes";
+   public static String CLASS_PATH = SYSTEM_HOME + "/oracles/classes";
 
    /** home path which mutants are put into */
-   public static String MUTANT_HOME = SYSTEM_HOME + "/result";
+   public static String MUTANT_HOME = SYSTEM_HOME + "/oracles/result";
 
    /** path which class mutants are put into */
    public static String CLASS_MUTANT_PATH = "";
@@ -103,7 +99,7 @@ public class MutationSystem extends OJSystem
    public static String ORIGINAL_PATH = "";
 
    /** absolute path where test cases are located */
-   public static String TESTSET_PATH = SYSTEM_HOME + "/testset";
+   public static String TESTSET_PATH = SYSTEM_HOME + "/oracles/testset";
 
    /** class name without package name that mutation is applied into */
    public static String CLASS_NAME;
@@ -167,7 +163,6 @@ public class MutationSystem extends OJSystem
    */
    public static int getClassType (String class_name)
    {
-	   System.out.println("class_name: " + class_name);
       try 
       {
          Class c = Class.forName (class_name);
@@ -179,7 +174,7 @@ public class MutationSystem extends OJSystem
          
          Method[] ms = c.getDeclaredMethods();
          
-         System.out.println("metodos: " + ms.length);
+         //System.out.println("metodos: " + ms.length);
 
          if (ms != null)
          {
@@ -195,6 +190,7 @@ public class MutationSystem extends OJSystem
          
          if (isGUI(c))       return GUI;
          if (isApplet(c))    return APPLET;
+         //if (isJUnit(c))       return JUNIT;
          
          return NORMAL;
       } 
@@ -236,6 +232,27 @@ public class MutationSystem extends OJSystem
    }
    
    
+   /** Examine if class <i>c</i> is a junit class */
+   /*private static boolean isJUnit(Class c)
+   {
+	  System.out.println("testando junit");
+	  Annotation[] annotations;
+      Method[] methods = c.getMethods();
+      System.out.println("qtde metodos: " + methods.length);
+      
+      for(int i=0;i<methods.length;i++){
+    	  annotations = methods[i].getAnnotations();
+    	  System.out.println("qtde annotations: " + annotations.length);
+    	  for (int j=0;j<annotations.length;j++){
+    		  System.out.println("testeeeee: " + annotations[i].getClass().getName());
+    	  }
+      } 
+      
+         
+      return false;
+   }*/
+
+
    /**  Inheritance Informations  */
    public static InheritanceINFO[] classInfo = null;
 
@@ -259,7 +276,8 @@ public class MutationSystem extends OJSystem
    /** Clear arranged original file made before*/
    private static void clearPreviousOriginalFiles()
    {
-      File original_class_dir = new File(MutationSystem.ORIGINAL_PATH);
+	  System.out.println("original_class_dir: " + MutationSystemOracle.ORIGINAL_PATH);
+      File original_class_dir = new File(MutationSystemOracle.ORIGINAL_PATH);
       int i;
       File[] old_files = original_class_dir.listFiles();
       
@@ -334,13 +352,13 @@ public class MutationSystem extends OJSystem
    /** Delete all traditional mutants generated before */
    public static void clearPreviousTraditionalMutants()
    {
-      clearPreviousTraditionalMutants(MutationSystem.TRADITIONAL_MUTANT_PATH);
+      clearPreviousTraditionalMutants(MutationSystemOracle.TRADITIONAL_MUTANT_PATH);
    }
 
    /** Delete all class mutants generated before */
    public static void clearPreviousClassMutants()
    {
-      clearPreviousMutants(MutationSystem.CLASS_MUTANT_PATH);
+      clearPreviousMutants(MutationSystemOracle.CLASS_MUTANT_PATH);
    }
 
     /** Delete all mutants generated before */
@@ -355,7 +373,8 @@ public class MutationSystem extends OJSystem
    public static Vector getNewTragetFiles()
    {
       Vector targetFiles = new Vector();
-      getJavacArgForDir (MutationSystem.SRC_PATH, "", targetFiles);
+      getJavacArgForDir (MutationSystemOracle.SRC_PATH, "", targetFiles);
+      //System.out.println("MutationSystemOracle.SRC_PATH: "+MutationSystemOracle.SRC_PATH);
       return targetFiles;
    }
 
@@ -374,7 +393,7 @@ public class MutationSystem extends OJSystem
          {
             temp = javaF[k].getAbsolutePath();
             temp.replace('\\', '/');
-            targetFiles.add(temp.substring(MutationSystem.SRC_PATH.length()+1, temp.length()));
+            targetFiles.add(temp.substring(MutationSystemOracle.SRC_PATH.length()+1, temp.length()));
          }
       }
 
@@ -402,7 +421,7 @@ public class MutationSystem extends OJSystem
          for(int k=0; k<classF.length; k++) 
          {
             temp = classF[k].getAbsolutePath();
-            classes[k] = temp.substring(MutationSystem.CLASS_PATH.length()+1, temp.length()-".class".length());
+            classes[k] = temp.substring(MutationSystemOracle.CLASS_PATH.length()+1, temp.length()-".class".length());
             classes[k] = classes[k].replace('\\', '.');
             classes[k] = classes[k].replace('/', '.');
          }
@@ -476,12 +495,12 @@ public class MutationSystem extends OJSystem
    public static void recordInheritanceRelation() throws Exception
    {
       String[] classes = null;
-      classes = MutationSystem.getAllClassNames(classes, MutationSystem.CLASS_PATH);
+      classes = MutationSystemOracle.getAllClassNames(classes, MutationSystemOracle.CLASS_PATH);
       
       if (classes == null)
       {
          System.err.println("[ERROR] There is no classes to apply mutation.");
-         System.err.println(" Pleas check the directory  " + MutationSystem.CLASS_PATH);
+         System.err.println(" Pleas check the directory  " + MutationSystemOracle.CLASS_PATH);
          Runtime.getRuntime().exit(0);
       }
       classInfo = new InheritanceINFO[classes.length];
@@ -497,7 +516,7 @@ public class MutationSystem extends OJSystem
          {       	
          	String classpath = System.getProperty("java.class.path");
          	//add the class path dynamically
-         	addURL(MutationSystem.CLASS_PATH);
+         	addURL(MutationSystemOracle.CLASS_PATH);
             //create a new class from the class name
             Class c = Class.forName(classes[i]);
             //create the parent class of the class above
@@ -572,6 +591,7 @@ public class MutationSystem extends OJSystem
    * @param name of class (including package name) */
    public static void setJMutationPaths(String whole_class_name)
    {
+	   System.out.println("passou aqui setJMutationPaths");
       int temp_start = whole_class_name.lastIndexOf(".") + 1;
       if (temp_start < 0)
       {
@@ -579,16 +599,16 @@ public class MutationSystem extends OJSystem
       }
   
       int temp_end = whole_class_name.length();
-      MutationSystem.CLASS_NAME = whole_class_name.substring(temp_start, temp_end);
-      MutationSystem.DIR_NAME   = whole_class_name;
-      MutationSystem.ORIGINAL_PATH = MutationSystem.MUTANT_HOME
-                                + "/" + whole_class_name + "/" + MutationSystem.ORIGINAL_DIR_NAME;
-      MutationSystem.CLASS_MUTANT_PATH = MutationSystem.MUTANT_HOME
-                                + "/" + whole_class_name + "/" + MutationSystem.CM_DIR_NAME;
-      MutationSystem.TRADITIONAL_MUTANT_PATH = MutationSystem.MUTANT_HOME
-                                + "/" + whole_class_name + "/" + MutationSystem.TM_DIR_NAME;
-      MutationSystem.EXCEPTION_MUTANT_PATH = MutationSystem.MUTANT_HOME
-                                + "/" + whole_class_name + "/" + MutationSystem.EM_DIR_NAME;
+      MutationSystemOracle.CLASS_NAME = whole_class_name.substring(temp_start, temp_end);
+      MutationSystemOracle.DIR_NAME   = whole_class_name;
+      MutationSystemOracle.ORIGINAL_PATH = MutationSystemOracle.MUTANT_HOME
+                                + "/" + whole_class_name + "/" + MutationSystemOracle.ORIGINAL_DIR_NAME;
+      MutationSystemOracle.CLASS_MUTANT_PATH = MutationSystemOracle.MUTANT_HOME
+                                + "/" + whole_class_name + "/" + MutationSystemOracle.CM_DIR_NAME;
+      MutationSystemOracle.TRADITIONAL_MUTANT_PATH = MutationSystemOracle.MUTANT_HOME
+                                + "/" + whole_class_name + "/" + MutationSystemOracle.TM_DIR_NAME;
+      MutationSystemOracle.EXCEPTION_MUTANT_PATH = MutationSystemOracle.MUTANT_HOME
+                                + "/" + whole_class_name + "/" + MutationSystemOracle.EM_DIR_NAME;
 
    }
 
@@ -597,18 +617,19 @@ public class MutationSystem extends OJSystem
    *  <p> ** CAUTION : this function or `setJMutationStructure(String home_path)' should be called before generating and running mutants. */
    public static void setJMutationStructure()
    {
+	   System.out.println("passou aqui setJMutationStructure");
       try 
       {
-         File f = new File (MutationSystem.SYSTEM_HOME + "/mujava.config");
+         File f = new File (MutationSystemOracle.SYSTEM_HOME + "/mujava.config");
          FileReader r = new FileReader(f);
          BufferedReader reader = new BufferedReader(r);
          String str = reader.readLine();
          String home_path = str.substring("MuJava_HOME=".length(), str.length());
          SYSTEM_HOME = home_path;
-         SRC_PATH = home_path + "/src";
-         CLASS_PATH = home_path + "/classes";
-         MUTANT_HOME = home_path + "/result";
-         TESTSET_PATH = home_path + "/testset";
+         SRC_PATH = home_path + "/oracles/src";
+         CLASS_PATH = home_path + "/oracles/classes";
+         MUTANT_HOME = home_path + "/oracles/result";
+         TESTSET_PATH = home_path + "/oracles/testset";
       } catch (FileNotFoundException e1)
       {
          System.err.println(" I can't find mujava.config file");
@@ -623,31 +644,31 @@ public class MutationSystem extends OJSystem
    public static void setJMutationStructure(String home_path)
    {
       SYSTEM_HOME = home_path;
-      SRC_PATH = home_path + "/src";
-      CLASS_PATH = home_path + "/classes";
-      MUTANT_HOME = home_path + "/result";
-      TESTSET_PATH = home_path + "/testset";
+      SRC_PATH = home_path + "/oracles/src";
+      CLASS_PATH = home_path + "/oracles/classes";
+      MUTANT_HOME = home_path + "/oracles/result";
+      TESTSET_PATH = home_path + "/oracles/testset";
    }
    
    /*
     * Lin add for setting sessions
     * 
     */
-   public static void setJMutationStructureAndSession (String sessionName)
+   public static void setJMutationStructureAndSessionOracle (String sessionName)
    {
       try 
       {
-         File f = new File (MutationSystem.SYSTEM_HOME + "/mujava.config");
+         File f = new File (MutationSystemOracle.SYSTEM_HOME + "/mujava.config");
          FileReader r = new FileReader(f);
          BufferedReader reader = new BufferedReader(r);
          String str = reader.readLine();
          String home_path = str.substring("MuJava_HOME=".length(), str.length());
          home_path = home_path+ "/" + sessionName;
          SYSTEM_HOME = home_path;
-         SRC_PATH = home_path + "/src";
-         CLASS_PATH = home_path + "/classes";
-         MUTANT_HOME = home_path + "/result";
-         TESTSET_PATH = home_path + "/testset";
+         SRC_PATH = home_path + "/oracles/src";
+         CLASS_PATH = home_path + "/oracles/classes";
+         MUTANT_HOME = home_path + "/oracles/result";
+         TESTSET_PATH = home_path + "/oracles/testset";
       } catch (FileNotFoundException e1)
       {
          System.err.println(" I can't find mujava.config file");

@@ -37,6 +37,9 @@ class genmutesCom {
 	  
 	  @Parameter(names = "-AOIS", description = "Generate mutants of AOIS")
 	  private boolean AOIS;
+	  
+	  @Parameter(names = "-ASM", description = "Generate mutants of ASM")
+	  private boolean ASM;
 	 
 	  @Parameter(names = "-all",  description = "Generate mutants of ALL MUTATION OPERATORS")
 	  private boolean all;
@@ -79,6 +82,13 @@ public boolean isDebug() {
 	public void setAOIS(boolean aOIS)
 	{
 		AOIS = aOIS;
+	}	
+	
+	public boolean getASM() {
+		return ASM;
+	}
+	public void setASM(boolean aSM) {
+		ASM = aSM;
 	}
 	
 	public boolean getAll()
