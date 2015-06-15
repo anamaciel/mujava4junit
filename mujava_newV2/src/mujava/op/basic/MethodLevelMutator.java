@@ -16,17 +16,10 @@
 
 package mujava.op.basic;
 
-import java.io.File;
-import java.io.IOException;
-
+import openjava.mop.*;
+import openjava.ptree.*;
+import java.io.*;
 import mujava.MutationSystem;
-import mujava.MutationSystemOracle;
-import openjava.mop.FileEnvironment;
-import openjava.ptree.CompilationUnit;
-import openjava.ptree.ConstructorDeclaration;
-import openjava.ptree.MethodDeclaration;
-import openjava.ptree.ParameterList;
-import openjava.ptree.ParseTreeException;
 /**
  * <p>
  * </p>
@@ -123,16 +116,13 @@ public class MethodLevelMutator  extends mujava.op.util.Mutator
    public String getSourceName(String op_name)
    {
  	  // make directory for the mutant
-	  String dir_name = MutationSystemOracle.MUTANT_PATH + "/" + currentMethodSignature + "/" + op_name + "_" + this.num + "/";
-	  
-	  System.out.println("teste MethodLevel: " + dir_name);
+	  String dir_name = MutationSystem.MUTANT_PATH + "/" + currentMethodSignature + "/" + op_name + "_" + this.num;
 	  File f = new File(dir_name);
-	  System.out.println("f.mkdir();" + f.mkdir());
-	  f.mkdir();	  
-	  
+	  f.mkdir();
+
 	  // return file name
 	  String name;
-	  name = dir_name + "/" +  MutationSystemOracle.CLASS_NAME + ".java";
+	  name = dir_name + "/" +  MutationSystem.CLASS_NAME + ".java";
       return name;
    }
 

@@ -72,14 +72,17 @@ public class MutationSystem extends OJSystem
    //public static String SYSTEM_HOME = "C:/jmutation";
    //public static String SYSTEM_HOME = "/Users/dmark/mujava";
 //   public static String SYSTEM_HOME = "";
-   public static String SYSTEM_HOME = System.getProperty("user.dir");
+   //public static String SYSTEM_HOME = System.getProperty("user.dir");
    
    
    
-   //public static String SYSTEM_HOME = "D:/mujava";
+   public static String SYSTEM_HOME = "D:/mujava";
 
    /** path of Java source files which mutation is applied to  */
    public static String SRC_PATH = SYSTEM_HOME + "/src";
+   
+   /** path of Java source files of JUnit classes which mutation is applied to  */
+   public static String SRC_PATH_TESTS = SYSTEM_HOME + "/src/tests";
 
    /** path of classes of Java source files at SRC_PATH directory */
    public static String CLASS_PATH = SYSTEM_HOME + "/classes";
@@ -150,8 +153,14 @@ public class MutationSystem extends OJSystem
    /** List of names of exception-related mutation operators */
    public static String[] em_operators = {  "EFD", "EHC", "EHD", "EHI",
                                             "ETC", "ETD"};
+   
+   
+   /** List of names of signature oracle mutation operators */
+   public static String[] sn_operators = { "ASM", "RSM", "MPPT", "MPPTO", "ATV", "RTV","ICtTV", "DCfTV", "MSM", "RBA", "RNA", "RSA", "RFM"};
 
-
+   /** List of names of annotation oracle mutation operators */
+   public static String[] an_operators = { "MEC", "REC", "AEC", "ACtT", "DCfT", "RT", "RIA"};
+   
    
    // Upsorn: (05/18/2009) added mutation operators' description
    public static String[] op_desc = {   "" };
@@ -358,9 +367,18 @@ public class MutationSystem extends OJSystem
       getJavacArgForDir (MutationSystem.SRC_PATH, "", targetFiles);
       return targetFiles;
    }
+   
+   /* Set up target files (stored in test folder) to be mutated - oracles */
+   public static Vector getNewTargetOracleFiles()
+   {
+      Vector targetFiles = new Vector();
+      getJavacArgForDir (MutationSystem.SRC_PATH_TESTS, "", targetFiles);
+      return targetFiles;
+   }
 
    protected static String getJavacArgForDir (String dir, String str, Vector targetFiles)
    {
+	  //System.out.println(dir);
       String result = str;
       String temp = "";
 
