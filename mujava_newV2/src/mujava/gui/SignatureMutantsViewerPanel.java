@@ -23,6 +23,7 @@ import javax.swing.text.StyleConstants;
 
 import mujava.MutationSystem;
 import mujava.gui.util.CMSummaryTableModel;
+import mujava.gui.util.SGSummaryTableModel;
 
 /**
  * @author Ana Maciel
@@ -169,49 +170,49 @@ public class SignatureMutantsViewerPanel extends MutantsViewerPanel {
 
 	   void setMutationType()
 	   {
-	      MutationSystem.MUTANT_PATH = MutationSystem.CLASS_MUTANT_PATH;
+	      MutationSystem.MUTANT_PATH = MutationSystem.SIGNATURE_MUTANT_PATH;
 	   }
 
 	   void setSummaryTableSize()
 	   {
-	      int temp = MutationSystem.cm_operators.length * 20;
+	      int temp = MutationSystem.sg_operators.length * 20;
 	      summaryPanel.setPreferredSize(new Dimension(150, temp));
 	      summaryPanel.setMaximumSize(new Dimension(150, temp));
 	   }
 
 	   void initSummaryTable()
 	   {
-	      CMSummaryTableModel tmodel = new CMSummaryTableModel();
+	      SGSummaryTableModel tmodel = new SGSummaryTableModel();
 	      summaryTable = new JTable(tmodel);
 	      adjustSummaryTableSize(summaryTable, tmodel);
 	   }
 
 	   int getMutantType()
 	   {
-	      return MutationSystem.CM;
+	      return MutationSystem.SG;
 	   }
 
 	   /**
-	    * Set a location where class-level mutants will be stored
+	    * Set a location where signature oracle mutants will be stored
 	    */
 	   void setMutantPath()
 	   {
-	      MutationSystem.MUTANT_PATH = MutationSystem.CLASS_MUTANT_PATH;
+	      MutationSystem.MUTANT_PATH = MutationSystem.SIGNATURE_MUTANT_PATH;
 	   }
 
 	   /**
-	    * Retrieve a path containing class-level mutants
+	    * Retrieve a path containing signature oracle mutants
 	    */
 	   String getMutantPath()
 	   {
-	      return MutationSystem.CLASS_MUTANT_PATH;
+	      return MutationSystem.SIGNATURE_MUTANT_PATH;
 	   }
 
 	   void printGeneratedMutantNum(String[] operators, int[] num)
 	   {
 
 	      int total = 0;
-	      CMSummaryTableModel myModel = (CMSummaryTableModel)(summaryTable.getModel());
+	      SGSummaryTableModel myModel = (SGSummaryTableModel)(summaryTable.getModel());
 	      for (int i=0; i<operators.length; i++)
 	      {
 	         myModel.setValueAt(new Integer(num[i]), i, 1);

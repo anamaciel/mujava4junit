@@ -35,6 +35,8 @@ abstract class SummaryTableModel extends AbstractTableModel
    static final int CMO = 0;
    static final int TMO = 1;
    static final int EMO = 2;
+   static final int SGN = 3;
+   static final int ANN = 4;
 
    abstract int getOperatorType();
 
@@ -48,6 +50,10 @@ abstract class SummaryTableModel extends AbstractTableModel
                    break;
          case EMO: op = MutationSystem.em_operators;
                    break;
+         case SGN: op = MutationSystem.sg_operators;
+         		   break;
+         case ANN: op = MutationSystem.an_operators;
+		   		   break;
       }
     
       data = new Object[op.length][2];

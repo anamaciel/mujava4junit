@@ -685,7 +685,7 @@ abstract class OOTableModel extends AbstractTableModel
    {
       if (getOperatorType() == SMO)
       {
-         op = MutationSystem.sn_operators;
+         op = MutationSystem.sg_operators;
       } 
       else
       {

@@ -22,6 +22,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.text.StyleConstants;
 
 import mujava.MutationSystem;
+import mujava.gui.util.ANSummaryTableModel;
 import mujava.gui.util.CMSummaryTableModel;
 
 /**
@@ -169,49 +170,49 @@ public class AnnotationMutantsViewerPanel extends MutantsViewerPanel {
 
 	   void setMutationType()
 	   {
-	      MutationSystem.MUTANT_PATH = MutationSystem.CLASS_MUTANT_PATH;
+	      MutationSystem.MUTANT_PATH = MutationSystem.ANNOTATION_MUTANT_PATH;
 	   }
 
 	   void setSummaryTableSize()
 	   {
-	      int temp = MutationSystem.cm_operators.length * 20;
+	      int temp = MutationSystem.an_operators.length * 20;
 	      summaryPanel.setPreferredSize(new Dimension(150, temp));
 	      summaryPanel.setMaximumSize(new Dimension(150, temp));
 	   }
 
 	   void initSummaryTable()
 	   {
-	      CMSummaryTableModel tmodel = new CMSummaryTableModel();
+	      ANSummaryTableModel tmodel = new ANSummaryTableModel();
 	      summaryTable = new JTable(tmodel);
 	      adjustSummaryTableSize(summaryTable, tmodel);
 	   }
 
 	   int getMutantType()
 	   {
-	      return MutationSystem.CM;
+	      return MutationSystem.AN;
 	   }
 
 	   /**
-	    * Set a location where class-level mutants will be stored
+	    * Set a location where annotation oracle mutants will be stored
 	    */
 	   void setMutantPath()
 	   {
-	      MutationSystem.MUTANT_PATH = MutationSystem.CLASS_MUTANT_PATH;
+	      MutationSystem.MUTANT_PATH = MutationSystem.ANNOTATION_MUTANT_PATH;
 	   }
 
 	   /**
-	    * Retrieve a path containing class-level mutants
+	    * Retrieve a path containing annotation oracle mutants
 	    */
 	   String getMutantPath()
 	   {
-	      return MutationSystem.CLASS_MUTANT_PATH;
+	      return MutationSystem.ANNOTATION_MUTANT_PATH;
 	   }
 
 	   void printGeneratedMutantNum(String[] operators, int[] num)
 	   {
 
 	      int total = 0;
-	      CMSummaryTableModel myModel = (CMSummaryTableModel)(summaryTable.getModel());
+	      ANSummaryTableModel myModel = (ANSummaryTableModel)(summaryTable.getModel());
 	      for (int i=0; i<operators.length; i++)
 	      {
 	         myModel.setValueAt(new Integer(num[i]), i, 1);

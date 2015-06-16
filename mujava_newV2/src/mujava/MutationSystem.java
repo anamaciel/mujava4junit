@@ -66,6 +66,8 @@ public class MutationSystem extends OJSystem
    public static final int CM = 0; // Class Mutation Operator
    public static final int TM = 1; // Traditional Mutation Operator
    public static final int EM = 2; // Exceptional Mutation Operator
+   public static final int SG = 3; // Signature Oracle Mutation Operator
+   public static final int AN = 4; // Annotation Oracle Mutation Operator
 
 
    /** home path where inputs and output of mujava system are located*/
@@ -95,6 +97,12 @@ public class MutationSystem extends OJSystem
 
    /** path which traditional mutants are put into */
    public static String TRADITIONAL_MUTANT_PATH = "";
+   
+   /** path which signature oracle mutants are put into */
+   public static String SIGNATURE_MUTANT_PATH = "";
+   
+   /** path which annotation oracle mutants are put into */
+   public static String ANNOTATION_MUTANT_PATH = "";
 
    /** path which exception-related mutants are put into */
    public static String EXCEPTION_MUTANT_PATH = "";
@@ -124,6 +132,12 @@ public class MutationSystem extends OJSystem
 
    /** directory name for traditional mutants */
    public static String TM_DIR_NAME = "traditional_mutants";
+   
+   /** directory name for signature oracle mutants */
+   public static String SG_DIR_NAME = "signature_mutants";
+   
+   /** directory name for annotation oracle mutants */
+   public static String AN_DIR_NAME = "annotation_mutants";
 
    /** directory name for original class */
    public static String ORIGINAL_DIR_NAME = "original";
@@ -156,7 +170,7 @@ public class MutationSystem extends OJSystem
    
    
    /** List of names of signature oracle mutation operators */
-   public static String[] sn_operators = { "ASM", "RSM", "MPPT", "MPPTO", "ATV", "RTV","ICtTV", "DCfTV", "MSM", "RBA", "RNA", "RSA", "RFM"};
+   public static String[] sg_operators = { "ASM", "RSM", "MPPT", "MPPTO", "ATV", "RTV","ICtTV", "DCfTV", "MSM", "RBA", "RNA", "RSA", "RFM"};
 
    /** List of names of annotation oracle mutation operators */
    public static String[] an_operators = { "MEC", "REC", "AEC", "ACtT", "DCfT", "RT", "RIA"};
@@ -607,6 +621,10 @@ public class MutationSystem extends OJSystem
                                 + "/" + whole_class_name + "/" + MutationSystem.TM_DIR_NAME;
       MutationSystem.EXCEPTION_MUTANT_PATH = MutationSystem.MUTANT_HOME
                                 + "/" + whole_class_name + "/" + MutationSystem.EM_DIR_NAME;
+      MutationSystem.SIGNATURE_MUTANT_PATH = MutationSystem.MUTANT_HOME
+              					+ "/" + whole_class_name + "/" + MutationSystem.SG_DIR_NAME;
+      MutationSystem.ANNOTATION_MUTANT_PATH = MutationSystem.MUTANT_HOME
+              					+ "/" + whole_class_name + "/" + MutationSystem.AN_DIR_NAME;
 
    }
 

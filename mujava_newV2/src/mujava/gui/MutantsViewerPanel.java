@@ -180,6 +180,10 @@ public abstract class MutantsViewerPanel  extends JPanel
                                  break;
          case MutationSystem.EM: names[0] = "exceptional_mutants";
                                  break;
+         case MutationSystem.SG: names[0] = "signature_mutants";
+         						 break;
+         case MutationSystem.AN: names[0] = "annotation_mutants";
+			 					 break;
 //         case MutationSystem.WM: names[0] = "web_mutants";
 //                                 break;                              
       }
@@ -211,12 +215,16 @@ public abstract class MutantsViewerPanel  extends JPanel
 
       switch(getMutantType())
       {
-         case MutationSystem.CM: operators = MutationSystem.cm_operators; // Ŭ���� ���� �����̼� ������
+         case MutationSystem.CM: operators = MutationSystem.cm_operators; 
                                  break;
-         case MutationSystem.TM: operators = MutationSystem.tm_operators; // �޼ҵ� ���� �����̼� ������
+         case MutationSystem.TM: operators = MutationSystem.tm_operators; 
                                  break;
-         case MutationSystem.EM: operators = MutationSystem.em_operators; // ���ܻ�Ȳ �����̼� ������
+         case MutationSystem.EM: operators = MutationSystem.em_operators; 
                                  break;
+         case MutationSystem.SG: operators = MutationSystem.sg_operators; 
+         						 break;
+         case MutationSystem.AN: operators = MutationSystem.an_operators; 
+			 					 break;
 //         case MutationSystem.WM: operators = MutationSystem.wm_operators; 
 //                                 break;
       }
