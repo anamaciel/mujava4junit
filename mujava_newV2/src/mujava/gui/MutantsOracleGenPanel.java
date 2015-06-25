@@ -220,10 +220,50 @@ public class MutantsOracleGenPanel extends JPanel
 		titleOP.setMaximumSize(new Dimension(300, 30));
 		titleOP.setEnabled(false);
 		rightPanel.add(titleOP);
+		
+		
+		// class-level operator selection 
+				JPanel class_operator_panel = new JPanel();
+				class_operator_panel.setBorder(new TitledBorder("Signature-level"));
+				class_operator_panel.setPreferredSize(new Dimension(140, 550));
+				class_operator_panel.setMaximumSize(new Dimension(140, 550));
+				class_operator_panel.setLayout(new BoxLayout(class_operator_panel,BoxLayout.PAGE_AXIS));
+				JScrollPane class_operator_scrollP = new JScrollPane();
+				class_operator_panel.add(class_operator_scrollP);
+				SOOTableModel smTableModel = new SOOTableModel();
+				annotationOpTable = new JTable(smTableModel);
+
+				initColumnSizes(annotationOpTable,smTableModel);
+				class_operator_scrollP.getViewport().add(annotationOpTable, null);
+				class_operator_scrollP.setPreferredSize(new Dimension(115, 550));
+				class_operator_scrollP.setMaximumSize(new Dimension(115, 550));
+
+				class_operator_panel.add(class_operator_scrollP);
+				JPanel classBPanel = new JPanel();
+				classBPanel.setLayout(new FlowLayout());
+				classBPanel.add(annotationNoneB);
+				annotationNoneB.addMouseListener(new java.awt.event.MouseAdapter()
+				{
+					public void mouseClicked(MouseEvent e)
+					{
+						annotationNoneB_mouseClicked(e);
+					}
+				});
+				classBPanel.add(annotationAllB);
+				annotationAllB.addMouseListener(new java.awt.event.MouseAdapter()
+				{
+					public void mouseClicked(MouseEvent e)
+					{
+						annotationAllB_mouseClicked(e);
+					}
+				});
+				class_operator_panel.add(classBPanel);
+		
+		
 
 		// method-level operator selection
 		JPanel traditional_operator_panel = new JPanel();
-		traditional_operator_panel.setBorder(new TitledBorder("Signature-level"));
+		traditional_operator_panel.setBorder(new TitledBorder("Annotation-level"));
 		traditional_operator_panel.setPreferredSize(new Dimension(140, 550));
 		traditional_operator_panel.setMaximumSize(new Dimension(140, 550));
 
@@ -259,42 +299,7 @@ public class MutantsOracleGenPanel extends JPanel
 		traditional_operator_panel.add(traditionalBPanel);
 
 
-		// class-level operator selection 
-		JPanel class_operator_panel = new JPanel();
-		class_operator_panel.setBorder(new TitledBorder("Annotation-level"));
-		class_operator_panel.setPreferredSize(new Dimension(140, 550));
-		class_operator_panel.setMaximumSize(new Dimension(140, 550));
-		class_operator_panel.setLayout(new BoxLayout(class_operator_panel,BoxLayout.PAGE_AXIS));
-		JScrollPane class_operator_scrollP = new JScrollPane();
-		class_operator_panel.add(class_operator_scrollP);
-		SOOTableModel smTableModel = new SOOTableModel();
-		annotationOpTable = new JTable(smTableModel);
-
-		initColumnSizes(annotationOpTable,smTableModel);
-		class_operator_scrollP.getViewport().add(annotationOpTable, null);
-		class_operator_scrollP.setPreferredSize(new Dimension(115, 550));
-		class_operator_scrollP.setMaximumSize(new Dimension(115, 550));
-
-		class_operator_panel.add(class_operator_scrollP);
-		JPanel classBPanel = new JPanel();
-		classBPanel.setLayout(new FlowLayout());
-		classBPanel.add(annotationNoneB);
-		annotationNoneB.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			public void mouseClicked(MouseEvent e)
-			{
-				annotationNoneB_mouseClicked(e);
-			}
-		});
-		classBPanel.add(annotationAllB);
-		annotationAllB.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			public void mouseClicked(MouseEvent e)
-			{
-				annotationAllB_mouseClicked(e);
-			}
-		});
-		class_operator_panel.add(classBPanel);
+		
 
 		// This is the original part.
 		//rightPanel.add(Box.createRigidArea(new Dimension(0,5)));
@@ -307,8 +312,9 @@ public class MutantsOracleGenPanel extends JPanel
 		//----
 		JPanel operator_panel = new JPanel();
 		operator_panel.setLayout(new FlowLayout());
-		operator_panel.add(traditional_operator_panel);
 		operator_panel.add(class_operator_panel);
+		operator_panel.add(traditional_operator_panel);
+		
 		//rightPanel.add(Box.createRigidArea(new Dimension(0,4)));
 		rightPanel.add(operator_panel);
 
