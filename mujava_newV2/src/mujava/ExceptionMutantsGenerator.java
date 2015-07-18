@@ -94,7 +94,56 @@ public class ExceptionMutantsGenerator  extends MutantsGenerator
 
          if (cdecl.getName().equals(MutationSystem.CLASS_NAME))
          {
-            mujava.op.util.Mutator mutant_op;
+            try
+            {
+               mujava.op.util.Mutator mutant_op;
+               if (hasOperator(exceptionOp, "EFD"))
+               {
+                  Debug.println("  Applying EFD ... ... ");
+                  mutant_op = new EFD(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(exceptionOp, "EHC"))
+               {
+                  Debug.println("  Applying EHC ... ... ");
+                  mutant_op = new EHC(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(exceptionOp, "EHD"))
+               {
+                  Debug.println("  Applying EHD ... ... ");
+                  mutant_op = new EHD(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(exceptionOp, "EHI"))
+               {
+                  Debug.println("  Applying EHI ... ... ");
+                  mutant_op = new EHI(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(exceptionOp, "ETC"))
+               {
+                  Debug.println("  Applying ETC ... ... ");
+                  mutant_op = new ETC(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(exceptionOp, "ETD"))
+               {
+                  Debug.println("  Applying ETD ... ... ");
+                  mutant_op = new ETD(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+            } catch (ParseTreeException e)
+            {
+               System.err.println( "Exception, during generating traditional mutants for the class "
+                               + MutationSystem.CLASS_NAME);
+               e.printStackTrace();
+            }
          }
       }
    }

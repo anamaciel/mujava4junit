@@ -181,9 +181,9 @@ public abstract class MutantsViewerPanel  extends JPanel
          case MutationSystem.EM: names[0] = "exceptional_mutants";
                                  break;
          case MutationSystem.SG: names[0] = "signature_mutants";
-         						 break;
+			 break;
          case MutationSystem.AN: names[0] = "annotation_mutants";
-			 					 break;
+			 break;
 //         case MutationSystem.WM: names[0] = "web_mutants";
 //                                 break;                              
       }
@@ -207,8 +207,7 @@ public abstract class MutantsViewerPanel  extends JPanel
 
    abstract void printGeneratedMutantNum(String[] operators, int[] num);
 
-   // name: ������ ����Ʈ �̸���
-   // ����Ʈ �̸����� �����̼� ������ ���� ����Ѵ�.
+   
    void showGeneratedMutantsNum(String[] name)
    {
       String[] operators = null;
@@ -222,9 +221,9 @@ public abstract class MutantsViewerPanel  extends JPanel
          case MutationSystem.EM: operators = MutationSystem.em_operators; 
                                  break;
          case MutationSystem.SG: operators = MutationSystem.sg_operators; 
-         						 break;
+			 break;
          case MutationSystem.AN: operators = MutationSystem.an_operators; 
-			 					 break;
+			 break;
 //         case MutationSystem.WM: operators = MutationSystem.wm_operators; 
 //                                 break;
       }

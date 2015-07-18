@@ -18,11 +18,7 @@
 package mujava.gui;
 
 import javax.swing.*;
-
-import openjava.mop.AnonymousClassEnvironment;
-
 import java.awt.event.*;
-
 import mujava.MutationSystem;
 
 /**
@@ -45,6 +41,9 @@ public class GenMutantsMain extends JFrame
 
    /** Panel for viewing details of class mutants. */
    ClassMutantsViewerPanel cvPanel;
+
+   /** Panel for viewing details of traditional mutants.  */
+   TraditionalMutantsViewerPanel tvPanel;
    
    /** Panel for viewing details of signature mutants. */
    SignatureMutantsViewerPanel sgPanel;
@@ -52,8 +51,6 @@ public class GenMutantsMain extends JFrame
    /** Panel for viewing details of signature mutants. */
    AnnotationMutantsViewerPanel anPanel;
 
-   /** Panel for viewing details of traditional mutants.  */
-   TraditionalMutantsViewerPanel tvPanel;
 
    public GenMutantsMain() 
    {
@@ -92,20 +89,20 @@ public class GenMutantsMain extends JFrame
     */
    public static void main (String[] args) throws Exception 
    { 
-      System.out.println("The main method starts");
-      MutationSystem.setJMutationStructure();
-      MutationSystem.recordInheritanceRelation();
-      GenMutantsMain main;
-      if(args.length==1 && args[0].equals("-oracle")){
-    	  System.out.println("executar GUI de oráculo");
-    	  main = new GenMutantsMain(true);
-    	  main.pack();
-          main.setVisible(true);
-      }else{
-    	  main = new GenMutantsMain();
-    	  main.pack();
-          main.setVisible(true);
-      }      
+	   System.out.println("The main method starts");
+	      MutationSystem.setJMutationStructure();
+	      MutationSystem.recordInheritanceRelation();
+	      GenMutantsMain main;
+	      if(args.length==1 && args[0].equals("-oracle")){
+	    	  System.out.println("executar GUI de oráculo");
+	    	  main = new GenMutantsMain(true);
+	    	  main.pack();
+	          main.setVisible(true);
+	      }else{
+	    	  main = new GenMutantsMain();
+	    	  main.pack();
+	          main.setVisible(true);
+	      }  
    } 
 
    /** <p> Initialize GenMutantsMain </p> */

@@ -23,7 +23,6 @@ import java.io.*;
 
 import mujava.util.*;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -61,7 +60,6 @@ public class MutationSystem extends OJSystem
    public static final int MAIN_ONLY = 4;
    public static final int NORMAL = 5;
    public static final int APPLET = 6;
-   public static final int JUNIT = 7;
 
    public static final int CM = 0; // Class Mutation Operator
    public static final int TM = 1; // Traditional Mutation Operator
@@ -75,19 +73,16 @@ public class MutationSystem extends OJSystem
    //public static String SYSTEM_HOME = "/Users/dmark/mujava";
 //   public static String SYSTEM_HOME = "";
    //public static String SYSTEM_HOME = System.getProperty("user.dir");
-   
-   
-   
-   public static String SYSTEM_HOME = "D:/mujava";
+   public static String SYSTEM_HOME = "E:/mujava";
 
    /** path of Java source files which mutation is applied to  */
    public static String SRC_PATH = SYSTEM_HOME + "/src";
-   
-   /** path of Java source files of JUnit classes which mutation is applied to  */
-   public static String SRC_PATH_TESTS = SYSTEM_HOME + "/src/tests";
 
    /** path of classes of Java source files at SRC_PATH directory */
    public static String CLASS_PATH = SYSTEM_HOME + "/classes";
+   
+   /** path of Java source files of JUnit classes which mutation is applied to  */
+   public static String SRC_PATH_ORACLES = SYSTEM_HOME + "/src/tests";
 
    /** home path which mutants are put into */
    public static String MUTANT_HOME = SYSTEM_HOME + "/result";
@@ -141,6 +136,8 @@ public class MutationSystem extends OJSystem
 
    /** directory name for original class */
    public static String ORIGINAL_DIR_NAME = "original";
+   
+   public static String ORIGINAL_ORACLE_DIR_NAME = "original/oracle";
 
    public static String LOG_IDENTIFIER = ":";
     
@@ -164,6 +161,7 @@ public class MutationSystem extends OJSystem
 //                                             "SID", "SWD", "SFD", "SSD" };
 //                                             "SDL"};   
 
+
    /** List of names of exception-related mutation operators */
    public static String[] em_operators = {  "EFD", "EHC", "EHD", "EHI",
                                             "ETC", "ETD"};
@@ -174,7 +172,6 @@ public class MutationSystem extends OJSystem
 
    /** List of names of annotation oracle mutation operators */
    public static String[] an_operators = { "MEC", "REC", "AEC", "ACtT", "DCfT", "RT", "RIA"};
-   
    
    // Upsorn: (05/18/2009) added mutation operators' description
    public static String[] op_desc = {   "" };
@@ -190,7 +187,6 @@ public class MutationSystem extends OJSystem
    */
    public static int getClassType (String class_name)
    {
-	   System.out.println("class_name: " + class_name);
       try 
       {
          Class c = Class.forName (class_name);
@@ -201,8 +197,6 @@ public class MutationSystem extends OJSystem
             return ABSTRACT;
          
          Method[] ms = c.getDeclaredMethods();
-         
-         System.out.println("metodos: " + ms.length);
 
          if (ms != null)
          {
@@ -221,7 +215,7 @@ public class MutationSystem extends OJSystem
          
          return NORMAL;
       } 
-      catch(Exception e)  {   return -1; }
+      catch(Exception e)  {   return -1;   }
       catch(Error e)  {   return -1;  }
    }
    
@@ -257,8 +251,8 @@ public class MutationSystem extends OJSystem
       }
       return false;
    }
-   
-   
+
+
    /**  Inheritance Informations  */
    public static InheritanceINFO[] classInfo = null;
 
@@ -366,12 +360,26 @@ public class MutationSystem extends OJSystem
       clearPreviousMutants(MutationSystem.CLASS_MUTANT_PATH);
    }
 
+   /** Delete all signature mutants generated before */
+   public static void clearPreviousSignatureMutants()
+   {
+      clearPreviousMutants(MutationSystem.SIGNATURE_MUTANT_PATH);
+   }
+   
+   /** Delete all annotation mutants generated before */
+   public static void clearPreviousAnnotationMutants()
+   {
+      clearPreviousMutants(MutationSystem.ANNOTATION_MUTANT_PATH);
+   }
+
     /** Delete all mutants generated before */
    public static void clearPreviousMutants()
    {
       clearPreviousOriginalFiles();
       clearPreviousClassMutants();
       clearPreviousTraditionalMutants();
+      clearPreviousAnnotationMutants();
+      clearPreviousSignatureMutants();
    }
 
    /* Set up target files (stored in src folder) to be tested */
@@ -386,13 +394,12 @@ public class MutationSystem extends OJSystem
    public static Vector getNewTargetOracleFiles()
    {
       Vector targetFiles = new Vector();
-      getJavacArgForDir (MutationSystem.SRC_PATH_TESTS, "", targetFiles);
+      getJavacArgForDir (MutationSystem.SRC_PATH_ORACLES, "", targetFiles);
       return targetFiles;
    }
 
    protected static String getJavacArgForDir (String dir, String str, Vector targetFiles)
    {
-	  //System.out.println(dir);
       String result = str;
       String temp = "";
 
@@ -444,7 +451,7 @@ public class MutationSystem extends OJSystem
       File[] sub_dir = dirF.listFiles(new DirFileFilter());
       if (sub_dir == null)       return result;
       
-      for (int i=0; i<sub_dir.length; i++)                                                                                                                                
+      for (int i=0; i<sub_dir.length; i++)
       {
          result = getAllClassNames(result,sub_dir[i].getAbsolutePath());
       }
@@ -517,8 +524,6 @@ public class MutationSystem extends OJSystem
          Runtime.getRuntime().exit(0);
       }
       classInfo = new InheritanceINFO[classes.length];
-      
-      //System.out.println("classInfo: "+classInfo.toString());
 
 	  boolean[] bad = new boolean[classes.length];
 
@@ -622,9 +627,9 @@ public class MutationSystem extends OJSystem
       MutationSystem.EXCEPTION_MUTANT_PATH = MutationSystem.MUTANT_HOME
                                 + "/" + whole_class_name + "/" + MutationSystem.EM_DIR_NAME;
       MutationSystem.SIGNATURE_MUTANT_PATH = MutationSystem.MUTANT_HOME
-              					+ "/" + whole_class_name + "/" + MutationSystem.SG_DIR_NAME;
+				+ "/" + whole_class_name + "/" + MutationSystem.SG_DIR_NAME;
       MutationSystem.ANNOTATION_MUTANT_PATH = MutationSystem.MUTANT_HOME
-              					+ "/" + whole_class_name + "/" + MutationSystem.AN_DIR_NAME;
+				+ "/" + whole_class_name + "/" + MutationSystem.AN_DIR_NAME;
 
    }
 

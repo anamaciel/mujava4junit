@@ -138,7 +138,7 @@ public class ClassMutantsGenerator  extends MutantsGenerator
          {
     	    DeclAnalyzer mutant_op;
 
-            /*if (hasOperator(classOp, "IHD"))
+            if (hasOperator(classOp, "IHD"))
             {
                Debug.println("  Applying IHD ... ... ");
                mutant_op = new IHD(file_env, null, cdecl);
@@ -146,9 +146,42 @@ public class ClassMutantsGenerator  extends MutantsGenerator
                
                if ( ( (IHD)mutant_op).getTotal() > 0 ) 
                   existIHD = true;
-            }*/
+            }
 
-           
+            if (hasOperator(classOp, "IHI"))
+            {
+               Debug.println("  Applying IHI ... ... ");
+               mutant_op = new IHI(file_env, null, cdecl);
+               generateMutant(mutant_op);
+            }
+ 
+            if (hasOperator(classOp, "IOD"))
+            {
+               Debug.println("  Applying IOD ... ... ");
+               mutant_op = new IOD(file_env, null, cdecl);
+               generateMutant(mutant_op);
+            }
+
+            if (hasOperator(classOp, "OMR"))
+            {
+               Debug.println("  Applying OMR ... ... ");
+               mutant_op = new OMR(file_env, null, cdecl);
+               generateMutant(mutant_op);
+            }
+
+            if (hasOperator(classOp, "OMD"))
+            {
+               Debug.println("  Applying OMD ... ... ");
+               mutant_op = new OMD(file_env, null, cdecl);
+               generateMutant(mutant_op);
+            }
+
+            if (hasOperator(classOp, "JDC"))
+            {
+               Debug.println("  Applying JDC ... ... ");
+               mutant_op = new JDC(file_env, null, cdecl);
+               generateMutant(mutant_op);
+            }
          }
       }
    }
@@ -169,9 +202,17 @@ public class ClassMutantsGenerator  extends MutantsGenerator
          if (cdecl.getName().equals(MutationSystem.CLASS_NAME))
          {
             String qname = file_env.toQualifiedName(cdecl.getName());
-            mujava.op.util.Mutator mutant_op;
+            try 
+            {
+               mujava.op.util.Mutator mutant_op;
 
-               
+               if (hasOperator(classOp, "AMC"))
+               {
+                  Debug.println("  Applying AMC ... ... ");
+                  mutant_op = new AMC(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+
                if (hasOperator(classOp, "IOR"))
                {
                   Debug.println("  Applying IOR ... ... ");
@@ -196,7 +237,17 @@ public class ClassMutantsGenerator  extends MutantsGenerator
                            }
                         }
 
-                       
+                        File f = new File(MutationSystem.SRC_PATH, result_str + ".java"); 
+                        if (f.exists()) 
+                        {
+                           CompilationUnit[] parent_comp_unit = new CompilationUnit[1];
+                           FileEnvironment[] parent_file_env = new FileEnvironment[1];
+                           this.generateParseTree(f, parent_comp_unit, parent_file_env);
+                           this.initParseTree(parent_comp_unit, parent_file_env);
+                           mutant_op = new IOR(file_env, cdecl, comp_unit);
+                           ((IOR)mutant_op).setParentEnv(parent_file_env[0], parent_comp_unit[0]);
+                           comp_unit.accept(mutant_op);
+                        }
                      }
                   } 
                   catch (ClassNotFoundException e) 
@@ -208,6 +259,157 @@ public class ClassMutantsGenerator  extends MutantsGenerator
                      System.out.print(" IOP  ^^; ");
                   }
                }
+
+               if (hasOperator(classOp, "ISD"))
+               {
+                  Debug.println("  Applying ISD ... ... ");
+                  mutant_op = new ISD( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "IOP"))
+               {
+                  Debug.println("  Applying IOP ... ... ");
+                  mutant_op = new IOP(file_env, cdecl, comp_unit);
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "IPC"))
+               {
+                  Debug.println("  Applying IPC ... ... ");
+                  mutant_op = new IPC( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "PNC"))
+               {
+                  Debug.println("  Applying PNC ... ... ");
+                  mutant_op = new PNC( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+ 
+               if (hasOperator(classOp, "PMD"))
+               {
+                  Debug.println("  Applying PMD ... ... ");
+                  //if(existIHD){
+                  mutant_op = new PMD( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+                  //}
+               }
+
+               if (hasOperator(classOp, "PPD"))
+               {
+                  Debug.println("  Applying PPD ... ... ");
+                  // if(existIHD){
+                  mutant_op = new PPD( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+                 //}
+               }
+
+               if (hasOperator(classOp, "PRV"))
+               {
+                  Debug.println("  Applying PRV ... ... ");
+                  mutant_op = new PRV( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "PCI"))
+               {
+                  Debug.println("  Applying PCI ... ... ");
+                  mutant_op = new PCI( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "PCC"))
+               {
+                  Debug.println("  Applying PCC ... ... ");
+                  mutant_op = new PCC( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "PCD"))
+               {
+                  Debug.println("  Applying PCD ... ... ");
+                  mutant_op = new PCD( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "JSD"))
+               {
+                  Debug.println("  Applying JSC ... ... ");
+                  mutant_op = new JSD( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "JSI"))
+               {
+                  Debug.println("  Applying JSI ... ... ");
+                  mutant_op = new JSI( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "JTD"))
+               {
+                  Debug.println("  Applying JTD ... ... ");
+                  mutant_op = new JTD( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op); 
+               }
+
+               if (hasOperator(classOp, "JTI"))
+               {
+                  Debug.println("  Applying JTI ... ... ");
+                  mutant_op = new JTI( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "JID"))
+               {
+                  Debug.println("  Applying JID ... ... ");
+                  mutant_op = new JID( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "OAN"))
+               {
+                  Debug.println("  Applying OAN ... ... ");
+                  mutant_op = new OAN( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "EOA"))
+               {
+                  Debug.println("  Applying EOA ... ... ");
+                  mutant_op = new EOA( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "EOC"))
+               {
+                  Debug.println("  Applying EOC ... ... ");
+                  mutant_op = new EOC( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "EAM"))
+               {
+                  Debug.println("  Applying EAM ... ... ");
+                  mutant_op = new EAM( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+               if (hasOperator(classOp, "EMM"))
+               {
+                  Debug.println("  Applying EMM ... ... ");
+                  mutant_op = new EMM( file_env, cdecl, comp_unit );
+                  comp_unit.accept(mutant_op);
+               }
+
+            }
+            catch (ParseTreeException e ) 
+            {
+               System.err.println( "Encountered errors during generating mutants." );
+               e.printStackTrace();
+            }
          }
       }
    }

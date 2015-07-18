@@ -51,9 +51,9 @@ abstract class SummaryTableModel extends AbstractTableModel
          case EMO: op = MutationSystem.em_operators;
                    break;
          case SGN: op = MutationSystem.sg_operators;
-         		   break;
+		   break;
          case ANN: op = MutationSystem.an_operators;
-		   		   break;
+ 		   break;
       }
     
       data = new Object[op.length][2];

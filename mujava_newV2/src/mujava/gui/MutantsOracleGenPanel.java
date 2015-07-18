@@ -605,20 +605,20 @@ public class MutantsOracleGenPanel extends JPanel
 	         File mutant_path = new File(mutant_dir_path);
 	         mutant_path.mkdir();
 
-	         String class_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.CM_DIR_NAME;
-	         File class_mutant_path = new File(class_mutant_dir_path);
-	         class_mutant_path.mkdir();
+	         String signature_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.SG_DIR_NAME;
+	         File signature_mutant_path = new File(signature_mutant_dir_path);
+	         signature_mutant_path.mkdir();
 
-	         String traditional_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.TM_DIR_NAME;
-	         File traditional_mutant_path = new File(traditional_mutant_dir_path);
-	         traditional_mutant_path.mkdir();
+	         String annotation_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.AN_DIR_NAME;
+	         File annotation_mutant_path = new File(annotation_mutant_dir_path);
+	         annotation_mutant_path.mkdir();
 
-	         String original_dir_path = mutant_dir_path + "/" + MutationSystem.ORIGINAL_DIR_NAME;
+	         String original_dir_path = mutant_dir_path + "/" + MutationSystem.ORIGINAL_ORACLE_DIR_NAME;
 	         File original_path = new File(original_dir_path);
 	         original_path.mkdir();
 
-	         MutationSystem.CLASS_MUTANT_PATH = class_mutant_dir_path;
-	         MutationSystem.TRADITIONAL_MUTANT_PATH = traditional_mutant_dir_path;
+	         MutationSystem.SIGNATURE_MUTANT_PATH = signature_mutant_dir_path;
+	         MutationSystem.TRADITIONAL_MUTANT_PATH = annotation_mutant_dir_path;
 	         MutationSystem.ORIGINAL_PATH = original_dir_path;
 	         MutationSystem.DIR_NAME = temp;
 	      } catch(Exception e)

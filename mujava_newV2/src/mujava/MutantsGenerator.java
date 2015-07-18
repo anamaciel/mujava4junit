@@ -17,34 +17,20 @@
  
 package mujava;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import openjava.mop.*;
+import openjava.ptree.*;
+import openjava.tools.parser.*;
+import openjava.ptree.util.*;
+
+import java.io.*;
+import java.util.*;
 import java.lang.reflect.Constructor;
-import java.util.Vector;
 
 import mujava.cli.Util;
-import mujava.op.util.DeclAnalyzer;
-import mujava.op.util.MutantCodeWriter;
-import mujava.util.Debug;
-import mujava.util.ExtensionFilter;
-import mujava.util.MutantDirFilter;
-import openjava.mop.Environment;
-import openjava.mop.FileEnvironment;
-import openjava.mop.OJClass;
-import openjava.mop.OJSystem;
-import com.sun.tools.javac.Main;
-import openjava.ptree.ClassDeclaration;
-import openjava.ptree.ClassDeclarationList;
-import openjava.ptree.CompilationUnit;
-import openjava.ptree.ModifierList;
-import openjava.ptree.ParseTreeException;
-import openjava.ptree.util.MemberAccessCorrector;
-import openjava.ptree.util.TypeNameQualifier;
-import openjava.tools.parser.ParseException;
-import openjava.tools.parser.Parser;
+import mujava.op.util.*;
+import mujava.util.*;
 
+import com.sun.tools.javac.Main;
 
 /**
  * <p>Generate mutants according to selected mutation 
@@ -61,7 +47,7 @@ public abstract class MutantsGenerator
    //private boolean debug = false;
 //	static int  counter;
    /** Java source file where mutation operators are applied to */
-   File original_file;         // mutation file
+   File original_file;         // mutation�� ������ file
 
    /** mutation operators to apply */
    String[] operators = null;
@@ -531,7 +517,7 @@ public abstract class MutantsGenerator
       try
       {
       // result = 0 : SUCCESS,   result = 1 : FALSE
-      	//int result = Main.compile(pars,new PrintWriter(new FileOutputStream("temp")));
+      //int result = Main.compile(pars,new PrintWriter(new FileOutputStream("temp")));
          Main.compile(pars);
       }
       catch (Exception e)

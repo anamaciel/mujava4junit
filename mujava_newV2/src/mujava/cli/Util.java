@@ -93,7 +93,6 @@ public class Util
 		FileInputStream inputStream = new FileInputStream("mujavaCLI.config");
 
 		String input = IOUtils.toString(inputStream);
-		//System.out.println("input loadConfig: " + input);
 		String[] inputs = input.split("\n");
 		String path = new String();
 		if (inputs.length == 1) // only one line of configuration
@@ -101,16 +100,13 @@ public class Util
 			path = inputs[0];
 			path = path.replace("MuJava_HOME=", "");
 			path = path.replace("\n", "");
-			//System.out.println("path loadConfig: " + path);
 
 		} else if (inputs.length == 2) // 2 lines of configuration
 		{
 			path = inputs[0];
 			String debug = inputs[1];
 			path = path.replace("MuJava_HOME=", "");
-			//System.out.println("path 1: " + path);
 			path = path.replace("\n", "");
-			//System.out.println("path 2: " + path.trim());
 			debug = debug.replace("Debug_mode=", "");
 			debug = debug.replace("\n", "");
 			// load debug mode from config file, and set it
@@ -119,13 +115,11 @@ public class Util
 			else {
 				Util.debug = false;
 			}
-			
-			//System.out.println("path loadConfig: " + path);
 		}
 
 		inputStream.close();
 
-		return path.trim();
+		return path;
 	}
 	
 	
