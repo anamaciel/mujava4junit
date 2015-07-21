@@ -20,43 +20,75 @@ import openjava.ptree.*;
 import java.io.*;
 
 /**
- * <p>Output and log LOR mutants to files </p>
+ * <p>Output and log RBA oracle mutants to files </p>
  * @author Yu-Seung Ma
  * @version 1.0
   */
 
 public class RBA_Writer extends TraditionalMutantCodeWriter
 {
-   BinaryExpression original;
-   BinaryExpression mutant;
+   Variable original_var;
+   FieldAccess original_field;
+   String mutant;
 
    public RBA_Writer( String file_name, PrintWriter out ) 
    {
-      super(file_name, out);
+      super(file_name,out);
    }
 
    /**
     * Set original source code and mutated code
     * @param exp1
-    * @param exp2
+    * @param mutant
     */
-   public void setMutant(BinaryExpression exp1, BinaryExpression exp2)
+   public void setMutant(Variable exp1, String mutant)
    {
-      original = exp1;
-      mutant = exp2;
+      original_var = exp1; 
+      this.mutant = mutant;
+   }
+
+   /**
+    * Set original source code and mutated code
+    * @param exp1
+    * @param mutant
+    */
+   public void setMutant(FieldAccess exp1, String mutant)
+   {
+      original_field = exp1;
+      this.mutant = mutant;
    }
 
    /**
     * Log mutated line
     */
-   public void visit( BinaryExpression p ) throws ParseTreeException
+   public void visit( Variable p ) throws ParseTreeException
    {
-      if (isSameObject(p, original))
+      if (isSameObject(p, original_var))
       {
-         super.visit(mutant);
+         out.print(mutant);
          // -----------------------------------------------------------
          mutated_line = line_num;
-         String log_str = p.toFlattenString()+ "  =>  " +mutant.toFlattenString();
+         String log_str = p.toString() + " => " + mutant;
+         writeLog(removeNewline(log_str));
+         // -------------------------------------------------------------
+      }
+      else
+      {
+         super.visit(p);
+      }
+   }
+
+   /**
+    * Log mutated line
+    */
+   public void visit( FieldAccess p ) throws ParseTreeException
+   {
+      if (isSameObject(p, original_field))
+      {
+         out.print(mutant);
+         // -----------------------------------------------------------
+         mutated_line = line_num;
+         String log_str = p.toString() + " => " + mutant;
          writeLog(removeNewline(log_str));
          // -------------------------------------------------------------
       }

@@ -44,6 +44,7 @@ import javax.swing.table.TableColumn;
 import mujava.ClassMutantsGenerator;
 import mujava.MutationSystem;
 import mujava.OpenJavaException;
+import mujava.SignatureMutantsGenerator;
 import mujava.TraditionalMutantsGenerator;
 import mujava.util.Debug;
 
@@ -220,46 +221,46 @@ public class MutantsOracleGenPanel extends JPanel
 		titleOP.setMaximumSize(new Dimension(300, 30));
 		titleOP.setEnabled(false);
 		rightPanel.add(titleOP);
-		
-		
+
+
 		// class-level operator selection 
-				JPanel class_operator_panel = new JPanel();
-				class_operator_panel.setBorder(new TitledBorder("Signature-level"));
-				class_operator_panel.setPreferredSize(new Dimension(140, 550));
-				class_operator_panel.setMaximumSize(new Dimension(140, 550));
-				class_operator_panel.setLayout(new BoxLayout(class_operator_panel,BoxLayout.PAGE_AXIS));
-				JScrollPane class_operator_scrollP = new JScrollPane();
-				class_operator_panel.add(class_operator_scrollP);
-				SOOTableModel smTableModel = new SOOTableModel();
-				annotationOpTable = new JTable(smTableModel);
+		JPanel class_operator_panel = new JPanel();
+		class_operator_panel.setBorder(new TitledBorder("Signature-level"));
+		class_operator_panel.setPreferredSize(new Dimension(140, 550));
+		class_operator_panel.setMaximumSize(new Dimension(140, 550));
+		class_operator_panel.setLayout(new BoxLayout(class_operator_panel,BoxLayout.PAGE_AXIS));
+		JScrollPane class_operator_scrollP = new JScrollPane();
+		class_operator_panel.add(class_operator_scrollP);
+		SOOTableModel smTableModel = new SOOTableModel();
+		annotationOpTable = new JTable(smTableModel);
 
-				initColumnSizes(annotationOpTable,smTableModel);
-				class_operator_scrollP.getViewport().add(annotationOpTable, null);
-				class_operator_scrollP.setPreferredSize(new Dimension(115, 550));
-				class_operator_scrollP.setMaximumSize(new Dimension(115, 550));
+		initColumnSizes(annotationOpTable,smTableModel);
+		class_operator_scrollP.getViewport().add(annotationOpTable, null);
+		class_operator_scrollP.setPreferredSize(new Dimension(115, 550));
+		class_operator_scrollP.setMaximumSize(new Dimension(115, 550));
 
-				class_operator_panel.add(class_operator_scrollP);
-				JPanel classBPanel = new JPanel();
-				classBPanel.setLayout(new FlowLayout());
-				classBPanel.add(annotationNoneB);
-				annotationNoneB.addMouseListener(new java.awt.event.MouseAdapter()
-				{
-					public void mouseClicked(MouseEvent e)
-					{
-						annotationNoneB_mouseClicked(e);
-					}
-				});
-				classBPanel.add(annotationAllB);
-				annotationAllB.addMouseListener(new java.awt.event.MouseAdapter()
-				{
-					public void mouseClicked(MouseEvent e)
-					{
-						annotationAllB_mouseClicked(e);
-					}
-				});
-				class_operator_panel.add(classBPanel);
-		
-		
+		class_operator_panel.add(class_operator_scrollP);
+		JPanel classBPanel = new JPanel();
+		classBPanel.setLayout(new FlowLayout());
+		classBPanel.add(annotationNoneB);
+		annotationNoneB.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				annotationNoneB_mouseClicked(e);
+			}
+		});
+		classBPanel.add(annotationAllB);
+		annotationAllB.addMouseListener(new java.awt.event.MouseAdapter()
+		{
+			public void mouseClicked(MouseEvent e)
+			{
+				annotationAllB_mouseClicked(e);
+			}
+		});
+		class_operator_panel.add(classBPanel);
+
+
 
 		// method-level operator selection
 		JPanel traditional_operator_panel = new JPanel();
@@ -298,23 +299,12 @@ public class MutantsOracleGenPanel extends JPanel
 		});
 		traditional_operator_panel.add(traditionalBPanel);
 
-
-		
-
-		// This is the original part.
-		//rightPanel.add(Box.createRigidArea(new Dimension(0,5)));
-		// Traditional operators ar not supported they are newly designed.
-		//rightPanel.add(traditional_operator_panel);
-		//rightPanel.add(temp_traditional_panel);
-		// rightPanel.add(class_operator_panel);
-
-
 		//----
 		JPanel operator_panel = new JPanel();
 		operator_panel.setLayout(new FlowLayout());
 		operator_panel.add(class_operator_panel);
 		operator_panel.add(traditional_operator_panel);
-		
+
 		//rightPanel.add(Box.createRigidArea(new Dimension(0,4)));
 		rightPanel.add(operator_panel);
 
@@ -362,313 +352,279 @@ public class MutantsOracleGenPanel extends JPanel
 			}
 		}
 	}
-	
-	
+
+
 	protected void initColumnSizes(JTable table, AbstractTableModel model)
-	   {
-	      initTripleColumnWidth(table, model, 30, 90, 80);
-	/*
-	      TableColumn column = null;
+	{
+		initTripleColumnWidth(table, model, 30, 90, 80);
 
-	      for (int i = 0; i < table.getColumnCount(); i++) 
-	      {
-	         column = table.getColumnModel().getColumn(i);
-	         switch(i)
-	         {
-	            case 0 :  column.setMaxWidth(30);
-	                      break;
-	            case 1 :  column.setMaxWidth(90);
-	                      break;
-	            case 2 :  column.setMaxWidth(80);
-	                      break;
-	         }
-	      }*/
-	   }
-	
-	
-	 void fileAllB_mouseClicked(MouseEvent e)
-	   {
-	      FileOracleTableModel table = (FileOracleTableModel)fileTable.getModel();
-	      table.setAllSelectValue(true);
-	      fileTable.setModel(table);
-	      fileTable.repaint();
-	   }
+	}
 
-	   void fileNoneB_mouseClicked(MouseEvent e)
-	   {
-	      FileOracleTableModel table = (FileOracleTableModel)fileTable.getModel();
-	      table.setAllSelectValue(false);
-	      fileTable.setModel(table);
-	      fileTable.repaint();
-	   }
 
-	   void runB_mouseClicked(MouseEvent e)
-	   {
-	   	//check if any files are selected, return an error message if no files have been selected
-	      FileOracleTableModel fTableModel = (FileOracleTableModel)fileTable.getModel();
-	      String[] file_list = fTableModel.getSelectedFiles();
-	      if (file_list == null || file_list.length == 0)
-	      {
-	         System.err.println("[ERROR] No class is selected.");
-	         return;
-	      }
-	      
-	      //check if any operators are selected, return an error message if no files have been selected
-	      SOOTableModel smoTableModel = (SOOTableModel)annotationOpTable.getModel();
-	      String[] class_ops = smoTableModel.getSelectedOprators();
-	 
-	      AOOTableModel amoTableModel = (AOOTableModel)signatureOpTable.getModel();
-	      String[] traditional_ops = amoTableModel.getSelectedOprators();
+	void fileAllB_mouseClicked(MouseEvent e)
+	{
+		FileOracleTableModel table = (FileOracleTableModel)fileTable.getModel();
+		table.setAllSelectValue(true);
+		fileTable.setModel(table);
+		fileTable.repaint();
+	}
 
-	      if ( (class_ops == null || class_ops.length == 0) && 
-	           (traditional_ops == null || traditional_ops.length == 0) )
-	      {
-	         System.out.println("[Error] no operators is selected. "); 
-	         return;
-	      }
-	      
-	      //disable the button
-	      runB.setEnabled(false);
-	      
-	      for (int i=0; i<file_list.length; i++)
-	      {
-	      // file_name = ABSTRACT_PATH - MutationSystem.SRC_PATH
-	      // For example: org/apache/bcel/Class.java
-	         String file_name = file_list[i];
-	         try
-	         {
-	            //System.out.println(i + " : " + file_name);
-	            // [1] Examine if the target class is interface or abstract class
-	            //     In that case, we can't apply mutation testing.
+	void fileNoneB_mouseClicked(MouseEvent e)
+	{
+		FileOracleTableModel table = (FileOracleTableModel)fileTable.getModel();
+		table.setAllSelectValue(false);
+		fileTable.setModel(table);
+		fileTable.repaint();
+	}
 
-	            // Generate class name from file_name
-	            String temp = file_name.substring(0,file_name.length()-".java".length());
-	            String class_name="";
-	            
-	            for (int j=0; j<temp.length(); j++)
-	            {
-	               if ( (temp.charAt(j) == '\\') || (temp.charAt(j) == '/') )
-	               {
-	                  class_name = class_name + ".";
-	               } 
-	               else
-	               {
-	                  class_name = class_name + temp.charAt(j);
-	               }
-	            }
-	           
-	            int class_type = MutationSystem.getClassType(class_name);
-	            
+	void runB_mouseClicked(MouseEvent e)
+	{
+		//check if any files are selected, return an error message if no files have been selected
+		FileOracleTableModel fTableModel = (FileOracleTableModel)fileTable.getModel();
+		String[] file_list = fTableModel.getSelectedFiles();
+		if (file_list == null || file_list.length == 0)
+		{
+			System.err.println("[ERROR] No class is selected.");
+			return;
+		}
+
+		//check if any operators are selected, return an error message if no files have been selected
+		SOOTableModel smoTableModel = (SOOTableModel)annotationOpTable.getModel();
+		String[] signature_ops = smoTableModel.getSelectedOprators();
+
+		AOOTableModel amoTableModel = (AOOTableModel)signatureOpTable.getModel();
+		String[] annotation_ops = amoTableModel.getSelectedOprators();
+
+		if ( (signature_ops == null || signature_ops.length == 0) && 
+				(annotation_ops == null || annotation_ops.length == 0) )
+		{
+			System.out.println("[Error] no operators is selected. "); 
+			return;
+		}
+
+		//disable the button
+		runB.setEnabled(false);
+
+		for (int i=0; i<file_list.length; i++)
+		{
+			// file_name = ABSTRACT_PATH - MutationSystem.SRC_PATH
+			// For example: org/apache/bcel/Class.java
+			String file_name = file_list[i];
+			try
+			{
+				//System.out.println(i + " : " + file_name);
+				// [1] Examine if the target class is interface or abstract class
+				//     In that case, we can't apply mutation testing.
+
+				// Generate class name from file_name
+				String temp = file_name.substring(0,file_name.length()-".java".length());
+				String class_name="";
+
+				for (int j=0; j<temp.length(); j++)
+				{
+					if ( (temp.charAt(j) == '\\') || (temp.charAt(j) == '/') )
+					{
+						class_name = class_name + ".";
+					} 
+					else
+					{
+						class_name = class_name + temp.charAt(j);
+					}
+				}
+
+				int class_type = MutationSystem.getClassType(class_name);
+
 				if (class_type == MutationSystem.NORMAL)
 				{   // do nothing?
 				} 
 				else if (class_type == MutationSystem.MAIN)
 				{
-	               System.out.println(" -- "  + file_name + " class contains 'static void main()' method.");
-	               System.out.println("    Pleas note that mutants are not generated for the 'static void main()' method");
-	            }
+					System.out.println(" -- "  + file_name + " class contains 'static void main()' method.");
+					System.out.println("    Pleas note that mutants are not generated for the 'static void main()' method");
+				}
 				//Added on 1/19/2013, no mutants will be generated for a class having only one main method
 				else if(class_type == MutationSystem.MAIN_ONLY){
 					System.out.println("Class " + file_name + " has only the 'static void main()' method and no mutants will be generated.");
 					break;
 				}
-//				else
-//				{
-//	               switch (class_type)
-//	               {
-//	                  case MutationSystem.INTERFACE :
-//	                            System.out.println(" -- Can't apply because " + file_name+ " is 'interface' ");
-//	                            break;
-//	                  case MutationSystem.ABSTRACT :
-//	                            System.out.println(" -- Can't apply because " + file_name+ " is 'abstract' class ");
-//	                            break;
-//	                  case MutationSystem.APPLET :
-//	                            System.out.println(" -- Can't apply because " + file_name+ " is 'applet' class ");
-//	                            break;
-//	                  case MutationSystem.GUI :
-//	                            System.out.println(" -- Can't apply because " + file_name+ " is 'GUI' class ");
-//	                            break;
-//	               }
-//	               deleteDirectory();
-//	               continue;
-//	            }
-				
-	            // [2] Apply mutation testing
-	            setMutationSystemPathFor(file_name);
-	            
-	            //File[] original_files = new File[1];
-	            //original_files[0] = new File(MutationSystem.SRC_PATH,file_name);
-	            
-	            File original_file = new File(MutationSystem.SRC_PATH, file_name);
-	           
-	            /*AllMutantsGenerator genEngine;
+
+
+				// [2] Apply mutation testing
+				setMutationSystemPathFor(file_name);
+
+				//File[] original_files = new File[1];
+				//original_files[0] = new File(MutationSystem.SRC_PATH,file_name);
+
+				File original_file = new File(MutationSystem.SRC_PATH, file_name);
+
+				/*AllMutantsGenerator genEngine;
 	            genEngine = new AllMutantsGenerator(original_file,class_ops,traditional_ops);
 	            genEngine.makeMutants();
 	            genEngine.compileMutants();*/
-	            
-	            ClassMutantsGenerator cmGenEngine;
-	            
-	            //do not generate class mutants if no class mutation operator is selected
-	            if(class_ops != null){
-		            cmGenEngine = new ClassMutantsGenerator(original_file,class_ops);   
-		            cmGenEngine.makeMutants();      
-		            cmGenEngine.compileMutants();
-	            }
-	            
-	            //do not generate traditional mutants if no class traditional operator is selected
-	            if(traditional_ops != null){
-		            TraditionalMutantsGenerator tmGenEngine;
-		            //System.out.println("original_file: " + original_file);
-		            //System.out.println("traditional_ops: " + traditional_ops);
-		            tmGenEngine = new TraditionalMutantsGenerator(original_file,traditional_ops);
-		            tmGenEngine.makeMutants();
-		            tmGenEngine.compileMutants();
-	            }
 
-	         } catch (OpenJavaException oje)
-	         {
-	            System.out.println("[OJException] " + file_name + " " + oje.toString());
-	            //System.out.println("Can't generate mutants for " +file_name + " because OpenJava " + oje.getMessage());
-	            deleteDirectory();
-	         } catch(Exception exp)
-	         {
-	            System.out.println("[Exception] " + file_name + " " + exp.toString());
-	            exp.printStackTrace();
-	            //System.out.println("Can't generate mutants for " +file_name + " due to exception" + exp.getClass().getName());
-	            //exp.printStackTrace();
-	            deleteDirectory();
-	         } catch(Error er)
-	         {
-	            System.out.println("[Error] " + file_name + " " + er.toString());
-	            System.out.println("MutantsGenPanel: ");
-	            er.printStackTrace();
+				SignatureMutantsGenerator sgGenEngine;
 
-	            //System.out.println("Can't generate mutants for " +file_name + " due to error" + er.getClass().getName());
-	            deleteDirectory();
-	         }
-	      }
-	      runB.setEnabled(true);
-	      parent_frame.cvPanel.refreshEnv();
-	      parent_frame.tvPanel.refreshEnv();
-	      System.out.println("------------------------------------------------------------------");
-	      System.out.println("All files are handled");
-	   }
-	   
-	   
-	   void deleteDirectory()
-	   {
-	      File originalDir = new File(MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME
-	                                + "/" + MutationSystem.ORIGINAL_DIR_NAME);
-	      while (originalDir.delete())  
-	      {    // do nothing?
-	      }
+				//do not generate class mutants if no class mutation operator is selected
+				if(signature_ops != null){
+					sgGenEngine = new SignatureMutantsGenerator(original_file,signature_ops);   
+					sgGenEngine.makeMutantsOracle();      
+					//sgGenEngine.compileMutants();
+				}
 
-	      File cmDir = new File(MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME
-	                                + "/" + MutationSystem.CM_DIR_NAME);
-	      while (cmDir.delete()) 
-	      {    // do nothing?
-	      }
+				//do not generate traditional mutants if no class traditional operator is selected
+				if(annotation_ops != null){
+					TraditionalMutantsGenerator tmGenEngine;
+					//System.out.println("original_file: " + original_file);
+					//System.out.println("traditional_ops: " + traditional_ops);
+					tmGenEngine = new TraditionalMutantsGenerator(original_file,annotation_ops);
+					tmGenEngine.makeMutants();
+					tmGenEngine.compileMutants();
+				}
 
-	      File tmDir = new File (MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME
-	                                + "/" + MutationSystem.TM_DIR_NAME);
-	      while (tmDir.delete())
-	      {    // do nothing?
-	      }
+			} catch (OpenJavaException oje)
+			{
+				System.out.println("[OJException] " + file_name + " " + oje.toString());
+				//System.out.println("Can't generate mutants for " +file_name + " because OpenJava " + oje.getMessage());
+				deleteDirectory();
+			} catch(Exception exp)
+			{
+				System.out.println("[Exception] " + file_name + " " + exp.toString());
+				exp.printStackTrace();
+				//System.out.println("Can't generate mutants for " +file_name + " due to exception" + exp.getClass().getName());
+				//exp.printStackTrace();
+				deleteDirectory();
+			} catch(Error er)
+			{
+				System.out.println("[Error] " + file_name + " " + er.toString());
+				System.out.println("MutantsGenPanel: ");
+				er.printStackTrace();
 
-	      File myHomeDir = new File(MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME);
-	      while (myHomeDir.delete())
-	      {    // do nothing?
-	      }
-	   }
-	   
-	   
-	   void setMutationSystemPathFor(String file_name)
-	   {
-	      try
-	      {
-	         String temp;
-	         temp = file_name.substring(0, file_name.length()-".java".length());
-	         temp = temp.replace('/', '.');
-	         temp = temp.replace('\\', '.');
-	         int separator_index = temp.lastIndexOf(".");
-	         
-	         if (separator_index >= 0)
-	         {
-	            MutationSystem.CLASS_NAME=temp.substring(separator_index+1, temp.length());
-	         }
-	         else
-	         {
-	            MutationSystem.CLASS_NAME = temp;
-	         }
+				//System.out.println("Can't generate mutants for " +file_name + " due to error" + er.getClass().getName());
+				deleteDirectory();
+			}
+		}
+		runB.setEnabled(true);
+		parent_frame.sgPanel.refreshEnv();
+		parent_frame.anPanel.refreshEnv();
+		System.out.println("------------------------------------------------------------------");
+		System.out.println("All files are handled");
+	}
 
-	         String mutant_dir_path = MutationSystem.MUTANT_HOME + "/" + temp;
-	         File mutant_path = new File(mutant_dir_path);
-	         mutant_path.mkdir();
 
-	         String signature_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.SG_DIR_NAME;
-	         File signature_mutant_path = new File(signature_mutant_dir_path);
-	         signature_mutant_path.mkdir();
+	void deleteDirectory()
+	{
+		File originalDir = new File(MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME
+				+ "/" + MutationSystem.ORIGINAL_DIR_NAME);
+		while (originalDir.delete())  
+		{    // do nothing?
+		}
 
-	         String annotation_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.AN_DIR_NAME;
-	         File annotation_mutant_path = new File(annotation_mutant_dir_path);
-	         annotation_mutant_path.mkdir();
+		File cmDir = new File(MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME
+				+ "/" + MutationSystem.CM_DIR_NAME);
+		while (cmDir.delete()) 
+		{    // do nothing?
+		}
 
-	         String original_dir_path = mutant_dir_path + "/" + MutationSystem.ORIGINAL_ORACLE_DIR_NAME;
-	         File original_path = new File(original_dir_path);
-	         original_path.mkdir();
+		File tmDir = new File (MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME
+				+ "/" + MutationSystem.TM_DIR_NAME);
+		while (tmDir.delete())
+		{    // do nothing?
+		}
 
-	         MutationSystem.SIGNATURE_MUTANT_PATH = signature_mutant_dir_path;
-	         MutationSystem.TRADITIONAL_MUTANT_PATH = annotation_mutant_dir_path;
-	         MutationSystem.ORIGINAL_PATH = original_dir_path;
-	         MutationSystem.DIR_NAME = temp;
-	      } catch(Exception e)
-	      {
-	         System.err.println(e);
-	      }
-	   }
-	   
-	   
-	   void descriptionB_mouseClicked(MouseEvent e)
-	   {
-	         
-	   }
-	   
-	   void signatureAllB_mouseClicked(MouseEvent e)
-	   {
-	      AOOTableModel table = (AOOTableModel) signatureOpTable.getModel();
-	      table.setAllSelectValue(true);
-	      signatureOpTable.setModel(table);
-	      signatureOpTable.repaint();
-	   }
-	 
-	   void signatureNoneB_mouseClicked(MouseEvent e)
-	   {
-		  AOOTableModel table = (AOOTableModel)signatureOpTable.getModel();
-	      table.setAllSelectValue(false);
-	      signatureOpTable.setModel(table);
-	      signatureOpTable.repaint();
-	   }
+		File myHomeDir = new File(MutationSystem.MUTANT_HOME + "/" + MutationSystem.DIR_NAME);
+		while (myHomeDir.delete())
+		{    // do nothing?
+		}
+	}
 
-	   void annotationAllB_mouseClicked(MouseEvent e)
-	   {
-	      SOOTableModel table = (SOOTableModel)annotationOpTable.getModel();
-	      table.setAllSelectValue(true);
-	      annotationOpTable.setModel(table);
-	      annotationOpTable.repaint();
-	   }
-	  
-	   void annotationNoneB_mouseClicked(MouseEvent e)
-	   {
-	      SOOTableModel table = (SOOTableModel)annotationOpTable.getModel();
-	      table.setAllSelectValue(false);
-	      annotationOpTable.setModel(table);
-	      annotationOpTable.repaint();
-	   }
 
-	   protected void initFileColumnSizes(JTable table, AbstractTableModel model) 
-	   {
-	      initTripleColumnWidth(table,model,30,700,80);
-	   }
+	void setMutationSystemPathFor(String file_name)
+	{
+		try
+		{
+			String temp;
+			temp = file_name.substring(0, file_name.length()-".java".length());
+			temp = temp.replace('/', '.');
+			temp = temp.replace('\\', '.');
+			int separator_index = temp.lastIndexOf(".");
+
+			if (separator_index >= 0)
+			{
+				MutationSystem.CLASS_NAME=temp.substring(separator_index+1, temp.length());
+			}
+			else
+			{
+				MutationSystem.CLASS_NAME = temp;
+			}
+
+			String mutant_dir_path = MutationSystem.MUTANT_HOME + "/" + temp;
+			File mutant_path = new File(mutant_dir_path);
+			mutant_path.mkdir();
+
+			String signature_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.SG_DIR_NAME;
+			File signature_mutant_path = new File(signature_mutant_dir_path);
+			signature_mutant_path.mkdir();
+
+			String annotation_mutant_dir_path = mutant_dir_path + "/" + MutationSystem.AN_DIR_NAME;
+			File annotation_mutant_path = new File(annotation_mutant_dir_path);
+			annotation_mutant_path.mkdir();
+
+			String original_dir_path = mutant_dir_path + "/" + MutationSystem.ORIGINAL_ORACLE_DIR_NAME;
+			File original_path = new File(original_dir_path);
+			original_path.mkdir();
+
+			MutationSystem.SIGNATURE_MUTANT_PATH = signature_mutant_dir_path;
+			MutationSystem.TRADITIONAL_MUTANT_PATH = annotation_mutant_dir_path;
+			MutationSystem.ORIGINAL_PATH = original_dir_path;
+			MutationSystem.DIR_NAME = temp;
+		} catch(Exception e)
+		{
+			System.err.println(e);
+		}
+	}
+
+
+	void descriptionB_mouseClicked(MouseEvent e)
+	{
+
+	}
+
+	void signatureAllB_mouseClicked(MouseEvent e)
+	{
+		AOOTableModel table = (AOOTableModel) signatureOpTable.getModel();
+		table.setAllSelectValue(true);
+		signatureOpTable.setModel(table);
+		signatureOpTable.repaint();
+	}
+
+	void signatureNoneB_mouseClicked(MouseEvent e)
+	{
+		AOOTableModel table = (AOOTableModel)signatureOpTable.getModel();
+		table.setAllSelectValue(false);
+		signatureOpTable.setModel(table);
+		signatureOpTable.repaint();
+	}
+
+	void annotationAllB_mouseClicked(MouseEvent e)
+	{
+		SOOTableModel table = (SOOTableModel)annotationOpTable.getModel();
+		table.setAllSelectValue(true);
+		annotationOpTable.setModel(table);
+		annotationOpTable.repaint();
+	}
+
+	void annotationNoneB_mouseClicked(MouseEvent e)
+	{
+		SOOTableModel table = (SOOTableModel)annotationOpTable.getModel();
+		table.setAllSelectValue(false);
+		annotationOpTable.setModel(table);
+		annotationOpTable.repaint();
+	}
+
+	protected void initFileColumnSizes(JTable table, AbstractTableModel model) 
+	{
+		initTripleColumnWidth(table,model,30,700,80);
+	}
 
 }
 
@@ -678,260 +634,260 @@ public class MutantsOracleGenPanel extends JPanel
  */
 abstract class OOTableModel extends AbstractTableModel 
 {
-   String[] columnHeader = new String[]{"", "Operator"};
-   String[] op;
-   Object[][] data;
+	String[] columnHeader = new String[]{"", "Operator"};
+	String[] op;
+	Object[][] data;
 
-   static final int SMO = 0;
-   static final int AMO = 1;
+	static final int SMO = 0;
+	static final int AMO = 1;
 
-   abstract int getOperatorType();
+	abstract int getOperatorType();
 
-   public OOTableModel()
-   {
-      if (getOperatorType() == SMO)
-      {
-         op = MutationSystem.sg_operators;
-      } 
-      else
-      {
-         op = MutationSystem.an_operators;
-      }
+	public OOTableModel()
+	{
+		if (getOperatorType() == SMO)
+		{
+			op = MutationSystem.sg_operators;
+		} 
+		else
+		{
+			op = MutationSystem.an_operators;
+		}
 
-      data = new Object[op.length][2];
-      for (int i=0; i<op.length; i++)
-      {
-         data[i][0] = new Boolean(false);
-         data[i][1] = op[i];
-      }
-   }
+		data = new Object[op.length][2];
+		for (int i=0; i<op.length; i++)
+		{
+			data[i][0] = new Boolean(false);
+			data[i][1] = op[i];
+		}
+	}
 
-   public void setAllSelectValue(boolean b)
-   {
-      for (int i=0; i<data.length; i++) 
-      {
-         data[i][0] = new Boolean(b);
-      }
-   }
+	public void setAllSelectValue(boolean b)
+	{
+		for (int i=0; i<data.length; i++) 
+		{
+			data[i][0] = new Boolean(b);
+		}
+	}
 
-   public String getColumnName(int col)
-   {
-      return columnHeader[col];
-   }
+	public String getColumnName(int col)
+	{
+		return columnHeader[col];
+	}
 
-   public int getColumnCount() 
-   {
-      return columnHeader.length; 
-   }
+	public int getColumnCount() 
+	{
+		return columnHeader.length; 
+	}
 
-   public Object getValueAt(int row, int col) 
-   {
-      return data[row][col];
-   }
+	public Object getValueAt(int row, int col) 
+	{
+		return data[row][col];
+	}
 
-   public int getRowCount() 
-   {
-      return data.length; 
-   }
+	public int getRowCount() 
+	{
+		return data.length; 
+	}
 
-   public Class getColumnClass(int c) 
-   {
-      return getValueAt(0, c).getClass();
-   }
+	public Class getColumnClass(int c) 
+	{
+		return getValueAt(0, c).getClass();
+	}
 
-   public void setValueAt(Object value, int row, int col) 
-   {
-      if (data[0][col] instanceof Integer && 
-          !(value instanceof Integer)) 
-      {
-         try 
-         {
-            data[row][col] = new Integer(value.toString());
-            fireTableCellUpdated(row, col);
-         } catch (NumberFormatException e) 
-         {    // do nothing?
-         }
-      } 
-      else 
-      {
-         data[row][col] = value;
-         fireTableCellUpdated(row, col);
-      }
-   }
+	public void setValueAt(Object value, int row, int col) 
+	{
+		if (data[0][col] instanceof Integer && 
+				!(value instanceof Integer)) 
+		{
+			try 
+			{
+				data[row][col] = new Integer(value.toString());
+				fireTableCellUpdated(row, col);
+			} catch (NumberFormatException e) 
+			{    // do nothing?
+			}
+		} 
+		else 
+		{
+			data[row][col] = value;
+			fireTableCellUpdated(row, col);
+		}
+	}
 
-   public boolean isCellEditable(int row, int col) 
-   {
-      //Note that the data/cell address is constant,
-      //no matter where the cell appears on screen.
-      if (col < 1) 
-         return true;
-      else 
-         return false;
-   }
+	public boolean isCellEditable(int row, int col) 
+	{
+		//Note that the data/cell address is constant,
+		//no matter where the cell appears on screen.
+		if (col < 1) 
+			return true;
+		else 
+			return false;
+	}
 
-   public String[] getSelectedOprators()
-   {
-      Vector set = new Vector();
-      int numRows = getRowCount();
-      int i;
-      for (i=0; i<numRows; i++)
-      {
-         if (data[i][0].toString().equals("true"))
-         {
-            set.add(data[i][1]);
-         }
-      }
+	public String[] getSelectedOprators()
+	{
+		Vector set = new Vector();
+		int numRows = getRowCount();
+		int i;
+		for (i=0; i<numRows; i++)
+		{
+			if (data[i][0].toString().equals("true"))
+			{
+				set.add(data[i][1]);
+			}
+		}
 
-      String[] names = new String[set.size()];
-      if (set.size() > 0) 
-      {
-         for (i=0; i<set.size(); i++)
-         {
-            names[i] = set.get(i).toString();
-         }
-         return names;
-      } 
-      else 
-      {
-         return null;
-      }
-   }
+		String[] names = new String[set.size()];
+		if (set.size() > 0) 
+		{
+			for (i=0; i<set.size(); i++)
+			{
+				names[i] = set.get(i).toString();
+			}
+			return names;
+		} 
+		else 
+		{
+			return null;
+		}
+	}
 }
 
 
 class SOOTableModel extends OOTableModel 
 {
-   private static final long serialVersionUID = 104L;
-   int getOperatorType(){    return SMO;    }
+	private static final long serialVersionUID = 104L;
+	int getOperatorType(){    return SMO;    }
 }
 
 
 class AOOTableModel extends OOTableModel 
 {
-   private static final long serialVersionUID = 105L;
-   int getOperatorType(){    return AMO;    }
+	private static final long serialVersionUID = 105L;
+	int getOperatorType(){    return AMO;    }
 }
 
 class FileOracleTableModel extends AbstractTableModel 
 {
-   private static final long serialVersionUID = 106L;
+	private static final long serialVersionUID = 106L;
 
-   String[] columnHeader = new String[]{"","File"};
-   String[] op;
+	String[] columnHeader = new String[]{"","File"};
+	String[] op;
 
-   Object[][] data;
+	Object[][] data;
 
-   public FileOracleTableModel(Vector value)
-   {
-      data = new Object[value.size()][2];
-      for (int i=0; i<value.size(); i++)
-      {
-         data[i][0] = new Boolean(false);
-         data[i][1] = value.get(i);
-      }
-   }
-   
-   public String getColumnName(int col)
-   {
-      return columnHeader[col];
-   }
+	public FileOracleTableModel(Vector value)
+	{
+		data = new Object[value.size()][2];
+		for (int i=0; i<value.size(); i++)
+		{
+			data[i][0] = new Boolean(false);
+			data[i][1] = value.get(i);
+		}
+	}
 
-   public int getColumnCount() 
-   {
-      return columnHeader.length;
-   }
-   
-   public void setAllSelectValue(boolean b)
-   {
-      for (int i=0; i<data.length; i++)
-      {
-         data[i][0] = new Boolean(b);
-      }
-   }
-  
-   public Object getValueAt(int row, int col) 
-   {
-      return data[row][col];
-   }
-  
-   public int getRowCount() 
-   {
-      return data.length; 
-   }
+	public String getColumnName(int col)
+	{
+		return columnHeader[col];
+	}
 
-   public String[] getSelectedFiles()
-   {
-      Vector set = new Vector();
-      int numRows = getRowCount();
-      int i;
-      
-      for (i=0; i<numRows; i++)
-      {
-         if (data[i][0].toString().equals("true"))
-            set.add(data[i][1]); 
-      }
+	public int getColumnCount() 
+	{
+		return columnHeader.length;
+	}
 
-      String[] names = new String[set.size()];
-      if (set.size() > 0) 
-      {
-         for (i=0; i<set.size(); i++)
-         {
-            names[i] = set.get(i).toString();
-         }
-         return names;
-      } 
-      else 
-      {
-         return null;
-      }
-   }
+	public void setAllSelectValue(boolean b)
+	{
+		for (int i=0; i<data.length; i++)
+		{
+			data[i][0] = new Boolean(b);
+		}
+	}
 
-   public Class getColumnClass(int c) 
-   {
-      return getValueAt(0, c).getClass();
-   }
+	public Object getValueAt(int row, int col) 
+	{
+		return data[row][col];
+	}
 
-   public void setValue(Object[] value)
-   {
-      data = new Object[value.length][2];
-      for (int i=0; i<value.length; i++)
-      {
-         data[i][0] = new Boolean(true);
-         data[i][1] = value[i];
-      }
-   }
+	public int getRowCount() 
+	{
+		return data.length; 
+	}
 
-   public void setValueAt(Object value, int row, int col) 
-   {
-      if (data[0][col] instanceof Integer && 
-          !(value instanceof Integer)) 
-      {
-         try 
-         {
-            data[row][col] = new Integer(value.toString());
-            fireTableCellUpdated(row, col);
-         } catch (NumberFormatException e)    
-         {  // do nothing?
-         }
-      } 
-      else 
-      {
-         data[row][col] = value;
-         fireTableCellUpdated(row, col);
-      }
-   }
+	public String[] getSelectedFiles()
+	{
+		Vector set = new Vector();
+		int numRows = getRowCount();
+		int i;
 
-   public boolean isCellEditable(int row, int col) 
-   {
-     //Note that the data/cell address is constant,
-     //no matter where the cell appears on screen.
-      if (col < 1) 
-      {
-         return true;
-      } 
-      else 
-      {
-         return false;
-      }
-   }
+		for (i=0; i<numRows; i++)
+		{
+			if (data[i][0].toString().equals("true"))
+				set.add(data[i][1]); 
+		}
+
+		String[] names = new String[set.size()];
+		if (set.size() > 0) 
+		{
+			for (i=0; i<set.size(); i++)
+			{
+				names[i] = set.get(i).toString();
+			}
+			return names;
+		} 
+		else 
+		{
+			return null;
+		}
+	}
+
+	public Class getColumnClass(int c) 
+	{
+		return getValueAt(0, c).getClass();
+	}
+
+	public void setValue(Object[] value)
+	{
+		data = new Object[value.length][2];
+		for (int i=0; i<value.length; i++)
+		{
+			data[i][0] = new Boolean(true);
+			data[i][1] = value[i];
+		}
+	}
+
+	public void setValueAt(Object value, int row, int col) 
+	{
+		if (data[0][col] instanceof Integer && 
+				!(value instanceof Integer)) 
+		{
+			try 
+			{
+				data[row][col] = new Integer(value.toString());
+				fireTableCellUpdated(row, col);
+			} catch (NumberFormatException e)    
+			{  // do nothing?
+			}
+		} 
+		else 
+		{
+			data[row][col] = value;
+			fireTableCellUpdated(row, col);
+		}
+	}
+
+	public boolean isCellEditable(int row, int col) 
+	{
+		//Note that the data/cell address is constant,
+		//no matter where the cell appears on screen.
+		if (col < 1) 
+		{
+			return true;
+		} 
+		else 
+		{
+			return false;
+		}
+	}
 }

@@ -109,6 +109,31 @@ public abstract class MutantsGenerator
       Debug.flush();
       return true;
    }
+   
+   public boolean makeMutantsOracle() throws OpenJavaException
+   {
+      Debug.print("-------------------------------------------------------\n");
+      Debug.print("* Generating parse tree. \n" );
+
+      generateParseTree();
+      Debug.print("..done. \n" );
+      //System.out.println("0");
+      Debug.print("* Initializing parse tree. \n" );
+      initParseTree();
+      Debug.print("..done. \n" );
+      //System.out.println("1");
+      Debug.print("* Generating Mutants \n" );
+      genMutants();
+      /*Debug.print("..done.\n" );
+      //System.out.println("2");
+      Debug.print("* Arranging original soure code. \n" );
+      arrangeOriginal();
+      //System.out.println("3");
+      compileOriginal();
+      Debug.print("..done. \n" );
+      Debug.flush();*/
+      return true;
+   }
 
    abstract void genMutants();
 
@@ -183,13 +208,13 @@ public abstract class MutantsGenerator
    {
       try
       {
-    	  //System.out.println("OJSystem.env0 :" + OJSystem.env );
+    	 //System.out.println("OJSystem.env0 :" + OJSystem.env );
          comp_unit.accept(new TypeNameQualifier (file_env));
          //System.out.println("OJSystem.env1 :" + OJSystem.env );
          MemberAccessCorrector corrector = new MemberAccessCorrector(file_env);
-        // System.out.println("OJSystem.env2 :" + OJSystem.env );
+         //System.out.println("OJSystem.env2 :" + OJSystem.env );
          comp_unit.accept(corrector);
-         //System.out.println("OJSystem.env3 :" + OJSystem.env );
+         //System.out.println("OJSystem.env3: " + OJSystem.env );
       } 
       catch (ParseTreeException e)
       {
@@ -366,7 +391,7 @@ public abstract class MutantsGenerator
       CompilationUnit result;
       try
       {
-    	 System.out.println( "File " + file );
+    	 //System.out.println( "File test" + file );
          result = parser.CompilationUnit( OJSystem.env );         
       } 
       catch (ParseException e) 
