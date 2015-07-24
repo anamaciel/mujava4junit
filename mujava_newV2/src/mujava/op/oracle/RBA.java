@@ -20,6 +20,7 @@ import openjava.mop.*;
 import openjava.ptree.*;
 
 import java.io.*;
+import java.util.Vector;
 
 /**
  * <p>Generate RBA (Replace Boolean Assertion) mutants --
@@ -65,21 +66,33 @@ public class RBA extends JUnit_OP
 	   System.out.println(p);
    }
    
-   public void visit( MethodDeclaration p ) throws ParseTreeException
+   
+   
+   public void visit( OJMethod p ) throws ParseTreeException
    {
-     System.out.println("métodos: " + p.getName());
-     System.out.println(p.getBody().get(1));
-     if(p.getBody().contains("org.junit.Assert.assertEquals( g1.sound(), \"vemmmm\" );")){
-    	 System.out.println("ok");
-     }
-     //System.out.println(p.getBody());
+     //System.out.println("métodos: " + p.getName());
+     //System.out.println(p.getBody().get(1));
+	  
+     //StatementList comandos = p.getBody();
+     Vector field_list = new Vector();
+     System.out.println("entrei");
      
-     //System.out.println(p.getBody().getParent().getClass());
    }
    
    public void visit( MethodCall p ) throws ParseTreeException
    {
-     System.out.println("métodos 2: " + p.getName());
+	   //System.out.println("métodos 2: " + p.getName());
+	   ExpressionList arguments = p.getArguments();
+	   ExpressionStatement expression = new ExpressionStatement("teste");
+	   Object[] contents = p.getContents();
+	   for (int i = 0; i < contents.length; i++) {
+		   System.out.println("contents: " + i + " - " + contents[i]);		
+	   }
+	   System.out.println("qtd de argumentos: " + arguments.size());
+	   for (int i = 0; i < arguments.size(); i++) {
+		   System.out.println("argumentos: " + arguments.get(i));
+		   
+	   }
    }
 
    /**
