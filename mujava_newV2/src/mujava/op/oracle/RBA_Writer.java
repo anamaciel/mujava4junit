@@ -17,6 +17,7 @@ package mujava.op.oracle;
 
 import mujava.op.util.TraditionalMutantCodeWriter;
 import openjava.ptree.*;
+
 import java.io.*;
 
 /**
@@ -30,11 +31,25 @@ public class RBA_Writer extends TraditionalMutantCodeWriter
    Variable original_var;
    FieldAccess original_field;
    String mutant;
+   MethodCall original;
+   MethodCall mutant_;
 
    public RBA_Writer( String file_name, PrintWriter out ) 
    {
       super(file_name,out);
    }
+   
+   /**
+    * Set original source code and mutated code
+    * @param exp1
+    * @param exp2
+    */
+   public void setMutant(MethodCall exp1, MethodCall exp2)
+   {
+	   original = exp1;
+	   this.mutant_ = exp2;
+   }
+   
 
    /**
     * Set original source code and mutated code
@@ -57,8 +72,8 @@ public class RBA_Writer extends TraditionalMutantCodeWriter
       original_field = exp1;
       this.mutant = mutant;
    }
-
-   /**
+   
+    /**
     * Log mutated line
     */
    public void visit( Variable p ) throws ParseTreeException

@@ -16,12 +16,13 @@
 package mujava.op.oracle;
 
 
-import openjava.mop.*;
-import openjava.ptree.*;
-
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Vector;
 
+import openjava.mop.*;
+import openjava.ptree.*;
+import openjava.syntax.*;
 /**
  * <p>Generate RBA (Replace Boolean Assertion) mutants --
  *    Example: assertFalse(expression)  → assertTrue (!expression)
@@ -81,9 +82,16 @@ public class RBA extends JUnit_OP
    
    public void visit( MethodCall p ) throws ParseTreeException
    {
-	   //System.out.println("métodos 2: " + p.getName());
+	   
+	   /*//System.out.println("métodos 2: " + p.getName());
 	   ExpressionList arguments = p.getArguments();
-	   ExpressionStatement expression = new ExpressionStatement("teste");
+	   
+	   
+	   //Expression exp = new AllocationExpression(getType(p), arguments);
+	   
+	   //arguments.add(exp);
+	   
+	   //ExpressionStatement expression = new ExpressionStatement("teste");
 	   Object[] contents = p.getContents();
 	   for (int i = 0; i < contents.length; i++) {
 		   System.out.println("contents: " + i + " - " + contents[i]);		
@@ -92,7 +100,38 @@ public class RBA extends JUnit_OP
 	   for (int i = 0; i < arguments.size(); i++) {
 		   System.out.println("argumentos: " + arguments.get(i));
 		   
+	   }*/
+	   
+	   
+	   if (p.getName().equals("assertTrue"))
+	   {
+		   ExpressionList arguments = p.getArguments();
+		   System.out.println(p.getName());
+		   try {
+			   //System.out.println("environment: " + getEnvironment());
+			   OJClass varType = arguments.get(0).getType(getEnvironment());
+			   if(p.getName().equals("assertTrue")){
+				   p.setName(p.getName().replace("assertTrue", "assertFalse"));				   
+			   }else if(p.getName().equals("assertFalse")){
+				   p.setName(p.getName().replace("assertFalse", "assertTrue"));	
+			   }
+
+			   if(varType.getName().contains("boolean")){
+				   System.out.println("nome: " + p.getName());
+				   ExpressionList mutantArgs = new ExpressionList();
+				   System.out.println(p.getArguments().toString());
+				   mutantArgs.add(Literal.makeLiteral("! " + p.getArguments()));
+				   System.out.println(mutantArgs);
+				   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+				   outputToFile(p, mutant);
+			   }
+			   
+		   } catch (Exception e) {
+			   // TODO Auto-generated catch block
+			   e.printStackTrace();
+		   }
 	   }
+
    }
 
    /**
@@ -100,7 +139,7 @@ public class RBA extends JUnit_OP
     * @param original_field
     * @param mutant
     */
-   public void outputToFile(FieldAccess original_field, String mutant)
+   public void outputToFile(MethodCall original_field, MethodCall mutant)
    {
       if (comp_unit == null) 
     	 return;
@@ -113,6 +152,7 @@ public class RBA extends JUnit_OP
       try 
       {
 		 PrintWriter out = getPrintWriter(f_name);
+		 System.out.println("f_name: " + f_name);
 		 RBA_Writer writer = new RBA_Writer(mutant_dir, out);
 		 writer.setMutant(original_field, mutant);
          writer.setMethodSignature(currentMethodSignature);
