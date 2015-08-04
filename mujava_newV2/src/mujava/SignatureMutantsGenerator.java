@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
 import mujava.op.basic.CreateDirForEachMethod;
+import mujava.op.oracle.ATV;
 import mujava.op.oracle.RBA;
 import mujava.op.util.CodeChangeLog;
 import mujava.util.Debug;
@@ -211,17 +212,17 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						Debug.println("  Applying MPPTO	 ... ... ");
 						mutant_op = new AODS(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}
+					}*/
 
 					if (hasOperator (signatureOp, "ATV") )
 					{
+						System.out.println("  Applying ATV ... ... ");
 						Debug.println("  Applying ATV ... ... ");
-						mutant_op = new AOIU(file_env,cdecl,comp_unit);
-						((AOIU)mutant_op).setAORflag(AOR_FLAG);
+						mutant_op = new ATV(file_env,cdecl,comp_unit);	
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "RTV") )
+					/*if (hasOperator (signatureOp, "RTV") )
 					{
 						Debug.println("  Applying RTV ... ... ");
 						mutant_op = new AOIS(file_env, cdecl, comp_unit);

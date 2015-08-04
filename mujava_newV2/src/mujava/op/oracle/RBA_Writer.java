@@ -24,92 +24,69 @@ import java.io.*;
  * <p>Output and log RBA oracle mutants to files </p>
  * @author Yu-Seung Ma
  * @version 1.0
-  */
+ */
 
 public class RBA_Writer extends TraditionalMutantCodeWriter
 {
-   Variable original_var;
-   FieldAccess original_field;
-   String mutant;
-   MethodCall original;
-   MethodCall mutant_;
 
-   public RBA_Writer( String file_name, PrintWriter out ) 
-   {
-      super(file_name,out);
-   }
-   
-   /**
-    * Set original source code and mutated code
-    * @param exp1
-    * @param exp2
-    */
-   public void setMutant(MethodCall exp1, MethodCall exp2)
-   {
-	   original = exp1;
-	   this.mutant_ = exp2;
-   }
-   
+	MethodCall original;
+	MethodCall mutant;
+	Literal mutantBoolean;
 
-   /**
-    * Set original source code and mutated code
-    * @param exp1
-    * @param mutant
-    */
-   public void setMutant(Variable exp1, String mutant)
-   {
-      original_var = exp1; 
-      this.mutant = mutant;
-   }
+	public RBA_Writer( String file_name, PrintWriter out ) 
+	{
+		super(file_name,out);
+	}
 
-   /**
-    * Set original source code and mutated code
-    * @param exp1
-    * @param mutant
-    */
-   public void setMutant(FieldAccess exp1, String mutant)
-   {
-      original_field = exp1;
-      this.mutant = mutant;
-   }
-   
-    /**
-    * Log mutated line
-    */
-   public void visit( Variable p ) throws ParseTreeException
-   {
-      if (isSameObject(p, original_var))
-      {
-         out.print(mutant);
-         // -----------------------------------------------------------
-         mutated_line = line_num;
-         String log_str = p.toString() + " => " + mutant;
-         writeLog(removeNewline(log_str));
-         // -------------------------------------------------------------
-      }
-      else
-      {
-         super.visit(p);
-      }
-   }
+	/**
+	 * Set original source code and mutated code
+	 * @param exp1
+	 * @param exp2
+	 */
+	public void setMutant(MethodCall exp1, MethodCall exp2)
+	{
+		original = exp1;
+		this.mutant = exp2;
+	}
 
-   /**
-    * Log mutated line
-    */
-   public void visit( FieldAccess p ) throws ParseTreeException
-   {
-      if (isSameObject(p, original_field))
-      {
-         out.print(mutant);
-         // -----------------------------------------------------------
-         mutated_line = line_num;
-         String log_str = p.toString() + " => " + mutant;
-         writeLog(removeNewline(log_str));
-         // -------------------------------------------------------------
-      }
-      else
-      {
-         super.visit(p);
-      }
-   }
+
+
+
+	/**
+	 * Log mutated line
+	 */
+	public void visit( MethodCall p ) throws ParseTreeException
+	{
+
+		if(mutant != null){
+			if (isSameObject(p, original))
+			{
+				super.visit(mutant);
+				// -----------------------------------------------------------
+				mutated_line = line_num;
+				String log_str = p.toFlattenString()+ "  =>  " + mutant.toFlattenString();
+				writeLog(removeNewline(log_str));
+				// -------------------------------------------------------------
+			}
+			else
+			{
+				super.visit(p);
+			}
+		}
+		else{
+			if (isSameObject(p, original))
+			{
+				super.visit(mutantBoolean);
+				// -----------------------------------------------------------
+				mutated_line = line_num;
+				String log_str = p.toFlattenString()+ "  =>  " + mutantBoolean.toFlattenString();
+				writeLog(removeNewline(log_str));
+				// -------------------------------------------------------------
+			}
+			else
+			{
+				super.visit(p);
+			}
+		}
+	}
 }

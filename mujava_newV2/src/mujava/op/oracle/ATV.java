@@ -32,11 +32,11 @@ import openjava.syntax.*;
  * @version 1.0
   */
 
-public class RBA extends JUnit_OP
+public class ATV extends JUnit_OP
 {
    boolean isPrePostEQ = true;
 
-   public RBA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+   public ATV(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
    {
       super( file_env, comp_unit );
    }
@@ -83,46 +83,26 @@ public class RBA extends JUnit_OP
    public void visit( MethodCall p ) throws ParseTreeException
    {
 	   
-	   /*//System.out.println("métodos 2: " + p.getName());
-	   ExpressionList arguments = p.getArguments();
-	   
-	   
-	   //Expression exp = new AllocationExpression(getType(p), arguments);
-	   
-	   //arguments.add(exp);
-	   
-	   //ExpressionStatement expression = new ExpressionStatement("teste");
-	   Object[] contents = p.getContents();
-	   for (int i = 0; i < contents.length; i++) {
-		   System.out.println("contents: " + i + " - " + contents[i]);		
-	   }
-	   System.out.println("qtd de argumentos: " + arguments.size());
-	   for (int i = 0; i < arguments.size(); i++) {
-		   System.out.println("argumentos: " + arguments.get(i));
-		   
-	   }*/
-	   
-	   
-	   if (p.getName().equals("assertTrue"))
+   
+	   if (p.getName().equals("assertEquals"))
 	   {
 		   ExpressionList arguments = p.getArguments();
 		   System.out.println(p.getName());
+		   
 		   try {
+			   
 			   //System.out.println("environment: " + getEnvironment());
-			   OJClass varType = arguments.get(0).getType(getEnvironment());
-			   if(p.getName().equals("assertTrue")){
-				   p.setName(p.getName().replace("assertTrue", "assertFalse"));				   
-			   }else if(p.getName().equals("assertFalse")){
-				   p.setName(p.getName().replace("assertFalse", "assertTrue"));	
-			   }
-
-			   if(varType.getName().contains("boolean")){
-				   System.out.println("nome: " + p.getName());
-				   
+			   OJClass varType = arguments.get(1).getType(getEnvironment());
+			   //System.out.println(arguments);
+			   if(varType.getName().contains("double")){
+				   System.out.println("if double");
 				   ExpressionList mutantArgs = new ExpressionList();
-				   //mutantArgs.add(Literal.makeLiteral());
+				   mutantArgs.add(arguments.get(0));
+				   mutantArgs.add(arguments.get(1));
+				   mutantArgs.add(Literal.makeLiteral(0.001));
 				   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-				   
+				   System.out.println(p);
+				   System.out.println(mutant);
 				   outputToFile(p, mutant);
 			   }
 			   
@@ -146,19 +126,21 @@ public class RBA extends JUnit_OP
 
       String f_name;
       num++;
-      f_name = getSourceName("RBA");
-      String mutant_dir = getMuantID("RBA");
+      f_name = getSourceName("ATV");
+      String mutant_dir = getMuantID("ATV");
 
       try 
       {
 		 PrintWriter out = getPrintWriter(f_name);
 		 System.out.println("f_name: " + f_name);
-		 RBA_Writer writer = new RBA_Writer(mutant_dir, out);
+		 ATV_Writer writer = new ATV_Writer(mutant_dir, out);
 		 writer.setMutant(original_field, mutant);
+		 System.out.println(mutant);
 		 //System.out.println(currentMethodSignature);
          writer.setMethodSignature(currentMethodSignature);
 		 comp_unit.accept( writer );
-		 out.flush();  out.close();
+		 out.flush();  
+		 out.close();
       } catch ( IOException e ) {
 		 System.err.println( "fails to create " + f_name );
       } catch ( ParseTreeException e ) {
