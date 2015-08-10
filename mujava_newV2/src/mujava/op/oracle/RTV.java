@@ -24,8 +24,8 @@ import openjava.mop.*;
 import openjava.ptree.*;
 import openjava.syntax.*;
 /**
- * <p>Generate ATV (Adding Threshold Value) mutants --
- *    Example: assertEquals(double, double) → assertEquals(double, double, double)
+ * <p>Generate RTV (Removing Threshold Value) mutants --
+ *    Example: assertEquals(double, double, double) → assertEquals(double, double)
  *    
  *    assertEquals
  *    assertArrayEquals
@@ -36,10 +36,10 @@ import openjava.syntax.*;
  * @version 1.0
  */
 
-public class ATV extends JUnit_OP
+public class RTV extends JUnit_OP
 {
 
-	public ATV(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public RTV(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
@@ -60,20 +60,18 @@ public class ATV extends JUnit_OP
 				System.out.println(varType.getName());
 				if((varType.getName().contains("double"))||(varType.getName().contains("float"))){				   
 					ExpressionList mutantArgs = new ExpressionList();
-					System.out.println("qtde argumentos: " + arguments.size());
-					
-					if(arguments.size()==2){
+					//System.out.println("qtde argumentos: " + arguments.size());
+					//System.out.println("tipo primeiro argumento: " + arguments.get(0).getType(getEnvironment()).getName().contains("String"));
+					if(arguments.size()==3 && !(arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
-						mutantArgs.add(Literal.makeLiteral(0.001));
 					}
-					if(arguments.size()==3){
+					if(arguments.size()==4){
 						System.out.println("if 3 argumentos");
 						
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
 						mutantArgs.add(arguments.get(2));
-						mutantArgs.add(Literal.makeLiteral(0.001));
 					}
 					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 					System.out.println(p);
@@ -82,6 +80,7 @@ public class ATV extends JUnit_OP
 				}
 
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -89,7 +88,7 @@ public class ATV extends JUnit_OP
 	}
 
 	/**
-	 * Write RBA mutants to files
+	 * Write RTV mutants to files
 	 * @param original_field
 	 * @param mutant
 	 */
@@ -100,8 +99,8 @@ public class ATV extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("ATV");
-		String mutant_dir = getMuantID("ATV");
+		f_name = getSourceName("RTV");
+		String mutant_dir = getMuantID("RTV");
 
 		try 
 		{

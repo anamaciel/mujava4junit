@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import mujava.op.basic.CreateDirForEachMethod;
 import mujava.op.oracle.ATV;
 import mujava.op.oracle.RBA;
+import mujava.op.oracle.RTV;
 import mujava.op.util.CodeChangeLog;
 import mujava.util.Debug;
 import openjava.ptree.ClassDeclaration;
@@ -222,13 +223,14 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					/*if (hasOperator (signatureOp, "RTV") )
+					if (hasOperator (signatureOp, "RTV") )
 					{
 						Debug.println("  Applying RTV ... ... ");
-						mutant_op = new AOIS(file_env, cdecl, comp_unit);
+						mutant_op = new RTV(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
-
+					
+					/*
 					if (hasOperator (signatureOp, "ICtTV") )
 					{
 						Debug.println("  Applying ICtTV ... ... ");
