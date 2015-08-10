@@ -21,6 +21,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
 import mujava.op.basic.CreateDirForEachMethod;
+import mujava.op.oracle.ASM;
 import mujava.op.oracle.ATV;
 import mujava.op.oracle.RBA;
 import mujava.op.oracle.RTV;
@@ -185,15 +186,14 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						return;
 					}
 
-					/*if (hasOperator (signatureOp, "ASM") )
+					if (hasOperator (signatureOp, "ASM") )
 					{
 						Debug.println("  Applying ASM ... ... ");
-						AOR_FLAG = true;
-						mutant_op = new AORB(file_env, cdecl, comp_unit);
+						mutant_op = new ASM(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "RSM") )
+					/*if (hasOperator (signatureOp, "RSM") )
 					{
 						Debug.println("  Applying RSM ... ... ");
 						mutant_op = new AORS(file_env, cdecl, comp_unit);
