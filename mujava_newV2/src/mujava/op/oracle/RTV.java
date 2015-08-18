@@ -49,7 +49,7 @@ public class RTV extends JUnit_OP
 	{
 
 		ExpressionList arguments = p.getArguments();
-		System.out.println(p.getName());
+		//System.out.println(p.getName());
 
 		if ((p.getName().equals("assertEquals"))||(p.getName().equals("assertNotEquals"))
 				||(p.getName().equals("assertArrayEquals")))
@@ -65,6 +65,10 @@ public class RTV extends JUnit_OP
 					if(arguments.size()==3 && !(arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
+						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+						//System.out.println(p);
+						System.out.println(mutant);
+						outputToFile(p, mutant);
 					}
 					if(arguments.size()==4){
 						System.out.println("if 3 argumentos");
@@ -72,11 +76,11 @@ public class RTV extends JUnit_OP
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
 						mutantArgs.add(arguments.get(2));
+						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+						//System.out.println(p);
+						System.out.println(mutant);
+						outputToFile(p, mutant);
 					}
-					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-					System.out.println(p);
-					System.out.println(mutant);
-					outputToFile(p, mutant);
 				}
 
 			} catch (Exception e) {

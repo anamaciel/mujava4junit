@@ -2,4 +2,6 @@ eclipse.preferences.version=1
 encoding//src/mujava/op/oracle/ASM.java=UTF-8
 encoding//src/mujava/op/oracle/ATV.java=UTF-8
 encoding//src/mujava/op/oracle/RBA.java=UTF-8
+encoding//src/mujava/op/oracle/RFM.java=UTF-8
+encoding//src/mujava/op/oracle/RSM.java=UTF-8
 encoding//src/mujava/op/oracle/RTV.java=UTF-8

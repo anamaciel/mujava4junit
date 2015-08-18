@@ -66,19 +66,24 @@ public class ATV extends JUnit_OP
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
 						mutantArgs.add(Literal.makeLiteral(0.001));
+						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+						System.out.println(p);
+						System.out.println(mutant);
+						outputToFile(p, mutant);
 					}
-					if(arguments.size()==3){
+					if(arguments.size()==3 && (arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
 						System.out.println("if 3 argumentos");
 						
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
 						mutantArgs.add(arguments.get(2));
 						mutantArgs.add(Literal.makeLiteral(0.001));
+						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+						System.out.println(p);
+						System.out.println(mutant);
+						outputToFile(p, mutant);
 					}
-					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-					System.out.println(p);
-					System.out.println(mutant);
-					outputToFile(p, mutant);
+					
 				}
 
 			} catch (Exception e) {

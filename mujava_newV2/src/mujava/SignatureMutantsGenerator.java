@@ -24,6 +24,8 @@ import mujava.op.basic.CreateDirForEachMethod;
 import mujava.op.oracle.ASM;
 import mujava.op.oracle.ATV;
 import mujava.op.oracle.RBA;
+import mujava.op.oracle.RFM;
+import mujava.op.oracle.RSM;
 import mujava.op.oracle.RTV;
 import mujava.op.util.CodeChangeLog;
 import mujava.util.Debug;
@@ -193,14 +195,14 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					/*if (hasOperator (signatureOp, "RSM") )
+					if (hasOperator (signatureOp, "RSM") )
 					{
 						Debug.println("  Applying RSM ... ... ");
-						mutant_op = new AORS(file_env, cdecl, comp_unit);
+						mutant_op = new RSM(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "MPPT") ) 
+					/*if (hasOperator (signatureOp, "MPPT") ) 
 					{
 						Debug.println("  Applying MPPT ... ... ");
 						mutant_op = new AODU(file_env, cdecl, comp_unit);
@@ -272,14 +274,14 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						Debug.println("  Applying RSA ... ... ");
 						mutant_op = new LOR(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}
+					}*/
 
 					if (hasOperator (signatureOp, "RFM") )
 					{
 						Debug.println("  Applying RFM ... ... ");
-						mutant_op = new LOI(file_env, cdecl, comp_unit);
+						mutant_op = new RFM(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}*/
+					}
 					
 				} catch (ParseTreeException e)
 				{
