@@ -70,6 +70,8 @@ public class RBA_Writer extends TraditionalMutantCodeWriter
 			}
 			else
 			{
+				//System.out.println("escrevendo o mutante");
+				
 				super.visit(p);
 			}
 		}

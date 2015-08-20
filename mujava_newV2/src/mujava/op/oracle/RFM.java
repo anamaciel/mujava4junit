@@ -25,7 +25,7 @@ import openjava.ptree.*;
 import openjava.syntax.*;
 /**
  * <p>Generate RFM (Remove fail() Method) mutants --
- *    Example: Fail();→ //fail();
+ *    Example: fail();→ //fail();
  *    
  *    fail
  *    
@@ -57,14 +57,9 @@ public class RFM extends JUnit_OP
 			ExpressionList mutantArgs = p.getArguments();
 			p.setName("//fail");
 			MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-			System.out.println(p);
+			//System.out.println(p);
 			System.out.println(mutant);
 			outputToFile(p, mutant);
-
-
-
-
-
 		}
 
 	}
