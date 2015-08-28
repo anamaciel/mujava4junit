@@ -25,6 +25,7 @@ import mujava.op.oracle.ASM;
 import mujava.op.oracle.ATV;
 import mujava.op.oracle.RBA;
 import mujava.op.oracle.RFM;
+import mujava.op.oracle.RNA;
 import mujava.op.oracle.RSM;
 import mujava.op.oracle.RTV;
 import mujava.op.util.CodeChangeLog;
@@ -262,14 +263,14 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					/*if (hasOperator (signatureOp, "RNA") )
+					if (hasOperator (signatureOp, "RNA") )
 					{
 						Debug.println("  Applying RNA ... ... ");
-						mutant_op = new SOR(file_env, cdecl, comp_unit);
+						mutant_op = new RNA(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "RSA") )
+					/*if (hasOperator (signatureOp, "RSA") )
 					{
 						Debug.println("  Applying RSA ... ... ");
 						mutant_op = new LOR(file_env, cdecl, comp_unit);

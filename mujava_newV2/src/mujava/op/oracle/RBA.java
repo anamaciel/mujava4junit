@@ -37,12 +37,12 @@ import openjava.syntax.*;
 
 public class RBA extends JUnit_OP
 {
-   boolean isPrePostEQ = true;
+	boolean isPrePostEQ = true;
 
-   public RBA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
-   {
-      super( file_env, comp_unit );
-   }
+	public RBA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	{
+		super( file_env, comp_unit );
+	}
 
 
    /*public void visit( Variable p) throws ParseTreeException
@@ -72,9 +72,9 @@ public class RBA extends JUnit_OP
    
    public void visit( MethodCall p ) throws ParseTreeException
    {
-	   
-	   
-	   
+
+
+
 	   if (p.getName().equals("assertTrue"))
 	   {
 		   ExpressionList arguments = p.getArguments();
@@ -82,25 +82,38 @@ public class RBA extends JUnit_OP
 		   try {
 			   //System.out.println("environment: " + getEnvironment());
 			   OJClass varType = arguments.get(0).getType(getEnvironment());
-			   
+
 			   if(p.getName().equals("assertTrue")){
-				   p.setName(p.getName().replace("assertTrue", "assertFalse"));				   
+				   p.setName(p.getName().replace("assertTrue", "assertFalse"));
 			   }else if(p.getName().equals("assertFalse")){
 				   p.setName(p.getName().replace("assertFalse", "assertTrue"));	
 			   }
 
-			   if(varType.getName().contains("boolean")){
-				   System.out.println("nome: " + p.getName());
-				   
+			   if(arguments.size()==1){
+
 				   ExpressionList mutantArgs = new ExpressionList();
+
+				   //mutantArgs.add(arguments.get(0));
 				   
 				   mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
-				   
+
 				   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-				   
+
+				   outputToFile(p, mutant);
+			   }else if(arguments.size()==2){
+
+				   ExpressionList mutantArgs = new ExpressionList();
+
+				   //mutantArgs.add(arguments.get(0));
+				   //mutantArgs.add(arguments.get(1));
+
+				   mutantArgs.add(arguments.get(0));
+				   mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
+
+				   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+
 				   outputToFile(p, mutant);
 			   }
-			   
 		   } catch (Exception e) {
 			   // TODO Auto-generated catch block
 			   e.printStackTrace();
