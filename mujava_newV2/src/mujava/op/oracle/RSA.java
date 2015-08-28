@@ -162,7 +162,7 @@ public class RSA extends JUnit_OP
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			RNA_Writer writer = new RNA_Writer(mutant_dir, out);
+			RSA_Writer writer = new RSA_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
 			//System.out.println(currentMethodSignature);
 			comp_unit.accept( writer );
@@ -194,7 +194,7 @@ public class RSA extends JUnit_OP
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			RNA_Writer writer = new RNA_Writer(mutant_dir, out);
+			RSA_Writer writer = new RSA_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant, original_var, mutation_var);
 			//System.out.println(currentMethodSignature);
 			comp_unit.accept( writer );

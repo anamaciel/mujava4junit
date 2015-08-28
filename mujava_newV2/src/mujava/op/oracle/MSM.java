@@ -18,14 +18,18 @@ package mujava.op.oracle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Vector;
 
-import openjava.mop.*;
-import openjava.ptree.*;
-import openjava.syntax.*;
+import openjava.mop.FileEnvironment;
+import openjava.mop.OJClass;
+import openjava.ptree.ClassDeclaration;
+import openjava.ptree.CompilationUnit;
+import openjava.ptree.ExpressionList;
+import openjava.ptree.Literal;
+import openjava.ptree.MethodCall;
+import openjava.ptree.ParseTreeException;
 /**
- * <p>Generate RSM (Remove String Message) mutants --
- *    Example: assertArrayEquals(String, byte[], byte[]) → assertArrayEquals(byte[], byte[])
+ * <p>Generate MSM (Modify String Message) mutants --
+ *    Example: assertArrayEquals(String m1, int[], int[]) → assertArrayEquals(String m2, int[], int[])
  *    
  *    assertEquals
  *    assertArrayEquals
@@ -34,8 +38,8 @@ import openjava.syntax.*;
  *    assertTrue
  *    assertNull
  *    assertNotNull
- *    assertNotEquals
  *    assertNotSame
+ *    assertSame
  *    fail
  *    
  * </p>
@@ -43,10 +47,10 @@ import openjava.syntax.*;
  * @version 1.0
  */
 
-public class RSM extends JUnit_OP
+public class MSM extends JUnit_OP
 {
 
-	public RSM(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public MSM(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
@@ -56,7 +60,7 @@ public class RSM extends JUnit_OP
 	{
 
 		ExpressionList arguments = p.getArguments();
-		//System.out.println(p.getName());
+		System.out.println(p.getName());
 
 		if ((p.getName().equals("assertEquals"))||(p.getName().equals("assertNotEquals"))
 				||(p.getName().equals("assertArrayEquals") ||(p.getName().equals("assertNotEquals"))
@@ -68,8 +72,9 @@ public class RSM extends JUnit_OP
 				System.out.println(varType.getName());				   
 				ExpressionList mutantArgs = new ExpressionList();
 				System.out.println("qtde argumentos: " + arguments.size());
-				System.out.println(arguments.get(0).getType(getEnvironment()).getName().contains("String"));
-				if(arguments.size()==3 && (arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
+				//System.out.println(arguments.get(0).getType(getEnvironment()).getName().contains("String"));
+				if(arguments.size()==3 && arguments.get(0).getType(getEnvironment()).getName().contains("String")){
+					mutantArgs.add(Literal.makeLiteral("Mutant MSM"));
 					mutantArgs.add(arguments.get(1));
 					mutantArgs.add(arguments.get(2));
 					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
@@ -79,6 +84,7 @@ public class RSM extends JUnit_OP
 				}
 				
 				if(arguments.size()==4){						
+					mutantArgs.add(Literal.makeLiteral("Mutant MSM"));
 					mutantArgs.add(arguments.get(1));
 					mutantArgs.add(arguments.get(2));
 					mutantArgs.add(arguments.get(3));
@@ -100,9 +106,10 @@ public class RSM extends JUnit_OP
 
 
 			ExpressionList mutantArgs = new ExpressionList();
-			//System.out.println("qtde argumentos: " + arguments.size());
+			System.out.println("qtde argumentos: " + arguments.size());
 
 			if(arguments.size()==2){						
+				mutantArgs.add(Literal.makeLiteral("Mutant MSM"));
 				mutantArgs.add(arguments.get(1));
 				MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 				System.out.println(p);
@@ -115,10 +122,10 @@ public class RSM extends JUnit_OP
 		{
 
 			ExpressionList mutantArgs = new ExpressionList();
-			//System.out.println("qtde argumentos: " + arguments.size());
+			System.out.println("qtde argumentos: " + arguments.size());
 
-			if(arguments.size()==1){	
-				mutantArgs.add(null);
+			if(arguments.size()==1){						
+				mutantArgs.add(Literal.makeLiteral("Mutant MSM"));
 				MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 				System.out.println(p);
 				System.out.println(mutant);
@@ -133,7 +140,7 @@ public class RSM extends JUnit_OP
 	}
 
 	/**
-	 * Write RSM mutants to files
+	 * Write MSM mutants to files
 	 * @param original_field
 	 * @param mutant
 	 */
@@ -144,14 +151,14 @@ public class RSM extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RSM");
-		String mutant_dir = getMuantID("RSM");
+		f_name = getSourceName("MSM");
+		String mutant_dir = getMuantID("MSM");
 
 		try 
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			ASM_Writer writer = new ASM_Writer(mutant_dir, out);
+			MSM_Writer writer = new MSM_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
 			System.out.println(mutant);
 			//System.out.println(currentMethodSignature);

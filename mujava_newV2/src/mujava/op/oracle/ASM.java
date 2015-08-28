@@ -60,7 +60,7 @@ public class ASM extends JUnit_OP
 
 		if ((p.getName().equals("assertEquals"))||(p.getName().equals("assertNotEquals"))
 				||(p.getName().equals("assertArrayEquals") ||(p.getName().equals("assertNotEquals"))
-						||(p.getName().equals("assertNotSame"))))
+						||(p.getName().equals("assertNotSame") ||(p.getName().equals("assertSame")))))
 		{
 			try {
 				//System.out.println("environment: " + getEnvironment());
