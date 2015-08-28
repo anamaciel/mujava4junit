@@ -23,6 +23,7 @@ import java.io.PrintWriter;
 import mujava.op.basic.CreateDirForEachMethod;
 import mujava.op.oracle.ASM;
 import mujava.op.oracle.ATV;
+import mujava.op.oracle.DCfTV;
 import mujava.op.oracle.MSM;
 import mujava.op.oracle.RBA;
 import mujava.op.oracle.RFM;
@@ -241,14 +242,14 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						Debug.println("  Applying ICtTV ... ... ");
 						mutant_op = new ROR(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}
+					}*/
 
 					if (hasOperator (signatureOp, "DCfTV") )
 					{
 						Debug.println("  Applying DCfTV ... ... ");
-						mutant_op = new COR(file_env, cdecl, comp_unit);
+						mutant_op = new DCfTV(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}*/
+					}
 
 					if (hasOperator (signatureOp, "MSM") ) 
 					{
