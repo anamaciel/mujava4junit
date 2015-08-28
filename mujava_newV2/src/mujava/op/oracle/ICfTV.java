@@ -28,8 +28,8 @@ import openjava.ptree.Literal;
 import openjava.ptree.MethodCall;
 import openjava.ptree.ParseTreeException;
 /**
- * <p>Generate DCfTV (Decrement Constant from Threshold Value) mutants --
- *    Example: assertEquals(double, double, 0.0001) → assertEquals(double, double, 0.0001-0.000001)
+ * <p>Generate ICfTV (Increment Constant to Threshold Value) mutants --
+ *    Example: assertEquals(double, double, 0.0001) → assertEquals(double, double, 0.0001+Const)
  *    
  *    assertEquals
  *    assertArrayEquals
@@ -40,10 +40,10 @@ import openjava.ptree.ParseTreeException;
  * @version 1.0
  */
 
-public class DCfTV extends JUnit_OP
+public class ICfTV extends JUnit_OP
 {
 
-	public DCfTV(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public ICfTV(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
@@ -53,7 +53,7 @@ public class DCfTV extends JUnit_OP
 	{
 
 		ExpressionList arguments = p.getArguments();
-		System.out.println(p.getName());
+		//System.out.println(p.getName());
 
 		if ((p.getName().equals("assertEquals"))||(p.getName().equals("assertNotEquals"))
 				||(p.getName().equals("assertArrayEquals")))
@@ -69,7 +69,7 @@ public class DCfTV extends JUnit_OP
 
 					mutantArgs.add(arguments.get(0));
 					mutantArgs.add(arguments.get(1));
-					mutantArgs.add(Literal.makeLiteralDecrementDouble(arguments.get(2)+""));
+					mutantArgs.add(Literal.makeLiteralIncrementDouble(arguments.get(2)+""));
 					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 					System.out.println(p);
 					System.out.println(mutant);
@@ -80,7 +80,7 @@ public class DCfTV extends JUnit_OP
 					mutantArgs.add(arguments.get(0));
 					mutantArgs.add(arguments.get(1));
 					mutantArgs.add(arguments.get(2));
-					mutantArgs.add(Literal.makeLiteralDecrementDouble(arguments.get(3)+""));
+					mutantArgs.add(Literal.makeLiteralIncrementDouble(arguments.get(3)+""));
 					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 					System.out.println(p);
 					System.out.println(mutant);
@@ -107,14 +107,14 @@ public class DCfTV extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("DCfTV");
-		String mutant_dir = getMuantID("DCfTV");
+		f_name = getSourceName("ICfTV");
+		String mutant_dir = getMuantID("ICfTV");
 
 		try 
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			DCfTV_Writer writer = new DCfTV_Writer(mutant_dir, out);
+			ICfTV_Writer writer = new ICfTV_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
 			System.out.println(mutant);
 			//System.out.println(currentMethodSignature);
