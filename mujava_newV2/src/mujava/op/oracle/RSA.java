@@ -29,87 +29,102 @@ import openjava.ptree.ParseTreeException;
 import openjava.ptree.VariableDeclaration;
 
 /**
- * <p>Generate RNA (Replace Null Assertion) mutants --
- *    Example: assertNull( Object)  → assertNotNull(NotNull= Object)
+ * <p>Generate RSA (Replace Same Assertion) mutants --
+ *    Example: assertSame(Obj 1, Obj 2) → assertNotSame (Obj1NewInstace, Obj2NewInstace)
  *    
- *    assertNull
- *    assertNotNull
+ *    assertSame
+ *    assertNotSame
  *    
  * </p>
  * @author Ana Maciel
  * @version 1.0
   */
 
-public class RNA extends JUnit_OP
+public class RSA extends JUnit_OP
 {
 	
 	VariableDeclaration mutant;
 	VariableDeclaration original;
 	
-	public RNA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public RSA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
-
 	
 	
 	public void visit( VariableDeclaration p ) throws ParseTreeException 
 	{
-		original = p;
-		if(p.getInitializer().toString().equals("null")){
-			
-			ExpressionList teste = new ExpressionList();
-			teste.add(Literal.makeLiteralNewType("new " +  p.getTypeSpecifier() + "()"));
-			
-			 mutant = p;
-	         mutant.setTypeSpecifier(p.getTypeSpecifier());
-	         mutant.setInitializer(teste.get(0));
-	         
-	         //System.out.println(mutant);
-		}else{
-			
-			ExpressionList teste = new ExpressionList();
-			teste.add(Literal.constantNull());
-			
-			 mutant = p;
-	         mutant.setTypeSpecifier(p.getTypeSpecifier());
-	         mutant.setInitializer(teste.get(0));
-	         
-	         //System.out.println(mutant);
-		}
-	}
-	
-	
+		//System.out.println(p);
+		this.original = p;
 
+		ExpressionList teste = new ExpressionList();
+		teste.add(Literal.makeLiteralNewType("new " +  p.getTypeSpecifier() + "()"));
+
+		this.mutant = p;
+		this.mutant.setTypeSpecifier(p.getTypeSpecifier());
+		this.mutant.setInitializer(teste.get(0));
+
+		//System.out.println(mutant);
+
+	}
 
 	public void visit( MethodCall p ) throws ParseTreeException
 	{
 
-		if (p.getName().equals("assertNull") || p.getName().equals("assertNotNull"))
+		if (p.getName().equals("assertSame") || p.getName().equals("assertNotSame"))
 		{
 			ExpressionList arguments = p.getArguments();
 			try {
 				//System.out.println("environment: " + getEnvironment());
 				OJClass varType = arguments.get(0).getType(getEnvironment());
 
-				if(p.getName().equals("assertNull")){
-					p.setName(p.getName().replace("assertNull", "assertNotNull"));	
+				if(p.getName().equals("assertSame")){
+					p.setName(p.getName().replace("assertSame", "assertNotSame"));	
 
 
-					if(arguments.size()==2){
+					if(arguments.size()==3){
 						System.out.println("nome: " + p.getName());
 
 						ExpressionList mutantArgs = new ExpressionList();				   
 
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
+						mutantArgs.add(arguments.get(2));
+
+						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+
+						outputToFile(p, mutant, this.original, this.mutant );
+					}else if(arguments.size()==2){
+						ExpressionList mutantArgs = new ExpressionList();
+
+						mutantArgs.add(arguments.get(0));
+						mutantArgs.add(arguments.get(1));
+
+						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+
+						outputToFile(p, mutant, this.original, this.mutant );
+
+					}
+
+				}else if(p.getName().equals("assertNotSame")){
+					p.setName(p.getName().replace("assertNotSame", "assertSame"));	
+
+					if(arguments.size()==3){
+						System.out.println("nome: " + p.getName());
+
+						ExpressionList mutantArgs = new ExpressionList();				   
+
+						mutantArgs.add(arguments.get(0));
+						mutantArgs.add(arguments.get(1));
+						mutantArgs.add(arguments.get(1));
 
 						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 
 						outputToFile(p, mutant);
-					}else if(arguments.size()==1){
+					}else if(arguments.size()==2){
 						ExpressionList mutantArgs = new ExpressionList();
 
+						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(0));
 
 						//mutantArgs.add(new CastExpression(new OJClass(java_class, metainfo), expr));
@@ -119,35 +134,6 @@ public class RNA extends JUnit_OP
 						outputToFile(p, mutant);
 					}
 
-				}else if(p.getName().equals("assertNotNull")){
-					p.setName(p.getName().replace("assertNotNull", "assertNull"));	
-
-
-
-						if(arguments.size()==2){
-							System.out.println("nome: " + p.getName());
-
-							ExpressionList mutantArgs = new ExpressionList();				   
-
-							mutantArgs.add(arguments.get(0));
-							mutantArgs.add(arguments.get(1));
-
-							MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-
-							outputToFile(p, mutant, this.original, this.mutant );
-						}else if(arguments.size()==1){
-							ExpressionList mutantArgs = new ExpressionList();
-
-							mutantArgs.add(arguments.get(0));
-
-							//mutantArgs.add(new CastExpression(new OJClass(java_class, metainfo), expr));
-
-							MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-
-							//outputToFile(p, mutant);
-							outputToFile(p, mutant, this.original, this.mutant );
-						}
-					
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -155,6 +141,7 @@ public class RNA extends JUnit_OP
 			}
 		}
 	}
+
 
 	/**
 	 * Write RBA mutants to files
@@ -168,8 +155,8 @@ public class RNA extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RNA");
-		String mutant_dir = getMuantID("RNA");
+		f_name = getSourceName("RSA");
+		String mutant_dir = getMuantID("RSA");
 
 		try 
 		{
@@ -200,8 +187,8 @@ public class RNA extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RNA");
-		String mutant_dir = getMuantID("RNA");
+		f_name = getSourceName("RSA");
+		String mutant_dir = getMuantID("RSA");
 
 		try 
 		{
@@ -220,35 +207,4 @@ public class RNA extends JUnit_OP
 		}
 	}
 
-
-
-	/**
-	 * Output PNC mutants to files
-	 * @param original
-	 * @param mutant
-	 */
-	/*public void outputToFile(AllocationExpression original, AllocationExpression mutant)
-	{
-		String f_name;
-		num++;
-		f_name = getSourceName(this);
-		System.out.println("f_name 2 : " + f_name);
-		System.out.println(mutant);
-		String mutant_dir = getMuantID();
-
-		try 
-		{
-			PrintWriter out = getPrintWriter(f_name);
-			RNA_Writer writer = new RNA_Writer(  mutant_dir, out  );
-			writer.setMutant(original, mutant);
-			comp_unit.accept( writer );
-			out.flush();  
-			out.close();
-		} catch ( IOException e ) {
-			System.err.println( "fails to create " + f_name );
-		} catch ( ParseTreeException e ) {
-			System.err.println( "errors during printing " + f_name );
-			e.printStackTrace();
-		}
-	}*/
 }
