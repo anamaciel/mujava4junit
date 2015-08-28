@@ -89,6 +89,28 @@ public class Literal extends Leaf implements Expression {
 		
 	}
 	
+	/**
+	 * Makes a new object of <code>Literal</code> class
+	 * from the string.
+	 *
+	 * @param  str  the string.
+	 */
+	public static Literal makeLiteralDecrementDouble(String b) {
+		double num = Double.parseDouble(b);
+		//System.out.println(num);
+		num = num - 0.001;
+		//System.out.println(num);
+		return makeLiteral(num);
+	}
+	
+	
+	public static Literal makeLiteralIncrementDouble(String b) {
+		double num = Double.parseDouble(b);
+		//System.out.println(num);
+		num = num + 0.001;
+		//System.out.println(num);
+		return makeLiteral(num);
+	}
 	
 
 	/**
