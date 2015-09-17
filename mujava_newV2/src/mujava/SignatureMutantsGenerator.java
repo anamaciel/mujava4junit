@@ -20,11 +20,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
+import mujava.op.basic.AODU;
 import mujava.op.basic.CreateDirForEachMethod;
 import mujava.op.oracle.ASM;
 import mujava.op.oracle.ATV;
 import mujava.op.oracle.DCfTV;
 import mujava.op.oracle.ICfTV;
+import mujava.op.oracle.MPPT;
 import mujava.op.oracle.MPPTO;
 import mujava.op.oracle.MSM;
 import mujava.op.oracle.RBA;
@@ -208,13 +210,12 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					/*if (hasOperator (signatureOp, "MPPT") ) 
+					if (hasOperator (signatureOp, "MPPT") ) 
 					{
 						Debug.println("  Applying MPPT ... ... ");
-						mutant_op = new AODU(file_env, cdecl, comp_unit);
-						((AODU)mutant_op).setAORflag(AOR_FLAG);
+						mutant_op = new MPPT(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}*/
+					}
 
 					if (hasOperator (signatureOp, "MPPTO") )
 					{

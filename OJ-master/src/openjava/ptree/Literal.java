@@ -36,6 +36,8 @@ public class Literal extends Leaf implements Expression {
 	public static final int STRING = 6;
 	public static final int NULL = 7;
 	public static final int OBJECT = 8;
+	public static final int SHORT = 9;
+	public static final int BYTE = 10;
 
 	protected int id = -1;
 
@@ -117,6 +119,18 @@ public class Literal extends Leaf implements Expression {
 		Object obj = (Object)(b);
 		
 		return makeLiteral(obj);
+	}
+	
+	public static Literal makeLiteralDouble(String b) {
+		double db = Double.parseDouble(b);
+		
+		return makeLiteral(b);
+	}
+	
+	public static Literal makeLiteralByte(String b) {
+		byte db = Byte.parseByte(b);
+		
+		return makeLiteral(b);
 	}
 	
 	/**
@@ -212,6 +226,28 @@ public class Literal extends Leaf implements Expression {
 	public static Literal makeLiteral(Double d) {
 		return makeLiteral(d.doubleValue());
 	}
+	
+	/**
+	 * Makes a new object of <code>Literal</code> class
+	 * from the number.
+	 *
+	 * @param  num  the number.
+	 */
+	public static Literal makeLiteral(byte num) {
+		return new Literal(Literal.BYTE, String.valueOf(num));
+	}
+	
+	/**
+	 * Makes a new object of <code>Literal</code> class
+	 * from the number.
+	 *
+	 * @param  num  the number.
+	 */
+	public static Literal makeLiteral(short num) {
+		return new Literal(Literal.SHORT, String.valueOf(num));
+	}
+	
+	
 
 	public int getLiteralType() {
 		return this.id;
