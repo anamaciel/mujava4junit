@@ -25,6 +25,7 @@ import mujava.op.oracle.ASM;
 import mujava.op.oracle.ATV;
 import mujava.op.oracle.DCfTV;
 import mujava.op.oracle.ICfTV;
+import mujava.op.oracle.MPPTO;
 import mujava.op.oracle.MSM;
 import mujava.op.oracle.RBA;
 import mujava.op.oracle.RFM;
@@ -213,14 +214,14 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						mutant_op = new AODU(file_env, cdecl, comp_unit);
 						((AODU)mutant_op).setAORflag(AOR_FLAG);
 						comp_unit.accept(mutant_op);
-					}
+					}*/
 
 					if (hasOperator (signatureOp, "MPPTO") )
 					{
 						Debug.println("  Applying MPPTO	 ... ... ");
-						mutant_op = new AODS(file_env, cdecl, comp_unit);
+						mutant_op = new MPPTO(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}*/
+					}
 
 					if (hasOperator (signatureOp, "ATV") )
 					{

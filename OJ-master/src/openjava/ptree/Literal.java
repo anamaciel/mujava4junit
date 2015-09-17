@@ -35,6 +35,7 @@ public class Literal extends Leaf implements Expression {
 	public static final int CHARACTER = 5;
 	public static final int STRING = 6;
 	public static final int NULL = 7;
+	public static final int OBJECT = 8;
 
 	protected int id = -1;
 
@@ -110,6 +111,22 @@ public class Literal extends Leaf implements Expression {
 		num = num + 0.001;
 		//System.out.println(num);
 		return makeLiteral(num);
+	}
+	
+	public static Literal makeLiteralObject(String b) {
+		Object obj = (Object)(b);
+		
+		return makeLiteral(obj);
+	}
+	
+	/**
+	 * Makes a new object of <code>Literal</code> class
+	 * from the Object.
+	 *
+	 * @param  Object  the number.
+	 */
+	public static Literal makeLiteral(Object obj) {
+		return new Literal(Literal.OBJECT, "(Object)" + obj);
 	}
 	
 
