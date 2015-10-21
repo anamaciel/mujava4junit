@@ -21,8 +21,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 
 import mujava.MutantsGenerator;
+import mujava.MutationSystem;
+import mujava.op.oracle.util.AnnotationManager;
 import mujava.op.util.MutantCodeWriter;
 import mujava.op.util.MutantCodeWriterOracle;
 import openjava.mop.FileEnvironment;
@@ -134,19 +137,60 @@ public class RBA extends JUnit_OP
          
          
          String arquivo="";
+         int cont = 1;
          while (br.ready()) {
         	 //lê a proxima linha
         	 String linha = br.readLine();
         	 if(!linha.trim().equals("")){
         		 arquivo+=linha + "\n";
-        	 }
+        	 }        	 
          }
+         
          FileWriter pw = new FileWriter(f_name); 
          
          pw.write(arquivo);
          
          pw.flush();
          pw.close();
+         
+         FileReader fr_annotation = new FileReader(f_name);
+         BufferedReader br_annotation = new BufferedReader(fr_annotation);  
+         String arquivoAnnotation = "";
+         boolean ann = false;
+         String ant = "";
+         while (br_annotation.ready()) {
+        	 String linha = br_annotation.readLine();
+        	 for (AnnotationManager annotation : MutationSystem.annotations) {
+        		 System.out.println("annotation: " + annotation.getAnnotation() + " Linha: " + annotation.getLine());
+
+        		 System.out.println(cont + "--" + annotation.getLine());
+
+        		 if(cont == annotation.getLine()+2){
+        			 ann = true;
+        			 ant = annotation.getAnnotation();
+        		 }        		 
+        	 }
+        	 if(ann){
+        		 arquivoAnnotation +=linha+"\n" + ant + "\n";
+        		 cont++;
+        		 cont++;
+        	 }else{
+        		 arquivoAnnotation +=linha+"\n";
+        		 cont++;
+        	 }
+        	 ann=false;
+         }
+         
+         FileWriter pw2 = new FileWriter(f_name); 
+         
+         pw2.write(arquivoAnnotation);
+         
+         pw2.flush();
+         pw2.close();
+         
+         //System.out.println("annotations: " + MutationSystem.annotations.size());
+         
+         System.out.println("arquivoNovo: " + arquivoAnnotation);
          
          
          

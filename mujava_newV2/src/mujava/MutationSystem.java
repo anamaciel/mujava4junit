@@ -21,12 +21,14 @@ import openjava.mop.OJClass;
 
 import java.io.*;
 
+import mujava.op.oracle.util.AnnotationManager;
 import mujava.util.*;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -178,7 +180,8 @@ public class MutationSystem extends OJSystem
    
    
    
-
+	/** GRAVAR AS ANNOTATIONS */
+   public static ArrayList<AnnotationManager> annotations = new ArrayList<AnnotationManager>();
    
  /**
    * Return type of class.

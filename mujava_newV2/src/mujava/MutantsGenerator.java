@@ -281,15 +281,17 @@ public abstract class MutantsGenerator
         	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
         			 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
         		 AnnotationManager annotation = new AnnotationManager(linha, cont);
-        		 annotations[i] = annotation;
-        	 }        	 
+        		 MutationSystem.annotations.add(annotation);
+        	 }    
+        	 cont++;
          }
+         System.out.println("gravei as annotations");
          
          FileWriter pw = new FileWriter(original_file); 
          
          pw.write(arquivo);
          
-         System.out.println(arquivo);
+         //System.out.println(arquivo);
 
          pw.flush();
          pw.close();
