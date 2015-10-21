@@ -45,6 +45,10 @@ public class TraditionalMutantCodeWriter extends MutantCodeWriter{
 
     protected void writeLog(String changed_content)
     {
+    	/*System.out.println(class_name+ MutationSystem.LOG_IDENTIFIER
+    		    + mutated_line+MutationSystem.LOG_IDENTIFIER
+    	      + method_signature + MutationSystem.LOG_IDENTIFIER
+    	      +changed_content);*/
       CodeChangeLog.writeLog(class_name+ MutationSystem.LOG_IDENTIFIER
 	    + mutated_line+MutationSystem.LOG_IDENTIFIER
       + method_signature + MutationSystem.LOG_IDENTIFIER

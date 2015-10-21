@@ -106,7 +106,7 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 		if (signatureOp != null && signatureOp.length > 0)
 		{
 			Debug.println("* Generating signature oracle mutants");
-			MutationSystem.clearPreviousTraditionalMutants();
+			MutationSystem.clearPreviousSignatureMutants();
 
 			MutationSystem.MUTANT_PATH = MutationSystem.SIGNATURE_MUTANT_PATH;
 
@@ -164,6 +164,7 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 		for (int j=0; j<cdecls.size(); ++j)
 		{
 			ClassDeclaration cdecl = cdecls.get(j);
+			//System.out.println(cdecl.getBody());
 			//take care of the case for generics
 			String tempName = cdecl.getName();
 			//System.out.println("tempName: " + tempName);

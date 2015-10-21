@@ -17,20 +17,18 @@ package mujava.op.oracle;
 
 import java.io.PrintWriter;
 
-import mujava.op.util.TraditionalMutantCodeWriter;
-import openjava.ptree.FieldAccess;
+import mujava.op.util.SignatureMutantCodeWriter;
 import openjava.ptree.Literal;
 import openjava.ptree.MethodCall;
 import openjava.ptree.ParseTreeException;
-import openjava.ptree.Variable;
 
 /**
- * <p>Output and log ATV oracle mutants to files </p>
+ * <p>Output and log ASM oracle mutants to files </p>
  * @author Yu-Seung Ma
  * @version 1.0
   */
 
-public class ASM_Writer extends TraditionalMutantCodeWriter
+public class ASM_Writer extends SignatureMutantCodeWriter
 {
 
    MethodCall original;
@@ -61,10 +59,13 @@ public class ASM_Writer extends TraditionalMutantCodeWriter
     */
    public void visit( MethodCall p ) throws ParseTreeException
    {
+	   //System.out.println(p.getName());
 	   
 	   if(mutant != null){
+		   
 	      if (isSameObject(p, original))
 	      {
+	    	  System.out.println("é mutante");
 	         super.visit(mutant);
 	         // -----------------------------------------------------------
 	         mutated_line = line_num;

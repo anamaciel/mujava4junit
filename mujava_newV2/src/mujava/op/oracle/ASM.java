@@ -56,7 +56,7 @@ public class ASM extends JUnit_OP
 	{
 
 		ExpressionList arguments = p.getArguments();
-		System.out.println(p.getName());
+		//System.out.println(p.getName());
 
 		if ((p.getName().equals("assertEquals"))||(p.getName().equals("assertNotEquals"))
 				||(p.getName().equals("assertArrayEquals") ||(p.getName().equals("assertNotEquals"))
@@ -67,7 +67,7 @@ public class ASM extends JUnit_OP
 				OJClass varType = arguments.get(1).getType(getEnvironment());
 				System.out.println(varType.getName());				   
 				ExpressionList mutantArgs = new ExpressionList();
-				System.out.println("qtde argumentos: " + arguments.size());
+				//System.out.println("qtde argumentos: " + arguments.size());
 				System.out.println(arguments.get(0).getType(getEnvironment()).getName().contains("String"));
 				if(arguments.size()==3 && !(arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
 					mutantArgs.add(Literal.makeLiteral("Mutant ASM"));
@@ -102,7 +102,7 @@ public class ASM extends JUnit_OP
 
 
 			ExpressionList mutantArgs = new ExpressionList();
-			System.out.println("qtde argumentos: " + arguments.size());
+			//System.out.println("qtde argumentos: " + arguments.size());
 
 			if(arguments.size()==1){						
 				mutantArgs.add(Literal.makeLiteral("Mutant ASM"));
@@ -118,7 +118,7 @@ public class ASM extends JUnit_OP
 		{
 
 			ExpressionList mutantArgs = new ExpressionList();
-			System.out.println("qtde argumentos: " + arguments.size());
+			//System.out.println("qtde argumentos: " + arguments.size());
 
 			if(arguments.size()==0){						
 				mutantArgs.add(Literal.makeLiteral("Mutant ASM"));

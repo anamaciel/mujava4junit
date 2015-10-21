@@ -146,6 +146,7 @@ public class Mutator extends mujava.openjava.extension.VariableBinder
     */
    public String exclude(String a, String b)
    {
+	   //System.out.println(a.substring(b.length()+1,a.length()));
       return a.substring(b.length()+1,a.length());
    }
 
@@ -206,11 +207,13 @@ public class Mutator extends mujava.openjava.extension.VariableBinder
       return name;
    }
 
+   //retorna o arquivo em BRANCO   
    public PrintWriter getPrintWriter(String f_name) throws IOException
    {
       File outfile = new File(f_name);
       FileWriter fout = new FileWriter( outfile );
       PrintWriter out = new PrintWriter( fout );
+   
       return out;
    }
 

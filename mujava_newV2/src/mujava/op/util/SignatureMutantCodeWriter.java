@@ -24,10 +24,15 @@
 package mujava.op.util;
 
 import java.io.*;
+
 import mujava.MutationSystem;
+import mujava.op.oracle.util.AnnotationManager;
 
 
 public class SignatureMutantCodeWriter extends MutantCodeWriterOracle{
+	
+	/** GRAVAR AS ANNOTATIONS */
+	   public AnnotationManager[] annotations = null;
 
        String method_signature = null;
 

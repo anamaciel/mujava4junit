@@ -35,7 +35,7 @@ public class OracleLevelMutator  extends mujava.op.util.Mutator
       super( file_env, comp_unit );
    }
 
-   String getMethodSignature(MethodDeclaration p)
+   public String getMethodSignature(MethodDeclaration p)
    {
        //remover the generics in the return type
 	   String temp = p.getReturnType().getName();
@@ -63,6 +63,7 @@ public class OracleLevelMutator  extends mujava.op.util.Mutator
         	str += ",";
       }
       str += ")";
+      //System.out.println("str methodSignature: " + str);
       return str;
    }
 

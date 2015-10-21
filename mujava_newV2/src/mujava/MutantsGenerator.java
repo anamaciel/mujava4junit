@@ -27,6 +27,7 @@ import java.util.*;
 import java.lang.reflect.Constructor;
 
 import mujava.cli.Util;
+import mujava.op.oracle.util.AnnotationManager;
 import mujava.op.util.*;
 import mujava.util.*;
 
@@ -54,6 +55,8 @@ public abstract class MutantsGenerator
 
    FileEnvironment file_env = null;
    CompilationUnit comp_unit = null;
+   
+   
 
    public MutantsGenerator(File f) 
    {
@@ -167,6 +170,7 @@ public abstract class MutantsGenerator
     */
    private void arrangeOriginal()
    {
+	   System.out.println("arrange original");
       if (comp_unit == null)
       {
          System.err.println(original_file + " is skipped.");
@@ -180,10 +184,12 @@ public abstract class MutantsGenerator
          try 
          {
             outfile = new File(MutationSystem.ORIGINAL_PATH, MutationSystem.CLASS_NAME + ".java");
+            System.out.println(outfile.getName());
             FileWriter fout = new FileWriter( outfile ); 
             PrintWriter out = new PrintWriter( fout );
             MutantCodeWriter writer = new MutantCodeWriter( out );
             writer.setClassName(cdecl.getName());
+            
             comp_unit.accept( writer );
             out.flush();  
             out.close();
@@ -250,7 +256,45 @@ public abstract class MutantsGenerator
    {
       try
       {
+    	  System.out.println("generate parse tree");
          comp_unit = parse(original_file);
+         
+         //lendo o arquivo original
+
+         FileReader fr = new FileReader(original_file);
+
+         BufferedReader br = new BufferedReader(fr);
+         
+         
+         
+         String arquivo="";
+         int cont = 1;
+         int i = 0;
+         while (br.ready()) {
+        	 //lê a proxima linha
+        	 String linha = br.readLine();        	 
+        	 
+        	 if(!linha.trim().equals("")){
+        		 arquivo+=linha + "\n";
+        	 }
+
+        	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
+        			 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
+        		 AnnotationManager annotation = new AnnotationManager(linha, cont);
+        		 annotations[i] = annotation;
+        	 }        	 
+         }
+         
+         FileWriter pw = new FileWriter(original_file); 
+         
+         pw.write(arquivo);
+         
+         System.out.println(arquivo);
+
+         pw.flush();
+         pw.close();
+         
+         System.out.println(original_file.getAbsolutePath());
 
          String pubcls_name = getMainClassName(file_env, comp_unit);
 
@@ -296,6 +340,7 @@ public abstract class MutantsGenerator
       try
       {
          comp_unit[0] = parse(f);
+         System.out.println("absolute path:" + f.getAbsolutePath());
          String pubcls_name = getMainClassName(file_env[0], comp_unit[0]);
          if (pubcls_name == null)
          {
@@ -342,6 +387,7 @@ public abstract class MutantsGenerator
       OJClass[] inners = c.getDeclaredClasses();
       for (int i = 0; i < inners.length; ++i) 
       {
+    	  System.out.println("inner class: " + inners[i].getName());
          OJSystem.env.record( inners[i].getName(), inners[i] );
          recordInnerClasses( inners[i] );
       }

@@ -15,10 +15,12 @@
  */ 
 package mujava.op.oracle;
 
-import mujava.op.util.TraditionalMutantCodeWriter;
-import openjava.ptree.*;
+import java.io.PrintWriter;
 
-import java.io.*;
+import mujava.op.util.SignatureMutantCodeWriter;
+import openjava.ptree.Literal;
+import openjava.ptree.MethodCall;
+import openjava.ptree.ParseTreeException;
 
 /**
  * <p>Output and log RBA oracle mutants to files </p>
@@ -26,7 +28,7 @@ import java.io.*;
  * @version 1.0
  */
 
-public class RBA_Writer extends TraditionalMutantCodeWriter
+public class RBA_Writer extends SignatureMutantCodeWriter
 {
 
 	MethodCall original;
@@ -34,7 +36,7 @@ public class RBA_Writer extends TraditionalMutantCodeWriter
 	Literal mutantBoolean;
 
 	public RBA_Writer( String file_name, PrintWriter out ) 
-	{
+	{		
 		super(file_name,out);
 	}
 
@@ -57,7 +59,6 @@ public class RBA_Writer extends TraditionalMutantCodeWriter
 	 */
 	public void visit( MethodCall p ) throws ParseTreeException
 	{
-
 		if(mutant != null){
 			if (isSameObject(p, original))
 			{

@@ -41,12 +41,16 @@ public class AllMutantsGenerator extends MutantsGenerator
 
    String[] classOp;
    String[] traditionalOp;
+   String[] signatureOp;
+   String[] annotationOp;
 
    public AllMutantsGenerator(File f) 
    {
       super(f);
       classOp = MutationSystem.cm_operators;
       traditionalOp = MutationSystem.tm_operators;
+      signatureOp = MutationSystem.sg_operators;
+      annotationOp = MutationSystem.an_operators;
    }
    
    public AllMutantsGenerator(File f, boolean debug) 
@@ -54,6 +58,8 @@ public class AllMutantsGenerator extends MutantsGenerator
       super(f, debug); 
       classOp = MutationSystem.cm_operators;
       traditionalOp = MutationSystem.tm_operators;
+      signatureOp = MutationSystem.sg_operators;
+      annotationOp = MutationSystem.an_operators;
    }
 
    public AllMutantsGenerator(File f, String[] cOP, String[] tOP) 

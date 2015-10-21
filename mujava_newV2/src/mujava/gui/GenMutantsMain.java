@@ -56,6 +56,7 @@ public class GenMutantsMain extends JFrame
    {
       try 
       {
+    	  System.out.println("gui principal");
          jbInit();
       }
       catch (Exception e) 

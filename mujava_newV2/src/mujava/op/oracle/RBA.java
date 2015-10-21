@@ -16,13 +16,25 @@
 package mujava.op.oracle;
 
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Vector;
 
-import openjava.mop.*;
-import openjava.ptree.*;
-import openjava.syntax.*;
+import mujava.MutantsGenerator;
+import mujava.op.util.MutantCodeWriter;
+import mujava.op.util.MutantCodeWriterOracle;
+import openjava.mop.FileEnvironment;
+import openjava.mop.OJClass;
+import openjava.mop.OJMethod;
+import openjava.ptree.ClassDeclaration;
+import openjava.ptree.CompilationUnit;
+import openjava.ptree.ExpressionList;
+import openjava.ptree.MethodCall;
+import openjava.ptree.MethodDeclaration;
+import openjava.ptree.ParseTreeException;
+import openjava.ptree.UnaryExpression;
 /**
  * <p>Generate RBA (Replace Boolean Assertion) mutants --
  *    Example: assertFalse(expression)  → assertTrue (!expression)
@@ -37,52 +49,21 @@ import openjava.syntax.*;
 
 public class RBA extends JUnit_OP
 {
-	boolean isPrePostEQ = true;
 
 	public RBA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
-
-
-   /*public void visit( Variable p) throws ParseTreeException
-   {
-	   System.out.println(p);
-	  
-   }*/
-
    
-   
-   public void visit( OJMethod p ) throws ParseTreeException
-   {
-     System.out.println("métodos: " + p.getName());
-     //System.out.println(p.getBody().get(1));
-	  
-     //StatementList comandos = p.getBody();
-     Vector field_list = new Vector();
-     System.out.println("entrei");
-     
-   }
-   
-    
-   /*private void uoi_boolean_MutantGen(Variable exp)
-   {
-      uoi_outputToFile(exp,UnaryExpression.NOT);
-   }*/
+
    
    public void visit( MethodCall p ) throws ParseTreeException
    {
+	   try {
+		   ExpressionList arguments = p.getArguments();		   
 
-
-
-	   if (p.getName().equals("assertTrue"))
-	   {
-		   ExpressionList arguments = p.getArguments();
-		   //System.out.println(p.getName());
-		   try {
-			   //System.out.println("environment: " + getEnvironment());
-			   OJClass varType = arguments.get(0).getType(getEnvironment());
-
+		   if (p.getName().equals("assertTrue") || (p.getName().equals("assertFalse")))
+		   {
 			   if(p.getName().equals("assertTrue")){
 				   p.setName(p.getName().replace("assertTrue", "assertFalse"));
 			   }else if(p.getName().equals("assertFalse")){
@@ -94,7 +75,7 @@ public class RBA extends JUnit_OP
 				   ExpressionList mutantArgs = new ExpressionList();
 
 				   //mutantArgs.add(arguments.get(0));
-				   
+
 				   mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
 
 				   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
@@ -114,13 +95,13 @@ public class RBA extends JUnit_OP
 
 				   outputToFile(p, mutant);
 			   }
-		   } catch (Exception e) {
-			   // TODO Auto-generated catch block
-			   e.printStackTrace();
 		   }
+	   } catch (Exception e) {
+		   // TODO Auto-generated catch block
+		   e.printStackTrace();
 	   }
-
    }
+
 
    /**
     * Write RBA mutants to files
@@ -140,13 +121,35 @@ public class RBA extends JUnit_OP
       try 
       {
 		 PrintWriter out = getPrintWriter(f_name);
-		 System.out.println("f_name: " + f_name);
+		 //System.out.println("f_name: " + f_name);
+		 //System.out.println(out.toString());
 		 RBA_Writer writer = new RBA_Writer(mutant_dir, out);
 		 writer.setMutant(original_field, mutant);
 		 //System.out.println(currentMethodSignature);
          writer.setMethodSignature(currentMethodSignature);
-		 comp_unit.accept( writer );
+		 comp_unit.accept( writer );		 
 		 out.flush();  out.close();
+		 FileReader fr = new FileReader(f_name);
+		 BufferedReader br = new BufferedReader(fr);        
+         
+         
+         String arquivo="";
+         while (br.ready()) {
+        	 //lê a proxima linha
+        	 String linha = br.readLine();
+        	 if(!linha.trim().equals("")){
+        		 arquivo+=linha + "\n";
+        	 }
+         }
+         FileWriter pw = new FileWriter(f_name); 
+         
+         pw.write(arquivo);
+         
+         pw.flush();
+         pw.close();
+         
+         
+         
       } catch ( IOException e ) {
 		 System.err.println( "fails to create " + f_name );
       } catch ( ParseTreeException e ) {
