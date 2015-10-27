@@ -85,6 +85,7 @@ public class MutantCodeWriter extends ParseTreeVisitor
 	public void visit( ClassDeclaration p )
 			throws ParseTreeException
 	{
+		//System.out.println("ClassDeclaration");
 
 		writeTab();
 
@@ -113,8 +114,8 @@ public class MutantCodeWriter extends ParseTreeVisitor
 				}
 			} 
 
-			out.println();
-			line_num++;		
+			//out.println();
+			//line_num++;		
 
 			EnumConstantList enumConstants = p.getEnumConstants();
 			MemberDeclarationList  mdl = p.getBody();

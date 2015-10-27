@@ -15,9 +15,15 @@
  */ 
 package mujava.op.oracle;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import mujava.MutationSystem;
+import mujava.op.oracle.util.AnnotationManager;
+import mujava.op.util.SignatureMutantCodeWriter;
 import openjava.mop.FileEnvironment;
 import openjava.mop.OJClass;
 import openjava.ptree.ClassDeclaration;
@@ -180,6 +186,9 @@ public class RNA extends JUnit_OP
 			//System.out.println(currentMethodSignature);
 			comp_unit.accept( writer );
 			out.flush();  out.close();
+			
+			SignatureMutantCodeWriter.writeAnnotations(f_name);
+			
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {
@@ -212,6 +221,8 @@ public class RNA extends JUnit_OP
 			//System.out.println(currentMethodSignature);
 			comp_unit.accept( writer );
 			out.flush();  out.close();
+			
+			SignatureMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {

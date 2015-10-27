@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Vector;
 
+import mujava.op.util.SignatureMutantCodeWriter;
 import openjava.mop.*;
 import openjava.ptree.*;
 import openjava.syntax.*;
@@ -57,7 +58,7 @@ public class RTV extends JUnit_OP
 			try {
 				//System.out.println("environment: " + getEnvironment());
 				OJClass varType = arguments.get(1).getType(getEnvironment());
-				System.out.println(varType.getName());
+				//System.out.println(varType.getName());
 				if((varType.getName().contains("double"))||(varType.getName().contains("float"))){				   
 					ExpressionList mutantArgs = new ExpressionList();
 					//System.out.println("qtde argumentos: " + arguments.size());
@@ -67,18 +68,18 @@ public class RTV extends JUnit_OP
 						mutantArgs.add(arguments.get(1));
 						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 						//System.out.println(p);
-						System.out.println(mutant);
+						//System.out.println(mutant);
 						outputToFile(p, mutant);
 					}
 					if(arguments.size()==4){
-						System.out.println("if 3 argumentos");
+						//System.out.println("if 3 argumentos");
 						
 						mutantArgs.add(arguments.get(0));
 						mutantArgs.add(arguments.get(1));
 						mutantArgs.add(arguments.get(2));
 						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 						//System.out.println(p);
-						System.out.println(mutant);
+						//System.out.println(mutant);
 						outputToFile(p, mutant);
 					}
 				}
@@ -112,12 +113,14 @@ public class RTV extends JUnit_OP
 			System.out.println("f_name: " + f_name);
 			ATV_Writer writer = new ATV_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
-			System.out.println(mutant);
+			//System.out.println(mutant);
 			//System.out.println(currentMethodSignature);
 			writer.setMethodSignature(currentMethodSignature);
 			comp_unit.accept( writer );
 			out.flush();  
 			out.close();
+			
+			SignatureMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {

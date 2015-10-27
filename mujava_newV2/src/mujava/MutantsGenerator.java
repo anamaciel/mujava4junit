@@ -256,34 +256,48 @@ public abstract class MutantsGenerator
    {
       try
       {
+    	  MutationSystem.annotations.clear();
     	  System.out.println("generate parse tree");
-         comp_unit = parse(original_file);
+         comp_unit = parse(original_file);         
+         
          
          //lendo o arquivo original
 
          FileReader fr = new FileReader(original_file);
 
-         BufferedReader br = new BufferedReader(fr);
-         
+         BufferedReader br = new BufferedReader(fr);    
          
          
          String arquivo="";
          int cont = 1;
          int i = 0;
+         boolean comentario = false;
          while (br.ready()) {
         	 //lê a proxima linha
-        	 String linha = br.readLine();        	 
+        	 String linha = br.readLine();  
         	 
-        	 if(!linha.trim().equals("")){
-        		 arquivo+=linha + "\n";
+        	 
+        	 if(linha.contains("//")){
+        		 String linha1 = linha.trim();
+        		 String confComentario = linha1.substring(linha1.indexOf("//"), linha1.length());
+            	 int tamLinhaComentario = linha1.length()-confComentario.length();
+            	 if(tamLinhaComentario==0){
+            		 comentario = true;
+            	 }        		 
         	 }
+        	 
+        	 if(linha.contains("/*") || linha.contains("*") || linha.contains("*/")){      		 
+        		 comentario = true;       		 
+    		 }
+        	 
+        	 if(!comentario){
 
-        	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
-        			 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
-        		 AnnotationManager annotation = new AnnotationManager(linha, cont);
-        		 MutationSystem.annotations.add(annotation);
-        	 }    
-        	 cont++;
+        		 if(!linha.trim().equals("")){
+        			 arquivo+=linha + "\n";
+        		 }        		   
+        	 }
+        	 comentario = false;
+        	 
          }
          System.out.println("gravei as annotations");
          
@@ -295,6 +309,25 @@ public abstract class MutantsGenerator
 
          pw.flush();
          pw.close();
+         
+         
+         FileReader fr2 = new FileReader(original_file);
+
+         BufferedReader br2 = new BufferedReader(fr2);
+         
+         while (br2.ready()) {
+        	 String linha = br2.readLine();  
+        	 
+        	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
+    				 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
+    			 AnnotationManager annotation = new AnnotationManager(linha, cont);
+    			 MutationSystem.annotations.add(annotation);
+    			 
+    			 System.out.println(linha + "**" + cont);
+    		 }  
+        	 cont++; 
+         }
+         
          
          System.out.println(original_file.getAbsolutePath());
 
@@ -316,6 +349,7 @@ public abstract class MutantsGenerator
             OJSystem.env.record(c.getName(), c);
             recordInnerClasses(c);
          }
+         
 
       } 
       catch (OpenJavaException e1)

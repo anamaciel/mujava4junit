@@ -65,7 +65,7 @@ public class ASM_Writer extends SignatureMutantCodeWriter
 		   
 	      if (isSameObject(p, original))
 	      {
-	    	  System.out.println("é mutante");
+	    	  //System.out.println("é mutante");
 	         super.visit(mutant);
 	         // -----------------------------------------------------------
 	         mutated_line = line_num;

@@ -180,8 +180,8 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 				}
 			} 
 
-			out.println();
-			line_num++;		
+			//out.println();
+			//line_num++;		
 
 			EnumConstantList enumConstants = p.getEnumConstants();
 			MemberDeclarationList  mdl = p.getBody();
@@ -602,10 +602,6 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 	public void visit( CompilationUnit p )
 			throws ParseTreeException
 	{
-		out.println( "// This is a mutant oracle." );
-		line_num++;
-		out.println( "// Author : AnaMaciel" );
-		line_num++;
 		out.println();
 		line_num++;
 
@@ -622,7 +618,7 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 
 		/* import statement list */
 		String[] islst = p.getDeclaredImports();
-		System.out.println(islst);
+		//System.out.println(islst);
 		if (islst.length != 0) {
 			for (int i = 0; i < islst.length; ++i) {
 				out.println( "import " + islst[i] + ";" );
@@ -909,6 +905,8 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 	public void visit( FieldDeclaration p )
 			throws ParseTreeException
 	{
+		//System.out.println("FieldDeclaration");
+		//System.out.println(p.getName());
 		writeTab();
 
 		/*ModifierList*/
@@ -1459,7 +1457,7 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 			throws ParseTreeException
 	{
 		String declname = p.getVariable();
-		out.print( declname );
+		//System.out.println(declname);
 
 		for (int i = 0; i < p.getDimension(); ++i) {
 			out.print( "[]" );

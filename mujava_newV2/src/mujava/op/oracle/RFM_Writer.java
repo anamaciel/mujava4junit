@@ -61,10 +61,13 @@ public class RFM_Writer extends TraditionalMutantCodeWriter
     */
    public void visit( MethodCall p ) throws ParseTreeException
    {
+	   //System.out.println(p.getName());
 	   
 	   if(mutant != null){
+		   
 	      if (isSameObject(p, original))
 	      {
+	    	  //System.out.println("é mutante");
 	         super.visit(mutant);
 	         // -----------------------------------------------------------
 	         mutated_line = line_num;

@@ -19,6 +19,7 @@ package mujava.op.oracle;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import mujava.op.util.SignatureMutantCodeWriter;
 import openjava.mop.FileEnvironment;
 import openjava.mop.OJClass;
 import openjava.ptree.ClassDeclaration;
@@ -53,7 +54,7 @@ public class DCfTV extends JUnit_OP
 	{
 
 		ExpressionList arguments = p.getArguments();
-		System.out.println(p.getName());
+		//System.out.println(p.getName());
 
 		if ((p.getName().equals("assertEquals"))||(p.getName().equals("assertNotEquals"))
 				||(p.getName().equals("assertArrayEquals")))
@@ -61,9 +62,9 @@ public class DCfTV extends JUnit_OP
 			try {
 				//System.out.println("environment: " + getEnvironment());
 				OJClass varType = arguments.get(1).getType(getEnvironment());
-				System.out.println(varType.getName());		   
+				//System.out.println(varType.getName());		   
 				ExpressionList mutantArgs = new ExpressionList();
-				System.out.println("qtde argumentos: " + arguments.size());
+				//System.out.println("qtde argumentos: " + arguments.size());
 				
 				if(arguments.size()==3 && (!arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
 
@@ -71,8 +72,8 @@ public class DCfTV extends JUnit_OP
 					mutantArgs.add(arguments.get(1));
 					mutantArgs.add(Literal.makeLiteralDecrementDouble(arguments.get(2)+""));
 					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-					System.out.println(p);
-					System.out.println(mutant);
+					//System.out.println(p);
+					//System.out.println(mutant);
 					outputToFile(p, mutant);
 					
 				}else if(arguments.size()==4){
@@ -82,8 +83,8 @@ public class DCfTV extends JUnit_OP
 					mutantArgs.add(arguments.get(2));
 					mutantArgs.add(Literal.makeLiteralDecrementDouble(arguments.get(3)+""));
 					MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
-					System.out.println(p);
-					System.out.println(mutant);
+					//System.out.println(p);
+					//System.out.println(mutant);
 					outputToFile(p, mutant);
 					
 				}
@@ -116,12 +117,14 @@ public class DCfTV extends JUnit_OP
 			System.out.println("f_name: " + f_name);
 			DCfTV_Writer writer = new DCfTV_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
-			System.out.println(mutant);
+			//System.out.println(mutant);
 			//System.out.println(currentMethodSignature);
 			writer.setMethodSignature(currentMethodSignature);
 			comp_unit.accept( writer );
 			out.flush();  
 			out.close();
+			
+			SignatureMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {

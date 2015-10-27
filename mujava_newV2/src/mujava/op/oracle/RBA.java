@@ -28,6 +28,7 @@ import mujava.MutationSystem;
 import mujava.op.oracle.util.AnnotationManager;
 import mujava.op.util.MutantCodeWriter;
 import mujava.op.util.MutantCodeWriterOracle;
+import mujava.op.util.SignatureMutantCodeWriter;
 import openjava.mop.FileEnvironment;
 import openjava.mop.OJClass;
 import openjava.mop.OJMethod;
@@ -65,38 +66,64 @@ public class RBA extends JUnit_OP
 	   try {
 		   ExpressionList arguments = p.getArguments();		   
 
+		   //System.out.println("RBA");
 		   if (p.getName().equals("assertTrue") || (p.getName().equals("assertFalse")))
 		   {
 			   if(p.getName().equals("assertTrue")){
 				   p.setName(p.getName().replace("assertTrue", "assertFalse"));
+				   if(arguments.size()==1){
+
+					   ExpressionList mutantArgs = new ExpressionList();
+
+					   //mutantArgs.add(arguments.get(0));
+
+					   mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
+
+					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+
+					   outputToFile(p, mutant);
+				   }else if(arguments.size()==2){
+
+					   ExpressionList mutantArgs = new ExpressionList();
+
+					   //mutantArgs.add(arguments.get(0));
+					   //mutantArgs.add(arguments.get(1));
+
+					   mutantArgs.add(arguments.get(0));
+					   mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
+
+					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+
+					   outputToFile(p, mutant);
+				   }
 			   }else if(p.getName().equals("assertFalse")){
 				   p.setName(p.getName().replace("assertFalse", "assertTrue"));	
-			   }
 
-			   if(arguments.size()==1){
+				   if(arguments.size()==1){
 
-				   ExpressionList mutantArgs = new ExpressionList();
+					   ExpressionList mutantArgs = new ExpressionList();
 
-				   //mutantArgs.add(arguments.get(0));
+					   //mutantArgs.add(arguments.get(0));
 
-				   mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
+					   mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
 
-				   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 
-				   outputToFile(p, mutant);
-			   }else if(arguments.size()==2){
+					   outputToFile(p, mutant);
+				   }else if(arguments.size()==2){
 
-				   ExpressionList mutantArgs = new ExpressionList();
+					   ExpressionList mutantArgs = new ExpressionList();
 
-				   //mutantArgs.add(arguments.get(0));
-				   //mutantArgs.add(arguments.get(1));
+					   //mutantArgs.add(arguments.get(0));
+					   //mutantArgs.add(arguments.get(1));
 
-				   mutantArgs.add(arguments.get(0));
-				   mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
+					   mutantArgs.add(arguments.get(0));
+					   mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
 
-				   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
+					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 
-				   outputToFile(p, mutant);
+					   outputToFile(p, mutant);
+				   }
 			   }
 		   }
 	   } catch (Exception e) {
@@ -124,7 +151,7 @@ public class RBA extends JUnit_OP
       try 
       {
 		 PrintWriter out = getPrintWriter(f_name);
-		 //System.out.println("f_name: " + f_name);
+		 System.out.println("f_name: " + f_name);
 		 //System.out.println(out.toString());
 		 RBA_Writer writer = new RBA_Writer(mutant_dir, out);
 		 writer.setMutant(original_field, mutant);
@@ -132,65 +159,14 @@ public class RBA extends JUnit_OP
          writer.setMethodSignature(currentMethodSignature);
 		 comp_unit.accept( writer );		 
 		 out.flush();  out.close();
-		 FileReader fr = new FileReader(f_name);
-		 BufferedReader br = new BufferedReader(fr);        
+		 
+		 SignatureMutantCodeWriter.writeAnnotations(f_name);
          
          
-         String arquivo="";
-         int cont = 1;
-         while (br.ready()) {
-        	 //lê a proxima linha
-        	 String linha = br.readLine();
-        	 if(!linha.trim().equals("")){
-        		 arquivo+=linha + "\n";
-        	 }        	 
-         }
-         
-         FileWriter pw = new FileWriter(f_name); 
-         
-         pw.write(arquivo);
-         
-         pw.flush();
-         pw.close();
-         
-         FileReader fr_annotation = new FileReader(f_name);
-         BufferedReader br_annotation = new BufferedReader(fr_annotation);  
-         String arquivoAnnotation = "";
-         boolean ann = false;
-         String ant = "";
-         while (br_annotation.ready()) {
-        	 String linha = br_annotation.readLine();
-        	 for (AnnotationManager annotation : MutationSystem.annotations) {
-        		 System.out.println("annotation: " + annotation.getAnnotation() + " Linha: " + annotation.getLine());
-
-        		 System.out.println(cont + "--" + annotation.getLine());
-
-        		 if(cont == annotation.getLine()+2){
-        			 ann = true;
-        			 ant = annotation.getAnnotation();
-        		 }        		 
-        	 }
-        	 if(ann){
-        		 arquivoAnnotation +=linha+"\n" + ant + "\n";
-        		 cont++;
-        		 cont++;
-        	 }else{
-        		 arquivoAnnotation +=linha+"\n";
-        		 cont++;
-        	 }
-        	 ann=false;
-         }
-         
-         FileWriter pw2 = new FileWriter(f_name); 
-         
-         pw2.write(arquivoAnnotation);
-         
-         pw2.flush();
-         pw2.close();
          
          //System.out.println("annotations: " + MutationSystem.annotations.size());
          
-         System.out.println("arquivoNovo: " + arquivoAnnotation);
+         //System.out.println("arquivoNovo: " + arquivoAnnotation);
          
          
          

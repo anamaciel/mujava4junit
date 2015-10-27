@@ -17,7 +17,9 @@
  
 package mujava;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,6 +27,7 @@ import java.lang.reflect.Constructor;
 import java.util.Vector;
 
 import mujava.cli.Util;
+import mujava.op.oracle.util.AnnotationManager;
 import mujava.op.util.DeclAnalyzer;
 import mujava.op.util.MutantCodeWriter;
 import mujava.util.Debug;
@@ -34,7 +37,9 @@ import openjava.mop.Environment;
 import openjava.mop.FileEnvironment;
 import openjava.mop.OJClass;
 import openjava.mop.OJSystem;
+
 import com.sun.tools.javac.Main;
+
 import openjava.ptree.ClassDeclaration;
 import openjava.ptree.ClassDeclarationList;
 import openjava.ptree.CompilationUnit;
@@ -235,11 +240,85 @@ public abstract class MutantsGeneratorOracle
     * Generate parse tree
     * @throws OpenJavaException
     */
+
    private void generateParseTree() throws OpenJavaException
    {
       try
       {
-         comp_unit = parse(original_file);
+    	  MutationSystem.annotations.clear();
+    	  System.out.println("generate parse tree");
+         comp_unit = parse(original_file);         
+         
+         
+         //lendo o arquivo original
+
+         FileReader fr = new FileReader(original_file);
+
+         BufferedReader br = new BufferedReader(fr);    
+         
+         
+         String arquivo="";
+         int cont = 1;
+         int i = 0;
+         boolean comentario = false;
+         while (br.ready()) {
+        	 //lê a proxima linha
+        	 String linha = br.readLine();  
+        	 
+        	 
+        	 if(linha.contains("//")){
+        		 String linha1 = linha.trim();
+        		 String confComentario = linha1.substring(linha1.indexOf("//"), linha1.length());
+            	 int tamLinhaComentario = linha1.length()-confComentario.length();
+            	 if(tamLinhaComentario==0){
+            		 comentario = true;
+            	 }        		 
+        	 }
+        	 
+        	 if(linha.contains("/*") || linha.contains("*") || linha.contains("*/")){      		 
+        		 comentario = true;       		 
+    		 }
+        	 
+        	 if(!comentario){
+
+        		 if(!linha.trim().equals("")){
+        			 arquivo+=linha + "\n";
+        		 }        		   
+        	 }
+        	 comentario = false;
+        	 
+         }
+         System.out.println("gravei as annotations");
+         
+         FileWriter pw = new FileWriter(original_file); 
+         
+         pw.write(arquivo);
+         
+         //System.out.println(arquivo);
+
+         pw.flush();
+         pw.close();
+         
+         
+         FileReader fr2 = new FileReader(original_file);
+
+         BufferedReader br2 = new BufferedReader(fr2);
+         
+         while (br2.ready()) {
+        	 String linha = br2.readLine();  
+        	 
+        	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
+    				 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
+    			 AnnotationManager annotation = new AnnotationManager(linha, cont);
+    			 System.out.println(linha + "**" + cont);
+    			 
+    			 MutationSystem.annotations.add(annotation);
+    		 }  
+        	 cont++; 
+         }
+         
+         
+         System.out.println(original_file.getAbsolutePath());
 
          String pubcls_name = getMainClassName(file_env, comp_unit);
 
@@ -259,6 +338,7 @@ public abstract class MutantsGeneratorOracle
             OJSystem.env.record(c.getName(), c);
             recordInnerClasses(c);
          }
+         
 
       } 
       catch (OpenJavaException e1)
@@ -271,6 +351,7 @@ public abstract class MutantsGeneratorOracle
          System.out.println(e);
          e.printStackTrace();
       }
+   
    }
 
    /**

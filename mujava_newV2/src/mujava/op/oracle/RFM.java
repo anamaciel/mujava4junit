@@ -18,11 +18,14 @@ package mujava.op.oracle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Vector;
 
-import openjava.mop.*;
-import openjava.ptree.*;
-import openjava.syntax.*;
+import mujava.op.util.SignatureMutantCodeWriter;
+import openjava.mop.FileEnvironment;
+import openjava.ptree.ClassDeclaration;
+import openjava.ptree.CompilationUnit;
+import openjava.ptree.ExpressionList;
+import openjava.ptree.MethodCall;
+import openjava.ptree.ParseTreeException;
 /**
  * <p>Generate RFM (Remove fail() Method) mutants --
  *    Example: fail();→ //fail();
@@ -58,7 +61,7 @@ public class RFM extends JUnit_OP
 			p.setName("//fail");
 			MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 			//System.out.println(p);
-			System.out.println(mutant);
+			//System.out.println(mutant);
 			outputToFile(p, mutant);
 		}
 
@@ -83,14 +86,16 @@ public class RFM extends JUnit_OP
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			ASM_Writer writer = new ASM_Writer(mutant_dir, out);
+			RFM_Writer writer = new RFM_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
-			System.out.println(mutant);
+			//System.out.println(mutant);
 			//System.out.println(currentMethodSignature);
 			writer.setMethodSignature(currentMethodSignature);
 			comp_unit.accept( writer );
 			out.flush();  
 			out.close();
+			
+			SignatureMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {
