@@ -41,6 +41,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import mujava.AnnotationMutantsGenerator;
 import mujava.ClassMutantsGenerator;
 import mujava.MutationSystem;
 import mujava.OpenJavaException;
@@ -463,6 +464,7 @@ public class MutantsOracleGenPanel extends JPanel
 	            genEngine.compileMutants();*/
 
 				SignatureMutantsGenerator sgGenEngine;
+				AnnotationMutantsGenerator tmGenEngine;
 
 				//do not generate class mutants if no class mutation operator is selected
 				if(signature_ops != null){
@@ -473,12 +475,12 @@ public class MutantsOracleGenPanel extends JPanel
 
 				//do not generate traditional mutants if no class traditional operator is selected
 				if(annotation_ops != null){
-					TraditionalMutantsGenerator tmGenEngine;
+					
 					//System.out.println("original_file: " + original_file);
 					//System.out.println("traditional_ops: " + traditional_ops);
-					tmGenEngine = new TraditionalMutantsGenerator(original_file,annotation_ops);
-					tmGenEngine.makeMutants();
-					tmGenEngine.compileMutants();
+					tmGenEngine = new AnnotationMutantsGenerator(original_file,annotation_ops);
+					tmGenEngine.makeMutantsOracle();
+					//tmGenEngine.compileMutants();
 				}
 
 			} catch (OpenJavaException oje)
@@ -569,12 +571,12 @@ public class MutantsOracleGenPanel extends JPanel
 			File annotation_mutant_path = new File(annotation_mutant_dir_path);
 			annotation_mutant_path.mkdir();
 
-			String original_dir_path = mutant_dir_path + "/" + MutationSystem.ORIGINAL_ORACLE_DIR_NAME;
+			String original_dir_path = mutant_dir_path + "/" + MutationSystem.ORIGINAL_DIR_NAME;
 			File original_path = new File(original_dir_path);
 			original_path.mkdir();
 
 			MutationSystem.SIGNATURE_MUTANT_PATH = signature_mutant_dir_path;
-			MutationSystem.TRADITIONAL_MUTANT_PATH = annotation_mutant_dir_path;
+			MutationSystem.ANNOTATION_MUTANT_PATH = annotation_mutant_dir_path;
 			MutationSystem.ORIGINAL_PATH = original_dir_path;
 			MutationSystem.DIR_NAME = temp;
 		} catch(Exception e)

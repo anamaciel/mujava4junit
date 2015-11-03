@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 
 import mujava.MutationSystem;
 import mujava.op.oracle.util.AnnotationManager;
-import mujava.op.util.SignatureMutantCodeWriter;
+import mujava.op.util.OracleMutantCodeWriter;
 import openjava.mop.FileEnvironment;
 import openjava.mop.OJClass;
 import openjava.ptree.ClassDeclaration;
@@ -174,7 +174,7 @@ public class RSA extends JUnit_OP
 			comp_unit.accept( writer );
 			out.flush();  out.close();
 			
-			SignatureMutantCodeWriter.writeAnnotations(f_name);
+			OracleMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {
@@ -222,7 +222,7 @@ public class RSA extends JUnit_OP
 	        	 }        	 
 	         }
 	         
-	         SignatureMutantCodeWriter.writeAnnotations(f_name);
+	         OracleMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {

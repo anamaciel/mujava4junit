@@ -19,7 +19,7 @@ package mujava.op.oracle;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import mujava.op.util.SignatureMutantCodeWriter;
+import mujava.op.util.OracleMutantCodeWriter;
 import openjava.mop.FileEnvironment;
 import openjava.mop.OJClass;
 import openjava.ptree.ClassDeclaration;
@@ -183,7 +183,7 @@ public class MPPT extends JUnit_OP
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			ICfTV_Writer writer = new ICfTV_Writer(mutant_dir, out);
+			MPPT_Writer writer = new MPPT_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
 			//System.out.println(mutant);
 			//System.out.println(currentMethodSignature);
@@ -192,7 +192,7 @@ public class MPPT extends JUnit_OP
 			out.flush();  
 			out.close();
 			
-			SignatureMutantCodeWriter.writeAnnotations(f_name);
+			OracleMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {

@@ -51,22 +51,35 @@ import openjava.ptree.UnaryExpression;
  * @version 1.0
   */
 
-public class RBA extends JUnit_OP
+public class RIA extends JUnit_OP
 {
 
-	public RBA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public RIA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
+		
+		for (AnnotationManager annotation : MutationSystem.annotations) {
+			if(annotation.getAnnotation().contains("@Ignore")){
+				System.out.println("achei a annotation");
+			}
+		}
+		
+		if (comp_unit == null) 
+	    	 return;
+
+	      String f_name;
+	      num++;
+	      f_name = getSourceName("RIA");
+	      String mutant_dir = getMuantID("RIA");
 	}
    
 
    
-   public void visit( MethodCall p ) throws ParseTreeException
+   /*public void visit( MethodCall p ) throws ParseTreeException
    {
 	   try {
 		   ExpressionList arguments = p.getArguments();		   
 
-		   //System.out.println("RBA");
 		   if (p.getName().equals("assertTrue") || (p.getName().equals("assertFalse")))
 		   {
 			   if(p.getName().equals("assertTrue")){
@@ -130,7 +143,7 @@ public class RBA extends JUnit_OP
 		   // TODO Auto-generated catch block
 		   e.printStackTrace();
 	   }
-   }
+   }*/
 
 
    /**
@@ -145,15 +158,15 @@ public class RBA extends JUnit_OP
 
       String f_name;
       num++;
-      f_name = getSourceName("RBA");
-      String mutant_dir = getMuantID("RBA");
+      f_name = getSourceName("RIA");
+      String mutant_dir = getMuantID("RIA");
 
       try 
       {
 		 PrintWriter out = getPrintWriter(f_name);
 		 System.out.println("f_name: " + f_name);
 		 //System.out.println(out.toString());
-		 RBA_Writer writer = new RBA_Writer(mutant_dir, out);
+		 RIA_Writer writer = new RIA_Writer(mutant_dir, out);
 		 writer.setMutant(original_field, mutant);
 		 //System.out.println(currentMethodSignature);
          writer.setMethodSignature(currentMethodSignature);

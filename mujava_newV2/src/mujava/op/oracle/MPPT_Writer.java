@@ -17,12 +17,10 @@ package mujava.op.oracle;
 
 import java.io.PrintWriter;
 
-import mujava.op.util.TraditionalMutantCodeWriter;
-import openjava.ptree.FieldAccess;
+import mujava.op.util.OracleMutantCodeWriter;
 import openjava.ptree.Literal;
 import openjava.ptree.MethodCall;
 import openjava.ptree.ParseTreeException;
-import openjava.ptree.Variable;
 
 /**
  * <p>Output and log ATV oracle mutants to files </p>
@@ -30,7 +28,7 @@ import openjava.ptree.Variable;
  * @version 1.0
   */
 
-public class MPPT_Writer extends TraditionalMutantCodeWriter
+public class MPPT_Writer extends OracleMutantCodeWriter
 {
 
    MethodCall original;

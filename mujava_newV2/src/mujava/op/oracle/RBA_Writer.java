@@ -17,7 +17,7 @@ package mujava.op.oracle;
 
 import java.io.PrintWriter;
 
-import mujava.op.util.SignatureMutantCodeWriter;
+import mujava.op.util.OracleMutantCodeWriter;
 import openjava.ptree.Literal;
 import openjava.ptree.MethodCall;
 import openjava.ptree.ParseTreeException;
@@ -28,7 +28,7 @@ import openjava.ptree.ParseTreeException;
  * @version 1.0
  */
 
-public class RBA_Writer extends SignatureMutantCodeWriter
+public class RBA_Writer extends OracleMutantCodeWriter
 {
 
 	MethodCall original;

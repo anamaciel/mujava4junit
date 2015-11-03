@@ -288,7 +288,7 @@ public abstract class MutantsGeneratorOracle
         	 comentario = false;
         	 
          }
-         System.out.println("gravei as annotations");
+         //System.out.println("gravei as annotations");
          
          FileWriter pw = new FileWriter(original_file); 
          
@@ -310,7 +310,7 @@ public abstract class MutantsGeneratorOracle
         	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
     				 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
     			 AnnotationManager annotation = new AnnotationManager(linha, cont);
-    			 System.out.println(linha + "**" + cont);
+    			 //System.out.println(linha + "**" + cont);
     			 
     			 MutationSystem.annotations.add(annotation);
     		 }  
@@ -318,7 +318,7 @@ public abstract class MutantsGeneratorOracle
          }
          
          
-         System.out.println(original_file.getAbsolutePath());
+         //System.out.println(original_file.getAbsolutePath());
 
          String pubcls_name = getMainClassName(file_env, comp_unit);
 

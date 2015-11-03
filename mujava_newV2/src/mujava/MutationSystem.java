@@ -139,8 +139,6 @@ public class MutationSystem extends OJSystem
    /** directory name for original class */
    public static String ORIGINAL_DIR_NAME = "original";
    
-   public static String ORIGINAL_ORACLE_DIR_NAME = "original/oracle";
-
    public static String LOG_IDENTIFIER = ":";
     
    /** List of names of class mutation operators */

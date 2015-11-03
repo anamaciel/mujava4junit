@@ -323,7 +323,7 @@ public abstract class MutantsGenerator
     			 AnnotationManager annotation = new AnnotationManager(linha, cont);
     			 MutationSystem.annotations.add(annotation);
     			 
-    			 System.out.println(linha + "**" + cont);
+    			 //System.out.println(linha + "**" + cont);
     		 }  
         	 cont++; 
          }

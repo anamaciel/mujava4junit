@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Vector;
 
-import mujava.op.util.SignatureMutantCodeWriter;
+import mujava.op.util.OracleMutantCodeWriter;
 import openjava.mop.*;
 import openjava.ptree.*;
 import openjava.syntax.*;
@@ -111,7 +111,7 @@ public class RTV extends JUnit_OP
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			ATV_Writer writer = new ATV_Writer(mutant_dir, out);
+			RTV_Writer writer = new RTV_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
 			//System.out.println(mutant);
 			//System.out.println(currentMethodSignature);
@@ -120,7 +120,7 @@ public class RTV extends JUnit_OP
 			out.flush();  
 			out.close();
 			
-			SignatureMutantCodeWriter.writeAnnotations(f_name);
+			OracleMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {

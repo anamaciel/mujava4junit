@@ -17,28 +17,30 @@ package mujava.op.oracle;
 
 import java.io.PrintWriter;
 
+import mujava.op.oracle.util.AnnotationManager;
 import mujava.op.util.OracleMutantCodeWriter;
 import openjava.ptree.Literal;
 import openjava.ptree.MethodCall;
 import openjava.ptree.ParseTreeException;
-import openjava.ptree.VariableDeclaration;
 
 /**
- * <p>Output and log RNA mutants to files</p>
- * @author Ana Maciel
+ * <p>Output and log RBA oracle mutants to files </p>
+ * @author Yu-Seung Ma
  * @version 1.0
-  */ 
+ */
 
-public class RSA_Writer extends OracleMutantCodeWriter
+public class RIA_Writer extends OracleMutantCodeWriter
 {
+
 	MethodCall original;
 	MethodCall mutant;
-	VariableDeclaration original_var;
-	VariableDeclaration mutant_var;
 	Literal mutantBoolean;
+	
+	AnnotationManager original_ann;
+	AnnotationManager mutant_ann;
 
-	public RSA_Writer( String file_name, PrintWriter out ) 
-	{
+	public RIA_Writer( String file_name, PrintWriter out ) 
+	{		
 		super(file_name,out);
 	}
 
@@ -57,27 +59,13 @@ public class RSA_Writer extends OracleMutantCodeWriter
 	 * Set original source code and mutated code
 	 * @param exp1
 	 * @param exp2
-	 * @param exp3
-	 * @param exp4 
 	 */
-	public void setMutant(MethodCall exp1, MethodCall exp2, VariableDeclaration exp3, VariableDeclaration exp4)
+	public void setMutant(AnnotationManager exp1, AnnotationManager exp2)
 	{
-		original = exp1;
-		this.mutant = exp2;
-		original_var = exp3;
-		this.mutant_var = exp4;
+		original_ann = exp1;
+		this.mutant_ann = exp2;
 	}
-	
-	/**
-	 * Set original source code and mutated code
-	 * @param exp3
-	 * @param exp4 
-	 */
-	public void setMutant(VariableDeclaration exp3, VariableDeclaration exp4)
-	{
-		original_var = exp3;
-		this.mutant_var = exp4;
-	}
+
 
 
 
@@ -86,7 +74,6 @@ public class RSA_Writer extends OracleMutantCodeWriter
 	 */
 	public void visit( MethodCall p ) throws ParseTreeException
 	{
-
 		if(mutant != null){
 			if (isSameObject(p, original))
 			{

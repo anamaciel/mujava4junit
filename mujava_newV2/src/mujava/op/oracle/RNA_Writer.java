@@ -15,9 +15,13 @@
  */ 
 package mujava.op.oracle;
 
-import java.io.*;
-import openjava.ptree.*;
-import mujava.op.util.MutantCodeWriter;
+import java.io.PrintWriter;
+
+import mujava.op.util.OracleMutantCodeWriter;
+import openjava.ptree.Literal;
+import openjava.ptree.MethodCall;
+import openjava.ptree.ParseTreeException;
+import openjava.ptree.VariableDeclaration;
 
 /**
  * <p>Output and log RNA mutants to files</p>
@@ -25,7 +29,7 @@ import mujava.op.util.MutantCodeWriter;
  * @version 1.0
   */ 
 
-public class RNA_Writer extends MutantCodeWriter
+public class RNA_Writer extends OracleMutantCodeWriter
 {
 	MethodCall original;
 	MethodCall mutant;

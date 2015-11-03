@@ -21,19 +21,7 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
 import mujava.op.basic.CreateDirForEachMethod;
-import mujava.op.oracle.ASM;
-import mujava.op.oracle.ATV;
-import mujava.op.oracle.DCfTV;
-import mujava.op.oracle.ICfTV;
-import mujava.op.oracle.MPPT;
-import mujava.op.oracle.MPPTO;
-import mujava.op.oracle.MSM;
-import mujava.op.oracle.RBA;
-import mujava.op.oracle.RFM;
-import mujava.op.oracle.RNA;
-import mujava.op.oracle.RSA;
-import mujava.op.oracle.RSM;
-import mujava.op.oracle.RTV;
+import mujava.op.oracle.RIA;
 import mujava.op.util.CodeChangeLog;
 import mujava.util.Debug;
 import openjava.ptree.ClassDeclaration;
@@ -44,46 +32,40 @@ import openjava.ptree.ParseTreeException;
  * 
  *            
  * <p> Currently available signature mutation operators:    
- *          (1) ASM: Adding String Message
- *          (2) RSM: Remove String Message
- *          (3) MPPT: Modify Primitive Parameter Type
- *          (4) MPPTO: Modify Primitive Parameter Type to Object
- *          (5) ATV: Adding Threshold Value
- *          (6) RTV: Removing Threshold Value
- *          (7) ICtTV: Increment Constant to Threshold Value
- *          (8) DCfTV: Decrement Constant from Threshold Value
- *          (9) MSM: Modify String Message
- *          (10) RBA: Replace Boolean Assertion
- *          (11) RNA: Replace Null Assertion
- *          (12) RSA: Replace Same Assertion
- *          (13) RFM: Remove fail() Method
-
+ *          (1) MEC: Modify Expected Class
+ *          (2) REC: Removing Expected Class
+ *          (3) AEC: Adding Expected Class
+ *          (4) ACtT: Increment Constant to Timeout
+ *          (5) DCfT: Decrement Constant from Timeout
+ *          (6) RTA: Removing Timeout
+ *          (7) RIA: Remove Ignore Annotation
+ *          
  * </p>        
  * @author Ana Maciel
  * @version 1.0
  */
 
-public class SignatureMutantsGenerator  extends MutantsGenerator
+public class AnnotationMutantsGenerator  extends MutantsGenerator
 {
 
-	String[] signatureOp;
+	String[] annotationOp;
 
-	public SignatureMutantsGenerator(File f) 
+	public AnnotationMutantsGenerator(File f) 
 	{
 		super(f);
-		signatureOp = MutationSystem.sg_operators;
+		annotationOp = MutationSystem.an_operators;
 	}
 
-	public SignatureMutantsGenerator(File f, boolean debug) 
+	public AnnotationMutantsGenerator(File f, boolean debug) 
 	{
 		super (f, debug);
-		signatureOp = MutationSystem.sg_operators;
+		annotationOp = MutationSystem.an_operators;
 	}
 
-	public SignatureMutantsGenerator(File f, String[] tOP) 
+	public AnnotationMutantsGenerator(File f, String[] tOP) 
 	{
 		super(f);
-		signatureOp = tOP;
+		annotationOp = tOP;
 	}
 
 	/** 
@@ -102,12 +84,12 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 		if (cdecls == null || cdecls.size() == 0) 
 			return;
 
-		if (signatureOp != null && signatureOp.length > 0)
+		if (annotationOp != null && annotationOp.length > 0)
 		{
-			Debug.println("* Generating signature oracle mutants");
-			MutationSystem.clearPreviousSignatureMutants();
+			Debug.println("* Generating annotation oracle mutants");
+			MutationSystem.clearPreviousAnnotationMutants();
 
-			MutationSystem.MUTANT_PATH = MutationSystem.SIGNATURE_MUTANT_PATH;
+			MutationSystem.MUTANT_PATH = MutationSystem.ANNOTATION_MUTANT_PATH;
 
 			CodeChangeLog.openLogFile();
 
@@ -152,8 +134,7 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 
 	/**
 	 * Apply selected signature oracle mutation operators: 
-	 *      ASM, RSM, MPPT, MPPTO, ATV, RTV, ICtTV
-	 *      DCfTV, MSM, RBA, RNA, RSA, RFM
+	 *      MEC, REC, AEC, ACtV, DCtV, RTA, RIA 
 	 *      
 	 * @param cdecls
 	 */
@@ -179,7 +160,7 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 					try
 					{
 						//generate a list of methods from the original java class
-						System.out.println("SIGNATURE GENERATION");
+						System.out.println("ANNOTATION GENERATION");
 						//System.out.println("MutationSystem.MUTANT_PATH: " + MutationSystem.MUTANT_PATH);
 						File f = new File(MutationSystem.MUTANT_PATH, "method_list");
 						FileOutputStream fout = new FileOutputStream(f);
@@ -196,35 +177,35 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						return;
 					}
 
-					if (hasOperator (signatureOp, "ASM") )
+					if (hasOperator (annotationOp, "RIA") )
 					{
-						Debug.println("  Applying ASM ... ... ");
-						mutant_op = new ASM(file_env, cdecl, comp_unit);
+						Debug.println("  Applying RIA ... ... ");
+						mutant_op = new RIA(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "RSM") )
+					/*if (hasOperator (annotationOp, "RSM") )
 					{
 						Debug.println("  Applying RSM ... ... ");
 						mutant_op = new RSM(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "MPPT") ) 
+					if (hasOperator (annotationOp, "MPPT") ) 
 					{
 						Debug.println("  Applying MPPT ... ... ");
 						mutant_op = new MPPT(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "MPPTO") )
+					if (hasOperator (annotationOp, "MPPTO") )
 					{
 						Debug.println("  Applying MPPTO	 ... ... ");
 						mutant_op = new MPPTO(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "ATV") )
+					if (hasOperator (annotationOp, "ATV") )
 					{
 						//System.out.println("  Applying ATV ... ... ");
 						Debug.println("  Applying ATV ... ... ");
@@ -232,66 +213,24 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "RTV") )
+					if (hasOperator (annotationOp, "RTV") )
 					{
 						Debug.println("  Applying RTV ... ... ");
 						mutant_op = new RTV(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 					
-					if (hasOperator (signatureOp, "ICtTV") )
+					if (hasOperator (annotationOp, "ICtTV") )
 					{
 						Debug.println("  Applying ICtTV ... ... ");
 						mutant_op = new ICfTV(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}
-
-					if (hasOperator (signatureOp, "DCfTV") )
-					{
-						Debug.println("  Applying DCfTV ... ... ");
-						mutant_op = new DCfTV(file_env, cdecl, comp_unit);
-						comp_unit.accept(mutant_op);
-					}
-
-					if (hasOperator (signatureOp, "MSM") ) 
-					{
-						Debug.println("  Applying MSM ... ... ");
-						mutant_op = new MSM(file_env, cdecl, comp_unit);
-						comp_unit.accept(mutant_op);
-					}
-
-					if (hasOperator (signatureOp, "RBA") )
-					{
-						//System.out.println("  Applying RBA ... ... ");
-						Debug.println("  Applying RBA ... ... ");
-						mutant_op = new RBA(file_env, cdecl, comp_unit);
-						comp_unit.accept(mutant_op);
-					}
-
-					if (hasOperator (signatureOp, "RNA") )
-					{
-						Debug.println("  Applying RNA ... ... ");
-						mutant_op = new RNA(file_env, cdecl, comp_unit);
-						comp_unit.accept(mutant_op);
-					}
-
-					if (hasOperator (signatureOp, "RSA") )
-					{
-						Debug.println("  Applying RSA ... ... ");
-						mutant_op = new RSA(file_env, cdecl, comp_unit);
-						comp_unit.accept(mutant_op);
-					}
-
-					if (hasOperator (signatureOp, "RFM") )
-					{
-						Debug.println("  Applying RFM ... ... ");
-						mutant_op = new RFM(file_env, cdecl, comp_unit);
-						comp_unit.accept(mutant_op);
-					}
+					}*/
+				
 					
 				} catch (ParseTreeException e)
 				{
-					System.err.println( "Exception, during generating signature mutants for the JUnit class "
+					System.err.println( "Exception, during generating annotation mutants for the JUnit class "
 							+ MutationSystem.CLASS_NAME);
 					e.printStackTrace();
 				}

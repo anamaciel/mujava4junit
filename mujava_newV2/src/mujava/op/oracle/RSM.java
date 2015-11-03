@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Vector;
 
-import mujava.op.util.SignatureMutantCodeWriter;
+import mujava.op.util.OracleMutantCodeWriter;
 import openjava.mop.*;
 import openjava.ptree.*;
 import openjava.syntax.*;
@@ -152,7 +152,7 @@ public class RSM extends JUnit_OP
 		{
 			PrintWriter out = getPrintWriter(f_name);
 			System.out.println("f_name: " + f_name);
-			ASM_Writer writer = new ASM_Writer(mutant_dir, out);
+			RSM_Writer writer = new RSM_Writer(mutant_dir, out);
 			writer.setMutant(original_field, mutant);
 			//System.out.println(mutant);
 			//System.out.println(currentMethodSignature);
@@ -161,7 +161,7 @@ public class RSM extends JUnit_OP
 			out.flush();  
 			out.close();
 			
-			SignatureMutantCodeWriter.writeAnnotations(f_name);
+			OracleMutantCodeWriter.writeAnnotations(f_name);
 			
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );

@@ -19,7 +19,7 @@ package mujava.op.oracle;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import mujava.op.util.SignatureMutantCodeWriter;
+import mujava.op.util.OracleMutantCodeWriter;
 import openjava.mop.FileEnvironment;
 import openjava.ptree.ClassDeclaration;
 import openjava.ptree.CompilationUnit;
@@ -95,7 +95,7 @@ public class RFM extends JUnit_OP
 			out.flush();  
 			out.close();
 			
-			SignatureMutantCodeWriter.writeAnnotations(f_name);
+			OracleMutantCodeWriter.writeAnnotations(f_name);
 		} catch ( IOException e ) {
 			System.err.println( "fails to create " + f_name );
 		} catch ( ParseTreeException e ) {
