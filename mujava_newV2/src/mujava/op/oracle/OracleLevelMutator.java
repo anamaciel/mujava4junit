@@ -126,6 +126,22 @@ public class OracleLevelMutator  extends mujava.op.util.Mutator
 	  name = dir_name + "/" +  MutationSystem.CLASS_NAME + ".java";
       return name;
    }
+   
+   /**
+    * Retrieve the source's file name
+    */
+   public String getSourceNameAnn(String op_name, String annotation)
+   {
+ 	  // make directory for the mutant
+	  String dir_name = MutationSystem.MUTANT_PATH + "/" + annotation + "/" + op_name + "_" + this.num;
+	  File f = new File(dir_name);
+	  f.mkdirs();
+
+	  // return file name
+	  String name;
+	  name = dir_name + "/" +  MutationSystem.CLASS_NAME + ".java";
+      return name;
+   }
 
    public void visit(MethodDeclaration p) throws ParseTreeException 
    {

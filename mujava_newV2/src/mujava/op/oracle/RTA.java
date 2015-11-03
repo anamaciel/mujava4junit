@@ -40,22 +40,23 @@ import openjava.ptree.MethodDeclaration;
 import openjava.ptree.ParseTreeException;
 import openjava.ptree.UnaryExpression;
 /**
- * <p>Generate RIA (Remove Ignore Annotation) mutants --
- *    Example: @ignore → //@ignore
+ * <p>Generate RTA (Removing Timeout) mutants --
+ *    Example: @Test(timeout=100) → @Test
  *    
- *    @Ignore
+ *    @Test    
+ *    
  *    
  * </p>
  * @author Ana Maciel
  * @version 1.0
   */
 
-public class RIA extends JUnit_OP
+public class RTA extends JUnit_OP
 {
 	
 	int cont=0;
 
-	public RIA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public RTA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
@@ -65,12 +66,11 @@ public class RIA extends JUnit_OP
 		//System.out.println(p.getName());
 		
 		for (AnnotationManager annotation : MutationSystem.annotations) {
-			if(annotation.getAnnotation().contains("@Ignore")){
-				//System.out.println("achei a annotation");
+			if(annotation.getAnnotation().contains("timeout")){				
 				String ann = annotation.getAnnotation();
-				annotation.setAnnotation(ann.replace("@Ignore", "//@Ignore"));
+				annotation.setAnnotation(ann.replace(ann.substring(ann.indexOf("("), ann.indexOf(")")+1), ""));
 				
-				outputToFile("IGNORE");
+				outputToFile("TEST");
 			}
 		}
 	
@@ -88,8 +88,8 @@ public class RIA extends JUnit_OP
 
       String f_name;
       num++;
-      f_name = getSourceNameAnn("RIA", ann);
-      String mutant_dir = getMuantID("RIA");
+      f_name = getSourceNameAnn("RTA", ann);
+      String mutant_dir = getMuantID("RTA");
 
       try 
       {

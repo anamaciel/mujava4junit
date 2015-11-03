@@ -171,7 +171,7 @@ public class MutationSystem extends OJSystem
    public static String[] sg_operators = { "ASM", "RSM", "MPPT", "MPPTO", "ATV", "RTV","ICtTV", "DCfTV", "MSM", "RBA", "RNA", "RSA", "RFM"};
 
    /** List of names of annotation oracle mutation operators */
-   public static String[] an_operators = { "MEC", "REC", "AEC", "ACtT", "DCfT", "RT", "RIA"};
+   public static String[] an_operators = { "MEC", "REC", "AEC", "ACtT", "DCfT", "RTA", "RIA"};
    
    // Upsorn: (05/18/2009) added mutation operators' description
    public static String[] op_desc = {   "" };

@@ -22,6 +22,7 @@ import java.io.PrintWriter;
 
 import mujava.op.basic.CreateDirForEachMethod;
 import mujava.op.oracle.RIA;
+import mujava.op.oracle.RTA;
 import mujava.op.util.CodeChangeLog;
 import mujava.util.Debug;
 import openjava.ptree.ClassDeclaration;
@@ -184,14 +185,14 @@ public class AnnotationMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					/*if (hasOperator (annotationOp, "RSM") )
+					if (hasOperator (annotationOp, "RTA") )
 					{
-						Debug.println("  Applying RSM ... ... ");
-						mutant_op = new RSM(file_env, cdecl, comp_unit);
+						Debug.println("  Applying RTA ... ... ");
+						mutant_op = new RTA(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (annotationOp, "MPPT") ) 
+					/*if (hasOperator (annotationOp, "MPPT") ) 
 					{
 						Debug.println("  Applying MPPT ... ... ");
 						mutant_op = new MPPT(file_env, cdecl, comp_unit);
