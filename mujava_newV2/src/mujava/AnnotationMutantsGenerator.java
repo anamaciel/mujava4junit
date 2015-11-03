@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
 import mujava.op.basic.CreateDirForEachMethod;
+import mujava.op.oracle.DCfT;
+import mujava.op.oracle.ICfT;
 import mujava.op.oracle.RIA;
 import mujava.op.oracle.RTA;
 import mujava.op.util.CodeChangeLog;
@@ -36,7 +38,7 @@ import openjava.ptree.ParseTreeException;
  *          (1) MEC: Modify Expected Class
  *          (2) REC: Removing Expected Class
  *          (3) AEC: Adding Expected Class
- *          (4) ACtT: Increment Constant to Timeout
+ *          (4) ICtT: Increment Constant to Timeout
  *          (5) DCfT: Decrement Constant from Timeout
  *          (6) RTA: Removing Timeout
  *          (7) RIA: Remove Ignore Annotation
@@ -135,7 +137,7 @@ public class AnnotationMutantsGenerator  extends MutantsGenerator
 
 	/**
 	 * Apply selected signature oracle mutation operators: 
-	 *      MEC, REC, AEC, ACtV, DCtV, RTA, RIA 
+	 *      MEC, REC, AEC, ICtV, DCtV, RTA, RIA 
 	 *      
 	 * @param cdecls
 	 */
@@ -192,21 +194,21 @@ public class AnnotationMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					/*if (hasOperator (annotationOp, "MPPT") ) 
+					if (hasOperator (annotationOp, "DCfT") ) 
 					{
-						Debug.println("  Applying MPPT ... ... ");
-						mutant_op = new MPPT(file_env, cdecl, comp_unit);
+						Debug.println("  Applying DCfT ... ... ");
+						mutant_op = new DCfT(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (annotationOp, "MPPTO") )
+					if (hasOperator (annotationOp, "ICfT") )
 					{
-						Debug.println("  Applying MPPTO	 ... ... ");
-						mutant_op = new MPPTO(file_env, cdecl, comp_unit);
+						Debug.println("  Applying ICfT	 ... ... ");
+						mutant_op = new ICfT(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (annotationOp, "ATV") )
+					/*if (hasOperator (annotationOp, "ATV") )
 					{
 						//System.out.println("  Applying ATV ... ... ");
 						Debug.println("  Applying ATV ... ... ");

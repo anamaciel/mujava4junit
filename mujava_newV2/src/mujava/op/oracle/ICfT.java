@@ -40,22 +40,23 @@ import openjava.ptree.MethodDeclaration;
 import openjava.ptree.ParseTreeException;
 import openjava.ptree.UnaryExpression;
 /**
- * <p>Generate RIA (Remove Ignore Annotation) mutants --
- *    Example: @ignore → //@ignore
+ * <p>Generate ICft (Increment Constant from Timeout) mutants --
+ *    Example: @Test(timeout=100) → @Test(timeout=100+Const)
  *    
- *    @Ignore
+ *    @Test    
+ *    
  *    
  * </p>
  * @author Ana Maciel
  * @version 1.0
   */
 
-public class RIA extends JUnit_OP
+public class ICfT extends JUnit_OP
 {
 	
 	int cont=0;
 
-	public RIA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public ICfT(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
@@ -66,21 +67,23 @@ public class RIA extends JUnit_OP
 		
 		for (AnnotationManager annotation : MutationSystem.annotations) {
 			AnnotationManager annotationOriginal = annotation;
-			if(annotation.getAnnotation().contains("@Ignore")){
-				//System.out.println("achei a annotation");
+			
+			if(annotation.getAnnotation().contains("timeout")){				
 				String ann = annotation.getAnnotation();
-				annotation.setAnnotation(ann.replace("@Ignore", "//@Ignore"));
+				String value = ann.substring(ann.indexOf("=")+1, ann.indexOf(")"));
+				int timeout = Integer.parseInt(value) + 100;
+				annotation.setAnnotation("\t@Test(timeout="+timeout+")");
 				
-				outputToFile("IGNORE");
-				
-				annotation.setAnnotation(annotationOriginal.getAnnotation());
+				outputToFile("TEST");				
+
 			}
+			
 		}
 	
 	}
    
    /**
-    * Write RIA mutants to files
+    * Write DCfT mutants to files
     * @param original_field
     * @param mutant
     */
@@ -91,15 +94,15 @@ public class RIA extends JUnit_OP
 
       String f_name;
       num++;
-      f_name = getSourceNameAnn("RIA", ann);
-      String mutant_dir = getMuantID("RIA");
+      f_name = getSourceNameAnn("ICfT", ann);
+      String mutant_dir = getMuantID("ICfT");
 
       try 
       {
 		 PrintWriter out = getPrintWriter(f_name);
 		 System.out.println("f_name: " + f_name);
 		 //System.out.println(out.toString());
-		 RIA_Writer writer = new RIA_Writer(mutant_dir, out);
+		 ICfT_Writer writer = new ICfT_Writer(mutant_dir, out);
 		 //System.out.println(currentMethodSignature);
          writer.setMethodSignature(currentMethodSignature);
 		 comp_unit.accept( writer );		 

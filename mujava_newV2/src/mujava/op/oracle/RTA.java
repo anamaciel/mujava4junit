@@ -66,11 +66,14 @@ public class RTA extends JUnit_OP
 		//System.out.println(p.getName());
 		
 		for (AnnotationManager annotation : MutationSystem.annotations) {
+			AnnotationManager annotationOriginal = annotation;
 			if(annotation.getAnnotation().contains("timeout")){				
 				String ann = annotation.getAnnotation();
 				annotation.setAnnotation(ann.replace(ann.substring(ann.indexOf("("), ann.indexOf(")")+1), ""));
 				
 				outputToFile("TEST");
+				
+				annotation.setAnnotation(annotationOriginal.getAnnotation());
 			}
 		}
 	

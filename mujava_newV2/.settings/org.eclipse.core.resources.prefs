@@ -1,7 +1,9 @@
 eclipse.preferences.version=1
 encoding//src/mujava/op/oracle/ASM.java=UTF-8
 encoding//src/mujava/op/oracle/ATV.java=UTF-8
+encoding//src/mujava/op/oracle/DCfT.java=UTF-8
 encoding//src/mujava/op/oracle/DCfTV.java=UTF-8
+encoding//src/mujava/op/oracle/ICfT.java=UTF-8
 encoding//src/mujava/op/oracle/ICfTV.java=UTF-8
 encoding//src/mujava/op/oracle/MPPT.java=UTF-8
 encoding//src/mujava/op/oracle/MPPTO.java=UTF-8
