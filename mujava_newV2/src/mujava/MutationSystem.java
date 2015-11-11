@@ -168,7 +168,7 @@ public class MutationSystem extends OJSystem
    
    
    /** List of names of signature oracle mutation operators */
-   public static String[] sg_operators = { "ASM", "RSM", "MPPT", "MPPTO", "ATV", "RTV","ICtTV", "DCfTV", "MSM", "RBA", "RNA", "RSA", "RFM"};
+   public static String[] sg_operators = { "ASM", "RSM", "MPPTO", "ATV", "RTV","ICtTV", "DCfTV", "MSM", "RBA", "RNA", "RSA", "RFM"};
 
    /** List of names of annotation oracle mutation operators */
    public static String[] an_operators = {"AEC", "ICtT", "DCfT", "RTA", "RIA"};

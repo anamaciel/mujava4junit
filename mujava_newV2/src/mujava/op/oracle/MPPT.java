@@ -61,28 +61,28 @@ public class MPPT extends JUnit_OP
 				OJClass varType = arguments.get(0).getType(getEnvironment());				
 				ExpressionList mutantArgs = new ExpressionList();
 				
-				//System.out.println(varType.getName());
+				System.out.println(varType.getName());
 				
 				if(varType.getName().contains("double")){
-					if(arguments.size()==3 && (arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
-
-						mutantArgs.add(arguments.get(0));
-						mutantArgs.add(Literal.makeLiteralByte(arguments.get(1)+""));
-						mutantArgs.add(Literal.makeLiteralByte(arguments.get(2)+""));
+					System.out.println("argumentos: " + arguments.size());
+					if(arguments.size()==3 && (!arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
+						System.out.println("if double 3");
+						mutantArgs.add(Literal.makeLiteralDouble(arguments.get(0)+""));
+						mutantArgs.add(Literal.makeLiteralDouble(arguments.get(1)+""));
+						mutantArgs.add(Literal.makeLiteralDouble(arguments.get(2)+""));
 						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 						//System.out.println(p);
 						//System.out.println(mutant);
 						outputToFile(p, mutant);
 
 					}else if(arguments.size()==2){
-
+						System.out.println("if double 2");
 						mutantArgs.add(Literal.makeLiteralByte(arguments.get(0)+""));
 						mutantArgs.add(Literal.makeLiteralByte(arguments.get(1)+""));
 						MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 						//System.out.println(p);
 						//System.out.println(mutant);
 						outputToFile(p, mutant);
-
 					}
 				}else if(varType.getName().contains("byte")){
 					if(arguments.size()==3 && (arguments.get(0).getType(getEnvironment()).getName().contains("String"))){
