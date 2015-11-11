@@ -303,16 +303,17 @@ public abstract class MutantsGeneratorOracle
          FileReader fr2 = new FileReader(original_file);
 
          BufferedReader br2 = new BufferedReader(fr2);
-         
+         int number = 1;
          while (br2.ready()) {
         	 String linha = br2.readLine();  
         	 
         	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
     				 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
-    			 AnnotationManager annotation = new AnnotationManager(linha, cont);
+    			 AnnotationManager annotation = new AnnotationManager(linha, cont, number);
     			 //System.out.println(linha + "**" + cont);
     			 
     			 MutationSystem.annotations.add(annotation);
+    			 number++;
     		 }  
         	 cont++; 
          }

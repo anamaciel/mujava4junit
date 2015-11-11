@@ -24,6 +24,7 @@
 package mujava.op.util;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import openjava.ptree.ParseTreeException;
 import mujava.MutationSystem;
@@ -111,6 +112,93 @@ public class OracleMutantCodeWriter extends MutantCodeWriterOracle{
     					arquivoAnnotation += ant+ "\n" + linha + "\n";
     					cont+=2;
     				}
+
+    			}else{
+    				arquivoAnnotation +=linha+"\n";
+    				cont++;
+    			}
+    			ann=false;
+    		}
+
+    		FileWriter pw2 = new FileWriter(f_name); 
+
+    		pw2.write(arquivoAnnotation);
+
+    		pw2.flush();
+    		pw2.close();
+    	} catch ( IOException e ) {
+    		System.err.println( "fails to create " + f_name );
+    	} 
+    }
+    
+    
+    
+    
+    
+    
+    
+    public static void writeAnnotationsOperators(String f_name, int number, String annotationName){
+    	FileReader fr;
+    	try {
+    		fr = new FileReader(f_name);
+
+    		BufferedReader br = new BufferedReader(fr);        
+
+
+    		String arquivo="";
+    		int cont = 1;
+    		while (br.ready()) {
+    			//lê a proxima linha
+    			String linha = br.readLine();
+    			if(!linha.trim().equals("")){
+    				arquivo+=linha + "\n";
+    			}        	 
+    		}
+
+    		FileWriter pw = new FileWriter(f_name); 
+
+    		pw.write(arquivo);
+
+    		pw.flush();
+    		pw.close();
+
+    		FileReader fr_annotation = new FileReader(f_name);
+    		BufferedReader br_annotation = new BufferedReader(fr_annotation);  
+    		String arquivoAnnotation = "";
+    		boolean ann = false;
+    		String ant = "";
+    		//System.out.println(MutationSystem.annotations.get(0).getAnnotation() + " -- " +  MutationSystem.annotations.get(0).getLine());
+    		while (br_annotation.ready()) {
+    			String linha = br_annotation.readLine();
+    			for (AnnotationManager annotation : MutationSystem.annotations) {
+    				//System.out.println("annotation: " + annotation.getAnnotation() + " Linha: " + annotation.getLine());
+
+    				//System.out.println(cont + "--" + annotation.getLine());
+
+    				if(cont == annotation.getLine()){
+    					ann = true;
+    					if(annotation.getNumber() == number){
+    						//System.out.println(annotationName);
+    						ant = annotationName;
+    					}else{
+    						ant = annotation.getAnnotation();
+    					}
+    				}        		 
+    			}
+    			if(ann){
+    				if(linha.trim().equals("{") ){
+    					//System.out.println(linha + "===" + ant);    					
+    					arquivoAnnotation += linha+ "\n" + ant + "\n";
+    					cont+=2;
+    				}else if(linha.trim().equals("}")){
+    					//System.out.println(linha + "===" + ant);
+    					arquivoAnnotation += linha+ "\n" + ant + "\n";
+    					cont+=2;
+    				}else {
+    					//System.out.println(linha + "===" + ant);
+    					arquivoAnnotation += ant+ "\n" + linha + "\n";
+    					cont+=2;
+    				}
     				
     			}else{
     				arquivoAnnotation +=linha+"\n";
@@ -129,5 +217,6 @@ public class OracleMutantCodeWriter extends MutantCodeWriterOracle{
     		System.err.println( "fails to create " + f_name );
     	} 
     }
-
+    
+    
 }

@@ -4,13 +4,15 @@ import java.lang.annotation.Annotation;
 
 public class AnnotationManager {
 	
-	public String annotation;
-	public int line;
+	private String annotation;
+	private int line;
+	private int number;
 	
 	
-	public AnnotationManager(String annotation, int line) {
+	public AnnotationManager(String annotation, int line, int number) {
 		this.annotation = annotation;
 		this.line = line;
+		this.number = number;
 	}
 
 
@@ -32,4 +34,16 @@ public class AnnotationManager {
 	public void setLine(int line) {
 		this.line = line;
 	}
+
+
+	public int getNumber() {
+		return number;
+	}
+
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+	
+	
 }

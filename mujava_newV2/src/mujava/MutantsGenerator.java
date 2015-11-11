@@ -127,12 +127,12 @@ public abstract class MutantsGenerator
       //System.out.println("1");
       Debug.print("* Generating Mutants \n" );
       genMutants();
-      /*Debug.print("..done.\n" );
+      Debug.print("..done.\n" );
       //System.out.println("2");
       Debug.print("* Arranging original soure code. \n" );
       arrangeOriginal();
       //System.out.println("3");
-      compileOriginal();
+      /*compileOriginal();
       Debug.print("..done. \n" );
       Debug.flush();*/
       return true;
@@ -170,7 +170,7 @@ public abstract class MutantsGenerator
     */
    private void arrangeOriginal()
    {
-	   System.out.println("arrange original");
+	   //System.out.println("arrange original");
       if (comp_unit == null)
       {
          System.err.println(original_file + " is skipped.");
@@ -184,7 +184,7 @@ public abstract class MutantsGenerator
          try 
          {
             outfile = new File(MutationSystem.ORIGINAL_PATH, MutationSystem.CLASS_NAME + ".java");
-            System.out.println(outfile.getName());
+            //System.out.println(outfile.getName());
             FileWriter fout = new FileWriter( outfile ); 
             PrintWriter out = new PrintWriter( fout );
             MutantCodeWriter writer = new MutantCodeWriter( out );
@@ -257,7 +257,7 @@ public abstract class MutantsGenerator
       try
       {
     	  MutationSystem.annotations.clear();
-    	  System.out.println("generate parse tree");
+    	  //System.out.println("generate parse tree");
          comp_unit = parse(original_file);         
          
          
@@ -299,7 +299,12 @@ public abstract class MutantsGenerator
         	 comentario = false;
         	 
          }
+         
+         fr.close();
+         
          System.out.println("gravei as annotations");
+         
+         System.out.println(original_file);
          
          FileWriter pw = new FileWriter(original_file); 
          
@@ -314,20 +319,23 @@ public abstract class MutantsGenerator
          FileReader fr2 = new FileReader(original_file);
 
          BufferedReader br2 = new BufferedReader(fr2);
+         int number = 1;
          
          while (br2.ready()) {
         	 String linha = br2.readLine();  
         	 
         	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
     				 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){
-    			 AnnotationManager annotation = new AnnotationManager(linha, cont);
+    			 AnnotationManager annotation = new AnnotationManager(linha, cont, number);
     			 MutationSystem.annotations.add(annotation);
     			 
+    			 number++;
     			 //System.out.println(linha + "**" + cont);
     		 }  
         	 cont++; 
          }
          
+         fr2.close();
          
          System.out.println(original_file.getAbsolutePath());
 

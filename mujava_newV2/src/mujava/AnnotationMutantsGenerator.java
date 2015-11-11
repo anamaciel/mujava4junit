@@ -21,8 +21,9 @@ import java.io.FileOutputStream;
 import java.io.PrintWriter;
 
 import mujava.op.basic.CreateDirForEachMethod;
+import mujava.op.oracle.AEC;
 import mujava.op.oracle.DCfT;
-import mujava.op.oracle.ICfT;
+import mujava.op.oracle.ICtT;
 import mujava.op.oracle.RIA;
 import mujava.op.oracle.RTA;
 import mujava.op.util.CodeChangeLog;
@@ -35,8 +36,6 @@ import openjava.ptree.ParseTreeException;
  * 
  *            
  * <p> Currently available signature mutation operators:    
- *          (1) MEC: Modify Expected Class
- *          (2) REC: Removing Expected Class
  *          (3) AEC: Adding Expected Class
  *          (4) ICtT: Increment Constant to Timeout
  *          (5) DCfT: Decrement Constant from Timeout
@@ -201,22 +200,22 @@ public class AnnotationMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (annotationOp, "ICfT") )
+					if (hasOperator (annotationOp, "ICtT") )
 					{
-						Debug.println("  Applying ICfT	 ... ... ");
-						mutant_op = new ICfT(file_env, cdecl, comp_unit);
+						Debug.println("  Applying ICtT	 ... ... ");
+						mutant_op = new ICtT(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
 					}
 
-					/*if (hasOperator (annotationOp, "ATV") )
+					if (hasOperator (annotationOp, "AEC") )
 					{
 						//System.out.println("  Applying ATV ... ... ");
-						Debug.println("  Applying ATV ... ... ");
-						mutant_op = new ATV(file_env,cdecl,comp_unit);	
+						Debug.println("  Applying AEC ... ... ");
+						mutant_op = new AEC(file_env,cdecl,comp_unit);	
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (annotationOp, "RTV") )
+					/*if (hasOperator (annotationOp, "RTV") )
 					{
 						Debug.println("  Applying RTV ... ... ");
 						mutant_op = new RTV(file_env, cdecl, comp_unit);

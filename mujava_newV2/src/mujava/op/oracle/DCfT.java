@@ -40,7 +40,7 @@ import openjava.ptree.MethodDeclaration;
 import openjava.ptree.ParseTreeException;
 import openjava.ptree.UnaryExpression;
 /**
- * <p>Generate DCft (Decrement Constant from Timeout) mutants --
+ * <p>Generate DCfT (Decrement Constant from Timeout) mutants --
  *    Example: @Test(timeout=100) → @Test(timeout=100-Const)
  *    
  *    @Test    
@@ -72,9 +72,8 @@ public class DCfT extends JUnit_OP
 				String ann = annotation.getAnnotation();
 				String value = ann.substring(ann.indexOf("=")+1, ann.indexOf(")"));
 				int timeout = Integer.parseInt(value) - 100;
-				annotation.setAnnotation("\t@Test(timeout="+timeout+")");
 				
-				outputToFile("TEST");				
+				outputToFile("DCfT", annotation.getNumber(), "\t@Test(timeout="+timeout+")");				
 
 			}
 			
@@ -87,7 +86,7 @@ public class DCfT extends JUnit_OP
     * @param original_field
     * @param mutant
     */
-   public void outputToFile(String ann)
+   public void outputToFile(String ann, int number, String annotation)
    {
       if (comp_unit == null) 
     	 return;
@@ -108,7 +107,7 @@ public class DCfT extends JUnit_OP
 		 comp_unit.accept( writer );		 
 		 out.flush();  out.close();
 		 
-		 OracleMutantCodeWriter.writeAnnotations(f_name);
+		 OracleMutantCodeWriter.writeAnnotationsOperators(f_name, number, annotation);
          
          
          

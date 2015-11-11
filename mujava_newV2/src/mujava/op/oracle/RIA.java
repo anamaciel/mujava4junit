@@ -69,11 +69,8 @@ public class RIA extends JUnit_OP
 			if(annotation.getAnnotation().contains("@Ignore")){
 				//System.out.println("achei a annotation");
 				String ann = annotation.getAnnotation();
-				annotation.setAnnotation(ann.replace("@Ignore", "//@Ignore"));
 				
-				outputToFile("IGNORE");
-				
-				annotation.setAnnotation(annotationOriginal.getAnnotation());
+				outputToFile("RIA", annotation.getNumber(), ann.replace("@Ignore", "//@Ignore"));				
 			}
 		}
 	
@@ -84,7 +81,7 @@ public class RIA extends JUnit_OP
     * @param original_field
     * @param mutant
     */
-   public void outputToFile(String ann)
+   public void outputToFile(String ann, int number, String annotation)
    {
       if (comp_unit == null) 
     	 return;
@@ -105,7 +102,7 @@ public class RIA extends JUnit_OP
 		 comp_unit.accept( writer );		 
 		 out.flush();  out.close();
 		 
-		 OracleMutantCodeWriter.writeAnnotations(f_name);
+		 OracleMutantCodeWriter.writeAnnotationsOperators(f_name, number, annotation);
          
          
          

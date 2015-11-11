@@ -21,7 +21,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLBoundOperation.ANONYMOUS;
 
 import mujava.MutantsGenerator;
 import mujava.MutationSystem;
@@ -40,8 +43,8 @@ import openjava.ptree.MethodDeclaration;
 import openjava.ptree.ParseTreeException;
 import openjava.ptree.UnaryExpression;
 /**
- * <p>Generate RTA (Removing Timeout) mutants --
- *    Example: @Test(timeout=100) → @Test
+ * <p>Generate AEC (Adding Expected Class) mutants --
+ *    Example: @Test → @Test = (expected = JavaNullExpection.class)
  *    
  *    @Test    
  *    
@@ -51,12 +54,12 @@ import openjava.ptree.UnaryExpression;
  * @version 1.0
   */
 
-public class RTA extends JUnit_OP
+public class AEC extends JUnit_OP
 {
 	
 	int cont=0;
 
-	public RTA(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
+	public AEC(FileEnvironment file_env, ClassDeclaration cdecl, CompilationUnit comp_unit)
 	{
 		super( file_env, comp_unit );
 	}
@@ -65,20 +68,41 @@ public class RTA extends JUnit_OP
 	public void visit( ClassDeclaration p ) throws ParseTreeException{
 		//System.out.println(p.getName());
 		
+		
 		for (AnnotationManager annotation : MutationSystem.annotations) {
 			AnnotationManager annotationOriginal = annotation;
-			if(annotation.getAnnotation().contains("timeout")){				
-				String ann = annotation.getAnnotation();
-				
-				outputToFile("RTA", annotation.getNumber(),ann.replace(ann.substring(ann.indexOf("("), ann.indexOf(")")+1), ""));
+		
+			String ann = annotation.getAnnotation().trim();
+			
+			if(annotation.getAnnotation().trim().equals("@Test")){
+											
+				outputToFile("AEC", annotation.getNumber(), "\t@Test(expected=IOException.class)");	
 								
+				outputToFile("AEC", annotation.getNumber(), "\t@Test(expected=NullPointerException.class)");
+				
+				outputToFile("AEC", annotation.getNumber(), "\t@Test(expected=IllegalArgumentException.class)");
+				
+				outputToFile("AEC", annotation.getNumber(), "\t@Test(expected=ClassNotFoundException.class)");
+							
+				outputToFile("AEC", annotation.getNumber(), "\t@Test(expected=ArrayIndexOutOfBoundsException.class)");
+				
+				outputToFile("AEC", annotation.getNumber(), "\t@Test(expected=ArithmeticException.class)");
+				
+			}else if(annotation.getAnnotation().contains("expected")){	
+				String classe = ann.substring(ann.indexOf("expected"+1), ann.indexOf(")"));
+				
+				classe = classe.replace("=", "");
+				classe = classe.replace(" ", "");
+				
+				//System.out.println(classe);
 			}
+			
 		}
 	
 	}
    
    /**
-    * Write RIA mutants to files
+    * Write AEC mutants to files
     * @param original_field
     * @param mutant
     */
@@ -89,21 +113,23 @@ public class RTA extends JUnit_OP
 
       String f_name;
       num++;
-      f_name = getSourceNameAnn("RTA", ann);
-      String mutant_dir = getMuantID("RTA");
+      f_name = getSourceNameAnn("AEC", ann);
+      String mutant_dir = getMuantID("AEC");
 
       try 
       {
 		 PrintWriter out = getPrintWriter(f_name);
 		 System.out.println("f_name: " + f_name);
 		 //System.out.println(out.toString());
-		 RIA_Writer writer = new RIA_Writer(mutant_dir, out);
+		 AEC_Writer writer = new AEC_Writer(mutant_dir, out);
 		 //System.out.println(currentMethodSignature);
          writer.setMethodSignature(currentMethodSignature);
 		 comp_unit.accept( writer );		 
 		 out.flush();  out.close();
 		 
-		 OracleMutantCodeWriter.writeAnnotationsOperators(f_name, number, annotation);         
+		 OracleMutantCodeWriter.writeAnnotationsOperators(f_name, number, annotation);
+         
+         
          
          //System.out.println("annotations: " + MutationSystem.annotations.size());
          
