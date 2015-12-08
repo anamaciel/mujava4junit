@@ -1,0 +1,2 @@
+Oráculo						#Mutantes		#Vivos		#Mortos
+TestingCalculator						7		
