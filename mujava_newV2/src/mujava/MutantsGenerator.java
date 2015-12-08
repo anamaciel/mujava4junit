@@ -129,12 +129,12 @@ public abstract class MutantsGenerator
       genMutants();
       Debug.print("..done.\n" );
       //System.out.println("2");
-      Debug.print("* Arranging original soure code. \n" );
+      Debug.print("* Arranging original source code. \n" );
       arrangeOriginal();
       //System.out.println("3");
-      /*compileOriginal();
+      /*compileOriginal();*/
       Debug.print("..done. \n" );
-      Debug.flush();*/
+      Debug.flush();
       return true;
    }
 
@@ -275,6 +275,7 @@ public abstract class MutantsGenerator
          while (br.ready()) {
         	 //lê a proxima linha
         	 String linha = br.readLine();  
+        	 //System.out.println(linha);
         	 
         	 
         	 if(linha.contains("//")){
@@ -323,6 +324,7 @@ public abstract class MutantsGenerator
          
          while (br2.ready()) {
         	 String linha = br2.readLine();  
+        	 //System.out.println(linha);
         	 
         	 if(linha.contains("@Test") || linha.contains("@After") || linha.contains("@AfterClass") 
     				 || linha.contains("@Before") || linha.contains("@BeforeClass") || linha.contains("@Ignore")){

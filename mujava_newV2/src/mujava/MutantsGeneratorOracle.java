@@ -263,8 +263,9 @@ public abstract class MutantsGeneratorOracle
          boolean comentario = false;
          while (br.ready()) {
         	 //lê a proxima linha
-        	 String linha = br.readLine();  
         	 
+        	 String linha = br.readLine();  
+        	 System.out.println(linha);
         	 
         	 if(linha.contains("//")){
         		 String linha1 = linha.trim();

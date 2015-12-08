@@ -277,6 +277,8 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 			throws ParseTreeException
 	{
 		writeTab();
+		
+		System.out.println("construtor: " + p);
 
 		/*ModifierList*/
 		ModifierList modifs = p.getModifiers();
@@ -1433,6 +1435,7 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 	public void visit( VariableDeclaration p )
 			throws ParseTreeException
 	{
+		//System.out.println("VariableDeclaration: " + p);
 		writeTab();
 
 		ModifierList modifs = p.getModifiers();

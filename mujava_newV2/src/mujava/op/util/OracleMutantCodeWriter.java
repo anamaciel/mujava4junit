@@ -68,6 +68,7 @@ public class OracleMutantCodeWriter extends MutantCodeWriterOracle{
     		while (br.ready()) {
     			//lê a proxima linha
     			String linha = br.readLine();
+    			//System.out.println(linha);
     			if(!linha.trim().equals("")){
     				arquivo+=linha + "\n";
     			}        	 
