@@ -354,6 +354,7 @@ public abstract class MutantsViewerPanel  extends JPanel
 
    void mList_mouseClicked(MouseEvent e)
    {
+	   System.out.println("listener list");
       setMutationType();
       Object selected_obj = mList.getSelectedValue();
       if (selected_obj != null)
@@ -429,6 +430,9 @@ public abstract class MutantsViewerPanel  extends JPanel
    *  @param changed_line line number of mutated code against original program*/
    public void showMutant(String dir_name,String mutant_log)
    {
+	   //System.out.println("show mutant");
+	   //System.out.println(dir_name);
+	   //System.out.println(mutant_log);
 	  System.out.println("MutantsViewerPanel.showMutant (with mutant_log)");
       try
       {

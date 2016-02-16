@@ -59,7 +59,7 @@ public class RNA extends JUnit_OP
 
 	
 	
-	public void visit( VariableDeclaration p ) throws ParseTreeException 
+	/*public void visit( VariableDeclaration p ) throws ParseTreeException 
 	{
 		original = p;
 		if(p.getInitializer().toString().equals("null")){
@@ -83,7 +83,7 @@ public class RNA extends JUnit_OP
 	         
 	         //System.out.println(mutant);
 		}
-	}
+	}*/
 	
 	
 

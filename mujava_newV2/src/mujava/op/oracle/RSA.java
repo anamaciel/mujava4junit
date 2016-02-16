@@ -58,7 +58,7 @@ public class RSA extends JUnit_OP
 	}
 	
 	
-	public void visit( VariableDeclaration p ) throws ParseTreeException 
+	/*public void visit( VariableDeclaration p ) throws ParseTreeException 
 	{
 		//System.out.println(p);
 		this.original = p;
@@ -72,7 +72,7 @@ public class RSA extends JUnit_OP
 
 		//System.out.println(mutant);
 
-	}
+	}*/
 
 	public void visit( MethodCall p ) throws ParseTreeException
 	{
@@ -89,7 +89,7 @@ public class RSA extends JUnit_OP
 
 
 					if(arguments.size()==3){
-						System.out.println("nome: " + p.getName());
+						//System.out.println("nome: " + p.getName());
 
 						ExpressionList mutantArgs = new ExpressionList();				   
 
@@ -116,7 +116,7 @@ public class RSA extends JUnit_OP
 					p.setName(p.getName().replace("assertNotSame", "assertSame"));	
 
 					if(arguments.size()==3){
-						System.out.println("nome: " + p.getName());
+						//System.out.println("nome: " + p.getName());
 
 						ExpressionList mutantArgs = new ExpressionList();				   
 

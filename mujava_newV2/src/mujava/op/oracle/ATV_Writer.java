@@ -59,7 +59,7 @@ public class ATV_Writer extends OracleMutantCodeWriter
     */
    public void visit( MethodCall p ) throws ParseTreeException
    {
-	   
+	   //System.out.println("writelog");
 	   if(mutant != null){
 	      if (isSameObject(p, original))
 	      {

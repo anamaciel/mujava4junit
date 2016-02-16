@@ -66,7 +66,9 @@ public class AEC extends JUnit_OP
    
 	
 	public void visit( ClassDeclaration p ) throws ParseTreeException{
-		//System.out.println(p.getName());
+		System.out.println(p.getName());
+		
+		
 		
 		
 		for (AnnotationManager annotation : MutationSystem.annotations) {

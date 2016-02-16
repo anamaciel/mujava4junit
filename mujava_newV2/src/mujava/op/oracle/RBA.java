@@ -75,9 +75,9 @@ public class RBA extends JUnit_OP
 
 					   ExpressionList mutantArgs = new ExpressionList();
 
-					   //mutantArgs.add(arguments.get(0));
+					   mutantArgs.add(arguments.get(0));
 
-					   mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
+					   //mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
 
 					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 
@@ -86,11 +86,11 @@ public class RBA extends JUnit_OP
 
 					   ExpressionList mutantArgs = new ExpressionList();
 
-					   //mutantArgs.add(arguments.get(0));
-					   //mutantArgs.add(arguments.get(1));
-
 					   mutantArgs.add(arguments.get(0));
-					   mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
+					   mutantArgs.add(arguments.get(1));
+
+					   //mutantArgs.add(arguments.get(0));
+					   //mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
 
 					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 
@@ -103,9 +103,9 @@ public class RBA extends JUnit_OP
 
 					   ExpressionList mutantArgs = new ExpressionList();
 
-					   //mutantArgs.add(arguments.get(0));
+					   mutantArgs.add(arguments.get(0));
 
-					   mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
+					   //mutantArgs.add(new UnaryExpression(arguments.get(0), UnaryExpression.NOT));
 
 					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 
@@ -114,11 +114,11 @@ public class RBA extends JUnit_OP
 
 					   ExpressionList mutantArgs = new ExpressionList();
 
-					   //mutantArgs.add(arguments.get(0));
-					   //mutantArgs.add(arguments.get(1));
-
 					   mutantArgs.add(arguments.get(0));
-					   mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
+					   mutantArgs.add(arguments.get(1));
+
+					   //mutantArgs.add(arguments.get(0));
+					   //mutantArgs.add(new UnaryExpression(arguments.get(1), UnaryExpression.NOT));
 
 					   MethodCall mutant = new MethodCall(p.getReferenceExpr(), p.getName(), mutantArgs);
 
