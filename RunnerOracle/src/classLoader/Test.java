@@ -12,11 +12,15 @@ public class Test {
 		try {
             ArrayList<Class> test = test();
             Object invoke = test.get(0).newInstance();
+            System.out.println(test.get(0).getName());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 	}
 
+	
+	
+	
 	
 	public static ArrayList<Class> test() {
         ArrayList<Class> classList = new ArrayList<Class>();
