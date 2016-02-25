@@ -31,7 +31,7 @@ public class JUnitExecutionListener extends RunListener {
 
 	public void testFinished(Description description) throws Exception {
 		//  System.out.println("Finished: " + description.getMethodName());
-		System.out.println();
+		//System.out.println();
 	}
 
 	public void testFailure(Failure failure) throws Exception {

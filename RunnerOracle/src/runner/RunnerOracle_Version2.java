@@ -19,7 +19,7 @@ import org.junit.runner.JUnitCore;
 
 import classLoader.JavaClassLoader;
 
-public class RunnerOracle {
+public class RunnerOracle_Version2 {
 	
 	public static ArrayList<String> mutants = new ArrayList<String>();
 	public static ArrayList<String> methods = new ArrayList<String>();
@@ -71,12 +71,12 @@ public class RunnerOracle {
 
 		//System.out.println(methods.size());
 
-		Logger logger = Logger.getLogger(RunnerOracle.class.getName());
+		Logger logger = Logger.getLogger(RunnerOracle_Version2.class.getName());
 		MyFormatter formatter = new MyFormatter();
 		// ConsoleHandler handler = new ConsoleHandler();
-		RunnerOracle.filehand.setFormatter(formatter);
+		RunnerOracle_Version2.filehand.setFormatter(formatter);
 
-		logger.addHandler(RunnerOracle.filehand);
+		logger.addHandler(RunnerOracle_Version2.filehand);
 
 		logger.setUseParentHandlers(false);
 
@@ -238,7 +238,7 @@ public class RunnerOracle {
 		
 		System.out.println("ICtT: " + ictt + " -- RIA: " + ria );
 		
-		System.out.println("RTA: " + rta);
+		System.out.println("RTA" + rta);
 		
 		System.out.println("Mutantes vivos:" + vivos);
 		System.out.println("Mutantes mortos:" + mortos);
