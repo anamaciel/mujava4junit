@@ -3,8 +3,6 @@
 	<name>RunnerOracle</name>
 	<comment>JavaCC Nature</comment>
 	<projects>
-		<project>QuickSort</project>
-		<project>RunnerJUnit</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

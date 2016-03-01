@@ -1,6 +1,5 @@
 package runner;
 
-import java.awt.List;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,36 +7,85 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-
-import logs.MyFormatter;
 
 import org.junit.runner.JUnitCore;
 
-import classLoader.JavaClassLoader;
-
-public class RunnerOracle {
+public class RunnerOracleMain {
 	
 	public static ArrayList<String> mutants = new ArrayList<String>();
 	public static ArrayList<String> methods = new ArrayList<String>();
 	
-	public static void main(String[] args) throws SecurityException, IOException {
-		//System.out.println(args[0]);
-		
+	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		reportOriginal(args[0]);
-		
-		
-		//********************************************************//
-		
-		//ler pasta com os oráculos mutantes
 		
 		reportMutants(args[1]);
 		
 		estatisticas();
 	}
+	
+	
+	public static void reportOriginal(String path) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		
+		FileWriter arq = new FileWriter("src/reports_logs/original.txt");
+
+		String clazzPath = path.substring(path.indexOf("tests"), path.length());
+		clazzPath = clazzPath.replace("/", ".");
+		clazzPath = clazzPath.replace(".java", "");
+		System.out.println(clazzPath);
+		
+		URL[] urlArray={new File(System.getProperty("user.home")).toURL()};  
+		URLClassLoader cl=new URLClassLoader(urlArray);  
+		cl.loadClass(clazzPath).newInstance(); 
+		Class c =  cl.loadClass(clazzPath);
+
+		JUnitCore.runClasses(c);
+
+		PrintWriter gravarArq = new PrintWriter(arq);			
+
+		for(String method:methods){
+			gravarArq.println(method);
+		}		
+		arq.close();		
+	}
+	
+	public static void reportMutants(String path) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{
+		mutants= listar(new File(path));
+		for (String mutant:mutants){
+			methods.clear();
+			System.out.println("mutant: " + mutant);
+			
+			String clazzPath = mutant.substring(path.indexOf("mutants"), mutant.length());			
+			clazzPath = clazzPath.replace(".java", "");
+			clazzPath = clazzPath.replace("\\", ".");
+			System.out.println(clazzPath);
+			
+			URL[] urlArray={new File(System.getProperty("user.home")).toURL()};  
+			URLClassLoader cl=new URLClassLoader(urlArray);  
+			cl.loadClass(clazzPath).newInstance(); 
+			Class c =  cl.loadClass(clazzPath);
+
+			JUnitCore.runClasses(c);
+			
+			FileWriter arq = new FileWriter("src/reports_logs/"+ mutant.substring(mutant.indexOf("mutants\\")+8, mutant.indexOf("\\tests")) + ".txt"); 
+			
+			PrintWriter gravarArq = new PrintWriter(arq);			
+			
+			for(String method:methods){
+				//System.out.println(method);
+				gravarArq.println(method);
+			}
+			
+			arq.close();
+
+			methods.clear();
+			System.out.println("===========================================");
+		}
+	}
+	
 	
 	public static ArrayList<String> listar(File directory) {
         if(directory.isDirectory()) {
@@ -56,81 +104,6 @@ public class RunnerOracle {
         return mutants;
     }
 	
-	public static void reportOriginal(String path) throws SecurityException, IOException{
-		//System.out.println("original");
-		//lendo o oráculo original
-		ArrayList<Class> classList = new ArrayList<Class>();
-
-		JavaClassLoader loader = new JavaClassLoader();
-
-		classList = loader.loadClazz(path);	
-
-		FileWriter arq = new FileWriter("src/reports_logs/original.txt");
-		
-		JUnitCore.runClasses(classList.get(0));
-		
-		PrintWriter gravarArq = new PrintWriter(arq);			
-
-		for(String method:methods){
-			gravarArq.println(method);
-		}
-		
-		arq.close();
-
-		
-		methods.clear();
-	}
-	
-	public static void reportMutants(String path) throws SecurityException, IOException {
-		System.out.println("MUTANTS");
-		ArrayList<Class> classList = new ArrayList<Class>();
-		
-		JavaClassLoader loader = new JavaClassLoader();
-		mutants= listar(new File(path));
-		
-		//System.out.println(mutants.size());
-
-		for (String mutant:mutants){
-			System.out.println("mutant: " + mutant);
-			classList = loader.loadClazzMutants(mutant);
-			System.out.println(classList.get(0));
-			JUnitCore.runClasses(classList.get(0));	
-			
-			//System.out.println(mutant.substring(mutant.indexOf("mutants\\")+8, mutant.indexOf("\\tests")));
-			
-			FileWriter arq = new FileWriter("src/reports_logs/"+ mutant.substring(mutant.indexOf("mutants\\")+8, mutant.indexOf("\\tests")) + ".txt"); 
-			
-			PrintWriter gravarArq = new PrintWriter(arq);			
-			
-			for(String method:methods){
-				//System.out.println(method);
-				gravarArq.println(method);
-			}
-			
-			arq.close();
-
-			methods.clear();
-			System.out.println("===========================================");
-		}	
-	}
-	
-	public static ArrayList<String> lerOriginal() throws IOException{
-
-		FileReader arq = new FileReader("src\\reports_logs\\original.txt");
-		ArrayList<String> results = new ArrayList<String>();
-		BufferedReader lerArq = new BufferedReader(arq); 
-		String linha = lerArq.readLine(); 
-		while (linha != null) { 
-			//System.out.printf("%s\n", linha); 
-			
-			if(linha!=""){
-				results.add(linha);
-			}
-			linha = lerArq.readLine(); // lê da segunda até a última linha  			
-		}
-		arq.close();
-		return results;
-	}
 	
 	public static void estatisticas() throws IOException{
 		ArrayList<String> results = lerOriginal();
@@ -142,10 +115,10 @@ public class RunnerOracle {
 		boolean vivo=false, morto = false;
 		String[] logs = dir.list();
 		for(String log: logs){
-			//System.out.println(log);
+			System.out.println(log);
 			FileReader arq;
 			try {
-				if(!log.contains("lck") && (!log.equals("original.txt"))&& (!log.equals("tests.txt"))){
+				if(!log.equals("original.txt")){
 					String op = log.substring(0, log.indexOf("_"));
 					
 					switch (op) {
@@ -189,16 +162,17 @@ public class RunnerOracle {
 					BufferedReader lerArq = new BufferedReader(arq); 
 					String linha = lerArq.readLine(); 
 					while (linha != null) { 
-						if(linha!="\n"){
-							mutants.add(linha);
-						}
-						linha = lerArq.readLine(); // lê da segunda até a última linha } 						
+						System.out.println(linha);	
+						linha = lerArq.readLine(); // lê da segunda até a última linha } 
+						mutants.add(linha);
 					}
+					System.out.println(mutants.size());
 					if(isAlive(results, mutants)){
 						vivos++;
 					}else{
 						mortos++;
 					}
+					mutants.clear();
 					arq.close();
 					
 				}
@@ -237,14 +211,32 @@ public class RunnerOracle {
 	}
 	
 	public static boolean isAlive(ArrayList<String> original, ArrayList<String> mutants){
-		for(String orig:original){
-			for(String mutant:mutants){
-				if(orig.equals(mutant)){
-					return true;
-				}
-			}
+		System.out.println("is alive");
+		boolean alive = true;
+		if(original.size()!=mutants.size()){
+			alive=false;
+		}else{
+			alive=true;
 		}
-		return false;
+		return alive;
 	}
+	
+	
+	public static ArrayList<String> lerOriginal() throws IOException{
 
+		FileReader arq = new FileReader("src\\reports_logs\\original.txt");
+		ArrayList<String> results = new ArrayList<String>();
+		BufferedReader lerArq = new BufferedReader(arq); 
+		String linha = lerArq.readLine(); 
+		while (linha != null) { 
+			//System.out.printf("%s\n", linha); 
+			
+			if(linha!=""){
+				results.add(linha);
+			}
+			linha = lerArq.readLine(); // lê da segunda até a última linha  			
+		}
+		arq.close();
+		return results;
+	}
 }

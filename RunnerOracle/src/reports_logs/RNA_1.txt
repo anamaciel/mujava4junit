@@ -1,4 +1,4 @@
-testBubbleNull
-testBubbleSame
+testBubbleFail
 testBubbleFirst
+testBubbleSame2
 testBubbleNotNull
