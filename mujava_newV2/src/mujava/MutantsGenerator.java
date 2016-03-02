@@ -132,8 +132,8 @@ public abstract class MutantsGenerator
       Debug.print("* Arranging original source code. \n" );
       arrangeOriginal();
       //System.out.println("3");
-      /*compileOriginal();*/
-      Debug.print("..done. \n" );
+      //compileOriginal();
+      //Debug.print("..done. \n" );
       Debug.flush();
       return true;
    }
@@ -641,6 +641,110 @@ public abstract class MutantsGenerator
       {
          System.err.println(e);
       }
+   }
+   
+   /**
+    * Compile mutants 
+    */
+   public void compileMutantsOracle()
+   {
+       // Lin add a counter 12/12/13
+       int counter = 0;
+       String fileName = new String();
+	   
+      File f = new File(MutationSystem.MUTANT_PATH);
+      
+      String[] s = f.list(new MutantDirFilter());
+
+      for (int i=0; i<s.length; i++)
+      {
+         File target_dir = new File(MutationSystem.MUTANT_PATH + "/" + s[i]);
+         
+         
+         System.out.println("TESTE: " + MutationSystem.MUTANT_PATH + "/" + s[i]);
+         String[] target_file = target_dir.list();
+         System.out.println("duvida: " + target_file.length);
+         fileName = target_file[0];
+
+         
+         
+         Vector v = new Vector();
+         for (int j=0; j<target_file.length; j++)
+         {
+            v.add(MutationSystem.MUTANT_PATH + "/" + s[i] + "/" + target_file[j]);
+         }
+
+         String[] pars = new String[v.size()+2];
+
+         pars[0] = "-cp E:/junit.jar org.junit.runner.JUnitCore";
+         pars[1] = MutationSystem.CLASS_PATH;
+         System.out.println("PARS");
+         for(int k = 0;k<pars.length;k++){
+        	 System.out.println(pars[k]);
+         }
+         for (int j=0; j<v.size(); j++)
+         {
+            pars[2+j] = v.get(j).toString();
+         }
+         System.out.println("PARS 2 ");
+         for(int k = 0;k<pars.length;k++){
+        	 System.out.println(pars[k]);
+         }
+         try
+         {
+        	 // result = 0 : SUCCESS,   result = 1 : FALSE
+
+        	 int result;
+        	 result = Main.compile(pars);
+        	 File tempCompileResultFile = new File(
+        			 MutationSystem.SYSTEM_HOME + "/compile_output");
+        	 PrintWriter out = new PrintWriter(tempCompileResultFile);
+
+        	 result = Main.compile(pars, out);
+        	 tempCompileResultFile.delete();
+
+        	 if (result == 0)
+        	 {
+        		 Debug.print("+" + s[i] + "   ");
+        		 counter++;
+        	 }
+        	 else
+        	 {
+        		 Debug.print("-" + s[i] + "   ");
+        		 // delete directory
+        		 File dir_name = new File(MutationSystem.MUTANT_PATH + "/" + s[i]);
+        		 File[] mutants = dir_name.listFiles();
+        		 boolean tr = false;
+
+        		 for (int j=0; j<mutants.length; j++)
+        		 {
+        			 // [tricky solution] It can produce loop -_-;;
+        			 while (!tr)
+        			 {
+        				 tr = mutants[j].delete();
+        			 }
+        			 tr = false;
+        		 }
+
+        		 while (!tr)
+        		 {
+        			 tr = dir_name.delete();
+        		 }
+        	 }
+         } 
+         catch (Exception e)
+         {
+            System.err.println(e);
+         }
+      }
+      Debug.println();
+      
+      
+      // Lin add printer total mutants
+      Util.Total = Util.Total+counter;
+//      System.out
+//		.println("------------------------------------------------------------------");
+//      System.out.println("Total mutants gnerated for " + fileName +": " + Integer.toString(counter));
    }
 
 

@@ -1,4 +1,3 @@
-testBubbleNull
 testBubbleSame
 testBubbleFirst
 testBubbleNotNull

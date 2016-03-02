@@ -278,7 +278,7 @@ public class MutantCodeWriterOracle extends ParseTreeVisitor
 	{
 		writeTab();
 		
-		System.out.println("construtor: " + p);
+		//System.out.println("construtor: " + p);
 
 		/*ModifierList*/
 		ModifierList modifs = p.getModifiers();

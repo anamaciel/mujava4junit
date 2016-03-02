@@ -210,7 +210,7 @@ public class MutantCodeWriter extends ParseTreeVisitor
 	public void visit( ConstructorDeclaration p )
 			throws ParseTreeException
 	{
-		System.out.println("visit ConstructorDeclaration");
+		//System.out.println("visit ConstructorDeclaration");
 		writeTab();
 
 		/*ModifierList*/

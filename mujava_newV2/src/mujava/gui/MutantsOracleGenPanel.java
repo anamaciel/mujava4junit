@@ -470,7 +470,7 @@ public class MutantsOracleGenPanel extends JPanel
 				if(signature_ops != null){
 					sgGenEngine = new SignatureMutantsGenerator(original_file,signature_ops);   
 					sgGenEngine.makeMutantsOracle();      
-					//sgGenEngine.compileMutants();
+					//sgGenEngine.compileMutantsOracle();
 				}
 
 				//do not generate traditional mutants if no class traditional operator is selected
@@ -480,7 +480,7 @@ public class MutantsOracleGenPanel extends JPanel
 					//System.out.println("traditional_ops: " + traditional_ops);
 					tmGenEngine = new AnnotationMutantsGenerator(original_file,annotation_ops);
 					tmGenEngine.makeMutantsOracle();
-					//tmGenEngine.compileMutants();
+					//tmGenEngine.compileMutantsOracle();
 				}
 
 			} catch (OpenJavaException oje)

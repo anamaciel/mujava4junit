@@ -24,6 +24,8 @@ public class Teste {
 	      
 	      Class c5 =  cl.loadClass("mutants.RNA_1.tests.TestingQuickSort");
 	      JUnitCore.runClasses(c5);
+	      
+	      
 
 		
 	} 
