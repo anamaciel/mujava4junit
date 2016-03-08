@@ -161,7 +161,7 @@ public class RSA extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RSA");
+		f_name = getSourceNameOracle("RSA");
 		String mutant_dir = getMuantID("RSA");
 
 		try 

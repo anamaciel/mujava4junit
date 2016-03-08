@@ -157,7 +157,7 @@ public class MPPTO extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("MPPTO");
+		f_name = getSourceNameOracle("MPPTO");
 		String mutant_dir = getMuantID("MPPTO");
 
 		try 

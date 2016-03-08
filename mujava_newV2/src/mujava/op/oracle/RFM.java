@@ -79,7 +79,7 @@ public class RFM extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RFM");
+		f_name = getSourceNameOracle("RFM");
 		String mutant_dir = getMuantID("RFM");
 
 		try 

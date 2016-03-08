@@ -174,7 +174,7 @@ public class RNA extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RNA");
+		f_name = getSourceNameOracle("RNA");
 		String mutant_dir = getMuantID("RNA");
 
 		try 

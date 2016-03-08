@@ -106,7 +106,7 @@ public class ATV extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("ATV");
+		f_name = getSourceNameOracle("ATV");
 		String mutant_dir = getMuantID("ATV");
 
 		try 

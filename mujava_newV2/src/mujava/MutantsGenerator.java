@@ -635,6 +635,7 @@ public abstract class MutantsGenerator
       {
       // result = 0 : SUCCESS,   result = 1 : FALSE
       //int result = Main.compile(pars,new PrintWriter(new FileOutputStream("temp")));
+    	  //System.out.println(pars);
          Main.compile(pars);
       }
       catch (Exception e)
@@ -676,7 +677,7 @@ public abstract class MutantsGenerator
 
          String[] pars = new String[v.size()+2];
 
-         pars[0] = "-cp E:/junit.jar org.junit.runner.JUnitCore";
+         pars[0] = "-classpath";
          pars[1] = MutationSystem.CLASS_PATH;
          System.out.println("PARS");
          for(int k = 0;k<pars.length;k++){

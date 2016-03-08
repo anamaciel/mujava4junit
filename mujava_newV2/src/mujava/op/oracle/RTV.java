@@ -104,7 +104,7 @@ public class RTV extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RTV");
+		f_name = getSourceNameOracle("RTV");
 		String mutant_dir = getMuantID("RTV");
 
 		try 

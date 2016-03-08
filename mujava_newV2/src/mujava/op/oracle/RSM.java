@@ -145,7 +145,7 @@ public class RSM extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("RSM");
+		f_name = getSourceNameOracle("RSM");
 		String mutant_dir = getMuantID("RSM");
 
 		try 

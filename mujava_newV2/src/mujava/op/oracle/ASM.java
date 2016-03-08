@@ -148,7 +148,7 @@ public class ASM extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("ASM");
+		f_name = getSourceNameOracle("ASM");
 		String mutant_dir = getMuantID("ASM");
 
 		try 

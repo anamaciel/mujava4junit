@@ -176,7 +176,7 @@ public class MPPT extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("MPPT");
+		f_name = getSourceNameOracle("MPPT");
 		String mutant_dir = getMuantID("MPPT");
 
 		try 

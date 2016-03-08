@@ -152,7 +152,7 @@ public class MSM extends JUnit_OP
 
 		String f_name;
 		num++;
-		f_name = getSourceName("MSM");
+		f_name = getSourceNameOracle("MSM");
 		String mutant_dir = getMuantID("MSM");
 
 		try 

@@ -145,7 +145,7 @@ public class RBA extends JUnit_OP
 
       String f_name;
       num++;
-      f_name = getSourceName("RBA");
+      f_name = getSourceNameOracle("RBA");
       String mutant_dir = getMuantID("RBA");
 
       try 
