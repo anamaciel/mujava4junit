@@ -20,24 +20,25 @@ public class RunnerOracleMain {
 	public static ArrayList<String> methods = new ArrayList<String>();
 	
 	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-		reportOriginal(args[0]);
+		reportOriginal(args[0], args[2]);
 		
-		reportMutants(args[1]);
+		reportMutants(args[1], args[2]);
 		
-		estatisticas();
+		estatisticas(args[2]);
 	}
 	
 	
-	public static void reportOriginal(String path) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+	public static void reportOriginal(String path, String pathReport) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
 		
-		FileWriter arq = new FileWriter("src/reports_logs/original.txt");
+		FileWriter arq = new FileWriter(pathReport+"/original.txt");
 
 		String clazzPath = path.substring(path.indexOf("tests"), path.length());
 		clazzPath = clazzPath.replace("/", ".");
 		clazzPath = clazzPath.replace(".java", "");
+		
 		System.out.println(clazzPath);
 		
-		URL[] urlArray={new File(System.getProperty("user.home")).toURL()};  
+		URL[] urlArray={new File(System.getProperty("user.home")+"/EXPERIMENTO/").toURL()};  
 		URLClassLoader cl=new URLClassLoader(urlArray);  
 		cl.loadClass(clazzPath).newInstance(); 
 		Class c =  cl.loadClass(clazzPath);
@@ -52,30 +53,40 @@ public class RunnerOracleMain {
 		arq.close();		
 	}
 	
-	public static void reportMutants(String path) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{
+	public static void reportMutants(String path, String pathReport) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{
 		mutants= listar(new File(path));
+		//System.out.println(mutants.size());
 		for (String mutant:mutants){
 			methods.clear();
-			System.out.println("mutant: " + mutant);
-			
-			String clazzPath = mutant.substring(path.indexOf("mutants"), mutant.length());			
+			System.out.println(mutant);
+			String clazzPath = mutant.substring(mutant.indexOf("tests"), mutant.length());			
 			clazzPath = clazzPath.replace(".java", "");
 			clazzPath = clazzPath.replace("\\", ".");
+			
 			System.out.println(clazzPath);
 			
-			URL[] urlArray={new File(System.getProperty("user.home")).toURL()};  
+			String pathJunit=mutant.substring(mutant.indexOf("EXPERIMENTO"), mutant.lastIndexOf("tests"));
+			System.out.println(pathJunit);
+			
+			URL[] urlArray={new File(System.getProperty("user.home")+"/" + pathJunit).toURL()};  
 			URLClassLoader cl=new URLClassLoader(urlArray);  
 			cl.loadClass(clazzPath).newInstance(); 
-			Class c =  cl.loadClass(clazzPath);
+			Class c =  cl.loadClass(clazzPath);			
 
 			JUnitCore.runClasses(c);
 			
-			FileWriter arq = new FileWriter("src/reports_logs/"+ mutant.substring(mutant.indexOf("mutants\\")+8, mutant.indexOf("\\tests")) + ".txt"); 
+			//System.out.println(mutant);
+			System.out.println("teste: " + mutant.substring(mutant.indexOf("()\\")+3, mutant.lastIndexOf("\\tests")));
 			
-			PrintWriter gravarArq = new PrintWriter(arq);			
+			FileWriter arq = new FileWriter(pathReport+"/"+ mutant.substring(mutant.indexOf("()\\")+3, mutant.lastIndexOf("\\tests")) + ".txt");
+			
+			
+			
+			PrintWriter gravarArq = new PrintWriter(arq);	
+			System.out.println(methods.size());
 			
 			for(String method:methods){
-				//System.out.println(method);
+				//System.out.println("metodo: " + method);
 				gravarArq.println(method);
 			}
 			
@@ -88,12 +99,13 @@ public class RunnerOracleMain {
 	
 	
 	public static ArrayList<String> listar(File directory) {
+		//System.out.println(directory.getAbsolutePath());
         if(directory.isDirectory()) {
             //System.out.println(directory.getPath());
             String[] subDirectory = directory.list();
             if(subDirectory != null) {
                 for(String dir : subDirectory){
-                	if(dir.contains(".java")){
+                	if(dir.contains(".java")&&directory.getPath().contains("tests")){
                 		//System.out.println(dir);
                 		mutants.add(directory.getPath()+ "\\" + dir );
                 	}
@@ -101,100 +113,140 @@ public class RunnerOracleMain {
                 }
             }
         }
+        //System.out.println(mutants.size());
         return mutants;
     }
 	
 	
-	public static void estatisticas() throws IOException{
-		ArrayList<String> results = lerOriginal();
+	public static void estatisticas(String path) throws IOException{
+		ArrayList<String> results = lerOriginal(path);
 		ArrayList<String> mutants=new ArrayList<String>();
-		File dir = new File("src\\reports_logs\\");
+		File dir = new File(path);
 		int vivos=0,mortos=0;
 		int asm=0,atv=0,dcftv=0,icttv=0,mppto=0,msm=0,rba=0,rna=0,rsa=0,rfm=0,rsm=0,rtv=0,aec=0,dcft=0,
 				ictt=0,ria=0,rta=0;
-		boolean vivo=false, morto = false;
+		int asmD=0,atvD=0,dcftvD=0,icttvD=0,mpptoD=0,msmD=0,rbaD=0,rnaD=0,rsaD=0,rfmD=0,rsmD=0,rtvD=0,aecD=0,dcftD=0,
+				icttD=0,riaD=0,rtaD=0;
+		boolean vivo=false;
 		String[] logs = dir.list();
 		for(String log: logs){
-			System.out.println(log);
+			//System.out.println(log);
 			FileReader arq;
 			try {
 				if(!log.equals("original.txt")){
 					String op = log.substring(0, log.indexOf("_"));
 					
-					switch (op) {
-						case "ASM": asm++;
-							break;
-						case "ATV": atv++;
-							break;
-						case "DCfTV": dcftv++;
-							break;
-						case "ICtTV": icttv++;
-							break;
-						case "MPPTO": mppto++;
-							break;
-						case "MSM": msm++;
-							break;
-						case "RBA": rba++;
-							break;
-						case "RNA": rna++;
-							break;
-						case "RSA": rsa++;
-							break;
-						case "RFM": rfm++;
-							break;
-						case "RSM": rsm++;
-							break;
-						case "RTV": rtv++;
-							break;
-						case "AEC": aec++;
-							break;
-						case "DCfT": dcft++;
-							break;
-						case "ICtT": ictt++;
-							break;
-						case "RIA": ria++;
-							break;
-						case "RTA": rta++;
-							break;
-					}					
-					
-					arq = new FileReader("src\\reports_logs\\" + log);
+					arq = new FileReader(path +"/" + log);
 					BufferedReader lerArq = new BufferedReader(arq); 
 					String linha = lerArq.readLine(); 
 					while (linha != null) { 
-						System.out.println(linha);	
-						linha = lerArq.readLine(); // lê da segunda até a última linha } 
+						linha = lerArq.readLine();  
 						mutants.add(linha);
 					}
-					System.out.println(mutants.size());
+					//System.out.println(mutants.size());
 					if(isAlive(results, mutants)){
 						vivos++;
+						vivo=true;
 					}else{
 						mortos++;
 					}
 					mutants.clear();
 					arq.close();
 					
+					switch (op) {
+					case "ASM": asm++;
+					if(!vivo)
+						asmD++;							
+					break;
+					case "ATV": atv++;
+					if(!vivo)
+						atvD++;
+					break;
+					case "DCfTV": dcftv++;
+					if(!vivo)
+						dcftvD++;
+					break;
+					case "ICtTV": icttv++;
+					if(!vivo)
+						icttvD++;
+					break;
+					case "MPPTO": mppto++;
+					if(!vivo)
+						mpptoD++;
+					break;
+					case "MSM": msm++;
+					if(!vivo)
+						msmD++;
+					break;
+					case "RBA": rba++;
+					if(!vivo)
+						rbaD++;
+					break;
+					case "RNA": rna++;
+					if(!vivo)
+						rnaD++;
+					break;
+					case "RSA": rsa++;
+					if(!vivo)
+						rsaD++;
+					break;
+					case "RFM": rfm++;
+					if(!vivo)
+						rfmD++;
+					break;
+					case "RSM": rsm++;
+					if(!vivo)
+						rsmD++;
+					break;
+					case "RTV": rtv++;
+					if(!vivo)
+						rtvD++;
+					break;
+					case "AEC": aec++;
+					if(!vivo)
+						aecD++;
+					break;
+					case "DCfT": dcft++;
+					if(!vivo)
+						dcftD++;
+					break;
+					case "ICtT": ictt++;
+					if(!vivo)
+						icttD++;
+					break;
+					case "RIA": ria++;
+					if(!vivo)
+						riaD++;
+					break;
+					case "RTA": rta++;
+					if(!vivo)
+						rtaD++;
+					break;
+					}					
+
+
+					
 				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 				
+			} 
+			vivo = false;
 		}
 				
 		System.out.println("\n**********SIGNATURE**********");
 		
-		System.out.println("ASM: " + asm + " -- ATV: " + atv );
+		System.out.println("ASM: " + asm +"/"+ asmD + " -- ATV: " + atv +"/"+ atvD);
 		
-		System.out.println("DCfTV: " + dcftv + " -- ICtTV: " + icttv );
+		System.out.println("DCfTV: " + dcftv +"/"+ dcftvD + " -- ICtTV: " + icttv +"/"+ icttvD);
 		
-		System.out.println("MPPTO: " + mppto + " -- MSM: " + msm );
+		System.out.println("MPPTO: " + mppto +"/"+ mpptoD+ " -- MSM: " + msm +"/"+ msmD);
 		
-		System.out.println("RBA: " + rba + " -- RNA: " + rna );
+		System.out.println("RBA: " + rba +"/"+ rbaD+ " -- RNA: " + rna +"/"+ rnaD);
 		
-		System.out.println("RSA: " + rsa + " -- RFM: " + rfm );
+		System.out.println("RSA: " + rsa +"/"+ rsaD+ " -- RFM: " + rfm +"/"+ rfmD);
 		
-		System.out.println("RSM: " + rsm + " -- RTV: " + rtv );
+		System.out.println("RSM: " + rsm +"/"+ rsmD+ " -- RTV: " + rtv +"/"+ rtvD);
 		
 		System.out.println("\n**********ANNOTATION**********");
 		
@@ -211,7 +263,7 @@ public class RunnerOracleMain {
 	}
 	
 	public static boolean isAlive(ArrayList<String> original, ArrayList<String> mutants){
-		System.out.println("is alive");
+		//System.out.println("is alive");
 		boolean alive = true;
 		if(original.size()!=mutants.size()){
 			alive=false;
@@ -222,9 +274,9 @@ public class RunnerOracleMain {
 	}
 	
 	
-	public static ArrayList<String> lerOriginal() throws IOException{
+	public static ArrayList<String> lerOriginal(String path) throws IOException{
 
-		FileReader arq = new FileReader("src\\reports_logs\\original.txt");
+		FileReader arq = new FileReader(path + "/original.txt");
 		ArrayList<String> results = new ArrayList<String>();
 		BufferedReader lerArq = new BufferedReader(arq); 
 		String linha = lerArq.readLine(); 
