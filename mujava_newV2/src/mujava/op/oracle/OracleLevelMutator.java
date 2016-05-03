@@ -117,9 +117,9 @@ public class OracleLevelMutator  extends mujava.op.util.Mutator
    public String getSourceName(String op_name)
    {
  	  // make directory for the mutant
-	  String dir_name = MutationSystem.MUTANT_PATH + "/" + currentMethodSignature + "/" + op_name + "_" + this.num;
+	  String dir_name = MutationSystem.MUTANT_PATH + "/" + currentMethodSignature + "/" + op_name + "_" + this.num +"/tests";
 	  File f = new File(dir_name);
-	  f.mkdir();
+	  f.mkdirs();
 
 	  // return file name
 	  String name;

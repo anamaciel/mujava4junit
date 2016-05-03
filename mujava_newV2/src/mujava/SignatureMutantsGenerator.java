@@ -275,12 +275,12 @@ public class SignatureMutantsGenerator  extends MutantsGenerator
 						comp_unit.accept(mutant_op);
 					}
 
-					if (hasOperator (signatureOp, "RSA") )
+					/*if (hasOperator (signatureOp, "RSA") )
 					{
 						Debug.println("  Applying RSA ... ... ");
 						mutant_op = new RSA(file_env, cdecl, comp_unit);
 						comp_unit.accept(mutant_op);
-					}
+					}*/
 
 					if (hasOperator (signatureOp, "RFM") )
 					{
