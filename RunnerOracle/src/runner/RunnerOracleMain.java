@@ -29,6 +29,7 @@ public class RunnerOracleMain {
 	
 	
 	public static void reportOriginal(String path, String pathReport) throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException{
+		int contFail = 0;
 		
 		FileWriter arq = new FileWriter(pathReport+"/original.txt");
 
@@ -36,7 +37,7 @@ public class RunnerOracleMain {
 		clazzPath = clazzPath.replace("/", ".");
 		clazzPath = clazzPath.replace(".java", "");
 		
-		System.out.println(clazzPath);
+		//System.out.println(clazzPath);
 		
 		URL[] urlArray={new File(System.getProperty("user.home")+"/EXPERIMENTO/").toURL()};  
 		URLClassLoader cl=new URLClassLoader(urlArray);  
@@ -48,9 +49,13 @@ public class RunnerOracleMain {
 		PrintWriter gravarArq = new PrintWriter(arq);			
 
 		for(String method:methods){
+			contFail++;
 			gravarArq.println(method);
 		}		
-		arq.close();		
+		arq.close();
+		
+		System.out.println("Qtde Fail ORIGINAL: " + contFail);
+		System.out.println("===========================================");
 	}
 	
 	public static void reportMutants(String path, String pathReport) throws InstantiationException, IllegalAccessException, ClassNotFoundException, IOException{
@@ -58,15 +63,15 @@ public class RunnerOracleMain {
 		//System.out.println(mutants.size());
 		for (String mutant:mutants){
 			methods.clear();
-			System.out.println(mutant);
+			//System.out.println(mutant);
 			String clazzPath = mutant.substring(mutant.indexOf("tests"), mutant.length());			
 			clazzPath = clazzPath.replace(".java", "");
 			clazzPath = clazzPath.replace("\\", ".");
 			
-			System.out.println(clazzPath);
+			//System.out.println(clazzPath);
 			
 			String pathJunit=mutant.substring(mutant.indexOf("EXPERIMENTO"), mutant.lastIndexOf("tests"));
-			System.out.println(pathJunit);
+			//System.out.println(pathJunit);
 			
 			URL[] urlArray={new File(System.getProperty("user.home")+"/" + pathJunit).toURL()};  
 			URLClassLoader cl=new URLClassLoader(urlArray);  
@@ -76,14 +81,24 @@ public class RunnerOracleMain {
 			JUnitCore.runClasses(c);
 			
 			//System.out.println(mutant);
-			System.out.println("teste: " + mutant.substring(mutant.indexOf("()\\")+3, mutant.lastIndexOf("\\tests")));
-			
-			FileWriter arq = new FileWriter(pathReport+"/"+ mutant.substring(mutant.indexOf("()\\")+3, mutant.lastIndexOf("\\tests")) + ".txt");
+			FileWriter arq=null;
+			if(mutant.contains("()")){
+				//System.out.println(mutant.substring(mutant.indexOf("()\\")+3, mutant.lastIndexOf("\\tests")));
+
+				arq = new FileWriter(pathReport+"/"+ mutant.substring(mutant.indexOf("()\\")+3, mutant.lastIndexOf("\\tests")) + ".txt");
+			}else{
+				//System.out.println(mutant);
+				String aux = mutant.substring(0,mutant.lastIndexOf("\\tests"));
+				//System.out.println(aux);
+				//System.out.println();
+				//System.out.println(mutant.substring(aux.lastIndexOf("\\")+1, aux.length()));
+				arq = new FileWriter(pathReport+"/"+ mutant.substring(aux.lastIndexOf("\\")+1, aux.length()) + ".txt");
+			}
 			
 			
 			
 			PrintWriter gravarArq = new PrintWriter(arq);	
-			System.out.println(methods.size());
+			//System.out.println(methods.size());
 			
 			for(String method:methods){
 				//System.out.println("metodo: " + method);
@@ -93,7 +108,7 @@ public class RunnerOracleMain {
 			arq.close();
 
 			methods.clear();
-			System.out.println("===========================================");
+			//System.out.println("===========================================");
 		}
 	}
 	
@@ -166,7 +181,7 @@ public class RunnerOracleMain {
 					if(!vivo)
 						dcftvD++;
 					break;
-					case "ICtTV": icttv++;
+					case "ICfTV": icttv++;
 					if(!vivo)
 						icttvD++;
 					break;
@@ -250,11 +265,11 @@ public class RunnerOracleMain {
 		
 		System.out.println("\n**********ANNOTATION**********");
 		
-		System.out.println("AEC: " + aec + " -- DCfT: " + dcft );
+		System.out.println("AEC: " + aec + "/"+ aecD + " -- DCfT: " + dcft + "/"+ dcftD);
 		
-		System.out.println("ICtT: " + ictt + " -- RIA: " + ria );
+		System.out.println("ICtT: " + ictt + "/"+ icttD + " -- RIA: " + ria + "/"+ riaD);
 		
-		System.out.println("RTA: " + rta);
+		System.out.println("RTA: " + rta+ "/"+ rtaD);
 		
 		System.out.println("\n******************************");
 		

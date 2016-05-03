@@ -15,7 +15,7 @@ public class CustomRunWith {
 	
 	
 	public static void main(String[] args) throws IOException {
-		String path = "C:\\Users\\AnaClaudia\\EXPERIMENTO\\calculator\\mutants";
+		String path = "C:\\Users\\AnaClaudia\\EXPERIMENTO\\bubblesort\\mutants\\AEC";
 		File dir = new File(path);
 		listar(dir);
 		addMyRunner();
@@ -31,6 +31,8 @@ public class CustomRunWith {
 					System.out.println(linha);
 					if(linha != ""){
 						if(linha.contains("public class")){
+							//text+="import static org.junit.Assert.*;
+							text+="import java.io.*;";
 							text+="\nimport org.junit.runner.RunWith;\n";
 							text+="\nimport runner.MyRunner;\n";
 							text+="\n@RunWith(MyRunner.class)\n";
